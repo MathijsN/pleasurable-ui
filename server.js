@@ -1,41 +1,166 @@
-// Importeer het npm package Express (uit de door npm aangemaakte node_modules map)
-// Deze package is geïnstalleerd via `npm install`, en staat als 'dependency' in package.json
 import express from 'express'
-
-// Importeer de Liquid package (ook als dependency via npm geïnstalleerd)
 import { Liquid } from 'liquidjs';
 
-// Maak een nieuwe Express applicatie aan, waarin we de server configureren
 const app = express()
 
-// Maak werken met data uit formulieren iets prettiger
 app.use(express.urlencoded({ extended: true }))
 
-// Gebruik de map 'public' voor statische bestanden (resources zoals CSS, JavaScript, afbeeldingen en fonts)
-// Bestanden in deze map kunnen dus door de browser gebruikt worden
 app.use(express.static('public'))
 
-// Stel Liquid in als 'view engine'
 const engine = new Liquid()
 app.engine('liquid', engine.express())
 
-// Stel de map met Liquid templates in
-// Let op: de browser kan deze bestanden niet rechtstreeks laden (zoals voorheen met HTML bestanden)
 app.set('views', './views')
 
+const baseURL = 'https://fdnd-agency.directus.app/items'
+const groupEndpoint = `${baseURL}/snappthis_group`
+const snappmapEndpoint = `${baseURL}/snappthis_snapmap`
+const snappEndpoint = `${baseURL}/snappthis_snap`
+const actionEndpoint = `${baseURL}/snappthis_action`
+const userEndpoint = `${baseURL}/snappthis_user`
 
 app.get('/', async function (request, response) {
+  const params = new URLSearchParams()
 
+  const allSnappmapsApiResponse = await fetch(`${snappmapEndpoint}?${params.toString()}`)
+  const allSnappmapsApiResponseJSON = await allSnappmapsApiResponse.json()
+  const allSnappmaps = allSnappmapsApiResponseJSON.data
 
+  console.log(allSnappmaps)
 
-  response.render('index.liquid')
+  response.render('index.liquid', { allSnappmaps })
 })
 
-// Stel het poortnummer in waar Express op moet gaan luisteren
-// Lokaal is dit poort 8000; als deze applicatie ergens gehost wordt, waarschijnlijk poort 80
+app.get('/groups', async function (request, response) {
+  const params = new URLSearchParams()
+  params.set('fields', 'name,slug,snappmap.snappthis_snapmap_uuid.*,count(users)')
+
+  const allGroupsApiResponse = await fetch(`${groupEndpoint}?${params.toString()}`)
+  const allGroupsApiResponseJSON = await allGroupsApiResponse.json()
+  const allGroups = allGroupsApiResponseJSON.data
+
+  response.render('groups.liquid', { allGroups })
+})
+
+app.get('/groups/:slug', async function (request, response) {
+  const params = new URLSearchParams()
+  params.set('fields', '*.*,snappmap.snappthis_snapmap_uuid.*')
+  params.set('filter[slug]', request.params.slug)
+
+  const snappMapsApiResponse = await fetch(`${groupEndpoint}?${params.toString()}`)
+  const snappMapsApiResponseJSON = await snappMapsApiResponse.json()
+  const snappMapslist = snappMapsApiResponseJSON.data
+
+  response.render('groups.liquid', { snappMapslist })
+})
+
+
+app.get('/snappmaps/:slug', async function (request, response) {
+  const params = new URLSearchParams()
+
+  params.set('fields', '*.*,groups.snappthis_group_uuid.name,groups.snappthis_group_uuid.slug,groups.snappthis_group_uuid.snappmap.snappthis_snapmap_uuid.name,groups.snappthis_group_uuid.snappmap.snappthis_snapmap_uuid.slug,groups.snappthis_group_uuid.snappmap.snappthis_snapmap_uuid.uuid')
+  params.set('filter[slug]', request.params.slug)
+
+  const snappmapApiResponse = await fetch(`${snappmapEndpoint}?${params.toString()}`)
+  const snappmapApiResponseJSON = await snappmapApiResponse.json()
+  const snappmap = snappmapApiResponseJSON.data
+
+  response.render('snappmap.liquid', { snappmap })
+})
+
+// app.post('/snappmaps/:slug',async function (request, response) {
+// })
+
+
+app.get('/snapps', async function (request, response) {
+  const params = new URLSearchParams()
+  params.set('fields', '*,snapmap.groups.snappthis_group_uuid.name')
+  params.set('filter[picture][_neq]', 'null')
+
+  const allSnappsApiResponse = await fetch(`${snappEndpoint}?${params.toString()}`)
+  const allSnappsApiResponseJSON = await allSnappsApiResponse.json()
+  const allSnapps = allSnappsApiResponseJSON.data
+
+  const path = request.path
+
+  response.render('snappmap.liquid', { allSnapps, path })
+})
+
+
+
+
+app.get('/snapps/location/:location', async function (request, response) {
+  const params = new URLSearchParams()
+  params.set('fields', '*,snapmap.groups.snappthis_group_uuid.name')
+  params.set('filter[picture][_neq]', 'null')
+  params.set('filter[location]', request.params.location)
+
+  const allSnappsApiResponse = await fetch(`${snappEndpoint}?${params.toString()}`)
+  const allSnappsApiResponseJSON = await allSnappsApiResponse.json()
+  const allSnapps = allSnappsApiResponseJSON.data
+
+  const path = request.path
+
+  response.render('snappmap.liquid', { allSnapps, path })
+})
+
+
+
+// Aanpassen
+
+app.get('/snapps/user/:uuid', async function (request, response) {
+  const params = new URLSearchParams()
+  params.set('fields', '*,snapmap.groups.snappthis_group_uuid.name')
+  params.set('filter[picture][_neq]', 'null')
+  params.set('filter[user]', request.params.location)
+
+  const allSnappsApiResponse = await fetch(`${snappEndpoint}?${params.toString()}`)
+  const allSnappsApiResponseJSON = await allSnappsApiResponse.json()
+  const allSnapps = allSnappsApiResponseJSON.data
+
+  const path = request.path
+
+  response.render('snappmap.liquid', { allSnapps, path })
+})
+
+
+
+
+// Aanpassen
+
+app.get('/snapps/:uuid', async function (request, response) {
+  const params = new URLSearchParams()
+
+  const allGroupsApiResponse = await fetch(`${groupEndpoint}?${params.toString()}`)
+  const allGroupsApiResponseJSON = await allGroupsApiResponse.json()
+  const allGroups = allGroupsApiResponseJSON.data
+
+  response.render('snapp.liquid', { allGroups })
+})
+
+
+
+
+
+
+// Aanpassen
+
+app.get('/user', async function (request, response) {
+  const params = new URLSearchParams()
+
+  response.render('snapp.liquid', { user })
+})
+
+
+
+
+app.use((req, res) => {
+  res.status(404).render('404.liquid')
+})
+
 app.set('port', process.env.PORT || 8000)
 
 // Start Express op, gebruik daarbij het zojuist ingestelde poortnummer op
 app.listen(app.get('port'), function () {
-  console.log(`Project draait via http://localhost:${app.get('port')}/\n\nSucces deze sprint. En maak mooie dingen! 🙂`)
+  console.log(`Project draait via http://localhost:${app.get('port')}`)
 })
