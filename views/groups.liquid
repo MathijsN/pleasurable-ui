@@ -1,0 +1,7 @@
+{% render 'partials/head.liquid', title: 'Groups' %}
+
+{% for group in allGroups %}
+  <p>{{ group.name }}</p>
+{% endfor %}
+
+{% render 'partials/footer.liquid'%}
