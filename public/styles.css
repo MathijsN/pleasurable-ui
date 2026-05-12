@@ -99,7 +99,7 @@ nav {
 
                 svg {
                     height: 36%;
-                    aspect-ratio: 1/1;
+                    width: auto;
                 }
             }
         }
