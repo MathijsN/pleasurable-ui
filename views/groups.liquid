@@ -1,8 +1,7 @@
 {% render 'partials/head.liquid', title: 'Groups' %}
 
+<ul>
 {% for groups in allGroups %}
-  <ul>
-    {% comment %} Make variable for the date of 'today' {% endcomment %}
     {% assign today_date = 'now' | date: '%Y%m%d' %}
 
     {% for snappmap in groups.snappmap %}
@@ -14,12 +13,18 @@
         <a href="/groups/{{ groups.slug }}"><strong>{{ groups.name }}</strong></a>
         <p class="active"><strong>Add your snapp!</strong></p>
       </li>
+
     {% else %}
       <li class="group-list-container">
         <a href="/groups/{{ groups.slug }}">{{ groups.name }}</a>
-        <p>{{ groups.users_count }} members</p>
+        {% if group.users_count == null %}
+          <p>{{ groups.users_count }} members</p>
+        {% else %}
+          <p>No members yet</p>
+        {% endif %}
       </li>
     {% endif %}
 {% endfor %}
+</ul>
 
 {% render 'partials/footer.liquid'%}
