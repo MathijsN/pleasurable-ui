@@ -77,7 +77,22 @@ body {
 
 .group-list-container {
     border-bottom: var(--text-color-on-light-bg) 1px solid;
-    padding: 10px 0px 10px 0px;
+    padding: 10px;
+    
+    a {
+        text-decoration: none;
+        color: var(--dark-text-color-on-light-bg);
+        font-size: 22px;
+    }
+
+    p {
+        font-size: 16px;
+        color: var(--text-color-on-light-bg);
+
+        &.active {
+            color: var(--accent-color-on-light-bg);
+        }
+    }
 }
 
 nav {
