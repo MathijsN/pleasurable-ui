@@ -75,6 +75,11 @@ body {
     margin-bottom: var(--bar-height);
 }
 
+.group-list-container {
+    border-bottom: var(--text-color-on-light-bg) 1px solid;
+    padding: 10px 0px 10px 0px;
+}
+
 nav {
     height: var(--bar-height);
     background-color: var(--primary-color);

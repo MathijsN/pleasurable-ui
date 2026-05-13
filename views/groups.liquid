@@ -2,8 +2,13 @@
 
 {% for group in allGroups %}
   <ul>
-    <li>
+    <li class="group-list-container">
       <a href="/groups/{{ group.slug }}">{{ group.name }}</a>
+      {% if group.users_count == null %}
+        <p>No members yet</p>
+      {% else %}
+        <p>{{ group.users_count }} members</p>
+      {% endif %}
     </li>
   </ul>
 {% endfor %}
