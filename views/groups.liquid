@@ -1,7 +1,11 @@
 {% render 'partials/head.liquid', title: 'Groups' %}
 
 {% for group in allGroups %}
-  <p>{{ group.name }}</p>
+  <ul>
+    <li>
+      <a href="/groups/{{ group.slug }}">{{ group.name }}</a>
+    </li>
+  </ul>
 {% endfor %}
 
 {% render 'partials/footer.liquid'%}
