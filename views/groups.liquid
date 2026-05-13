@@ -1,16 +1,25 @@
 {% render 'partials/head.liquid', title: 'Groups' %}
 
-{% for group in allGroups %}
+{% for groups in allGroups %}
   <ul>
-    <li class="group-list-container">
-      <a href="/groups/{{ group.slug }}">{{ group.name }}</a>
-      {% if group.users_count == null %}
-        <p>No members yet</p>
-      {% else %}
-        <p>{{ group.users_count }} members</p>
-      {% endif %}
-    </li>
-  </ul>
+    {% comment %} Make variable for the date of 'today' {% endcomment %}
+    {% assign today_date = 'now' | date: '%Y%m%d' %}
+
+    {% for snappmap in groups.snappmap %}
+      {% assign target_date = snappmap.snappthis_snapmap_uuid.time_end | date: '%Y%m%d' %}
+    {% endfor %}
+
+    {% if target_date > today_date %}
+      <li class="group-list-container">
+        <a href="/groups/{{ groups.slug }}"><strong>{{ groups.name }}</strong></a>
+        <p class="active"><strong>Add your snapp!</strong></p>
+      </li>
+    {% else %}
+      <li class="group-list-container">
+        <a href="/groups/{{ groups.slug }}">{{ groups.name }}</a>
+        <p>{{ groups.users_count }} members</p>
+      </li>
+    {% endif %}
 {% endfor %}
 
 {% render 'partials/footer.liquid'%}
