@@ -111,3 +111,73 @@ nav {
         fill: var(--accent-color-on-dark-bg);
     }
 }
+
+.home-page-snappmaps-list {
+    display: grid;
+    align-items: center;
+    grid-template-columns: 1fr max-content;
+    font-size: 0.6rem;
+
+    h2,
+    .active {
+        padding: 0.65rem;
+    }
+
+    h2 {
+        font-size: var(--font-size-xs);
+        font-weight: 400;
+        color: var(--dark-text-color-on-light-bg);
+    }
+
+    .active {
+        color: var(--accent-color-on-light-bg);
+    }
+
+    .image-thumbnails {
+        grid-column: 1/-1;
+        grid-row: 2;
+
+        @media (any-pointer:fine) {
+            &:hover svg {
+                transition: 0.1s;
+                scale: 1.1;
+            }
+        }
+
+        a {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 0.05rem;
+            text-decoration: none;
+
+            span,
+            img {
+                aspect-ratio: 1 / 1;
+                width: 100%;
+                height: auto;
+                display: block;
+            }
+
+            span {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                row-gap: 0.1rem;
+                font-size: 0.9rem;
+                line-height: 1;
+                color: var(--dark-text-color-on-light-bg);
+                background-color: var(--pill-button-bg-color);
+
+                svg {
+                    display: block;
+                    order: -1;
+                    width: 1.1rem;
+                    height: auto;
+                    fill: currentColor;
+                }
+            }
+        }
+    }
+
+}

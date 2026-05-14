@@ -21,6 +21,9 @@ const userEndpoint = `${baseURL}/snappthis_user`
 
 app.get('/', async function (request, response) {
   const params = new URLSearchParams()
+  params.set('fields', '*,snaps.*')
+  params.set('sort','-time_end')
+  params.set('deep[snaps][_sort]', '-date_created')
 
   const allSnappmapsApiResponse = await fetch(`${snappmapEndpoint}?${params.toString()}`)
   const allSnappmapsApiResponseJSON = await allSnappmapsApiResponse.json()
