@@ -29,8 +29,6 @@ app.get('/', async function (request, response) {
   const allSnappmapsApiResponseJSON = await allSnappmapsApiResponse.json()
   const allSnappmaps = allSnappmapsApiResponseJSON.data
 
-  console.log(allSnappmaps)
-
   response.render('index.liquid', { allSnappmaps })
 })
 

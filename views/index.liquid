@@ -25,11 +25,11 @@
 
         {% for snapp in snappmap.snaps limit: 4 %}
           <picture>
-            <source srcset="https://fdnd-agency.directus.app/assets/{{ snapp.picture }}?width=200&format=avif" type="image/avif" width="300" height="300"
+            <source srcset="https://fdnd-agency.directus.app/assets/{{ snapp.picture }}?width=200&format=avif" type="image/avif" width="200" height="200"
             >
-            <source srcset="https://fdnd-agency.directus.app/assets/{{ snapp.picture }}?width=200&format=webp" type="image/webp" width="300" height="300"
+            <source srcset="https://fdnd-agency.directus.app/assets/{{ snapp.picture }}?width=200&format=webp" type="image/webp" width="200" height="200"
             >
-            <img loading="lazy" src="https://fdnd-agency.directus.app/assets/{{ snapp.picture }}?width=200" alt="" width="300" height="300" style="object-fit: cover;"
+            <img loading="lazy" src="https://fdnd-agency.directus.app/assets/{{ snapp.picture }}?width=200" alt="" width="200" height="200" style="object-fit: cover;"
             >
           </picture>
         {% endfor %}
