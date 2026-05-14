@@ -1,29 +1,42 @@
-## What does this change?
-
-Resolves issue #
-
-<!-- A PR should have enough detail to be understandable far in the future. e.g what is the problem/why is the change needed, how does it solve it and any questions or points of discussion. Prefer copying information from a GitHub issue over linking to it; the card may not always exist and reviewers may not have access to the board. -->
-
-[livesite]()
-
-## How Has This Been Tested?
-<!-- Link to test results in the Wiki-->
-
-### RAPPE Principles
-
-- [ ] [User test]()
-- [ ] [Accessibility test]()
-- [ ] [Progressive Enhancement test]() 
-- [ ] [Performance test]()
-- [ ] [Responsive Design test]()
-- [ ] [Device test]()
-- [ ] [Browser test]()
-
-## Images
-
-<!-- Usually only applicable to UI changes, what did it look like before and what will it look like after? -->
+## Wat verandert er?
+<!-- Geef hier een beschrijving van wat je hebt gedaan in de branch. -->
 
 
-## How to review
+Gerelateerd aan issue # <!--Aan welke issue is de PR gerelateerd? -->
 
-<!-- Provide instructions to help others verify the change. This could take the form of "On PROD, do X and witness Y. On this branch, do X and witness Z. " -->
+[Livesite]() <!--Zet tussen de open haakjes de live website -->
+
+## RAPPE principes test
+
+### Responsive
+- [ ] Test de layout op verschillende schermgroottes
+- [ ] Test de user preferences
+
+### Accessibility
+- [ ] Test de toegankelijkheid met een WCAG audit en handmatige test
+- [ ] Test de toegankelijkheid met het keyboard
+      
+### Performance
+- [ ] Test de performance met behulp van de Performance audit deeltaak
+
+### Progressive Enhancement
+- [ ] Test de functionele laag
+- [ ] Test de Baseline CSS 
+- [ ] Test de enhancements
+
+## Overige testen
+- [ ] User test
+- [ ] Screenreader test
+- [ ] Browser test
+- [ ] Device test
+- [ ] HTML Validator
+
+<!-- Leg uit hoe je hebt getest, wat daarin naar voren is gekomen en hoe je het hebt opgelost. -->
+
+## Images/Videos
+<!-- Voeg hier foto's en/of videos toe van wat je hebt gemaakt. -->
+
+## Hoe te reviewen
+<!-- Aanvullende vragen/opmerkingen voor de reviewer. -->
+
+
