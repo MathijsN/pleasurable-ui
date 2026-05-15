@@ -124,6 +124,16 @@ ul.groups {
         align-items: center;
         justify-content: space-between;
         gap: .5rem;
+
+        svg {
+            transition: var(--transition-duration);
+            @media (any-pointer:fine) {
+                &:hover {
+                cursor: pointer;
+                scale: var(--hover-scale);
+                }
+            }
+        }
     }
 }
 
