@@ -159,7 +159,7 @@ form.picture {
         row-gap: var(--spacing-s);
         padding-block: 0;
 
-        overflow-y: scroll;
+        overflow-y: auto;
 
         margin-top: var(--bar-height);
 
