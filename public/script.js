@@ -8,3 +8,17 @@ document.getElementById('file').onchange = function (evt) {
         preview.src = URL.createObjectURL(file);
     }
 }
+
+
+const makeSnappIcon = document.getElementById("make-snapp")
+
+function enterOnLabel(e) {
+    if (e.key === "Enter") {
+        e.preventDefault()
+        makeSnappIcon.click()
+    }
+}
+
+if (makeSnappIcon) {
+    makeSnappIcon.addEventListener('keydown', enterOnLabel)
+}
