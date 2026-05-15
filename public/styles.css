@@ -105,6 +105,7 @@ ul.groups {
                 text-decoration: none;
                 color: var(--dark-text-color-on-light-bg);
                 font-size: 22px;
+                font-weight: 400;
             }
         }
 
