@@ -112,6 +112,10 @@ nav {
     }
 }
 
+body:has(form.picture:valid) {
+    overflow-y: hidden;
+}
+
 form.picture {
     display: flex;
     flex-direction: column;
@@ -121,29 +125,37 @@ form.picture {
 
     button,
     img,
-    .retry-action {
+    .retry-action,
+    p {
         display: none;
     }
 
     &:valid {
         display: grid;
         grid-template-columns: 1fr 1fr;
-        grid-template-rows: min-content 1fr;
+        grid-template-rows: min-content min-content 1fr;
         place-items: start center;
-        row-gap: var(--spacing-m);
+        row-gap: var(--spacing-s);
+        padding-block: 0;
 
         overflow-y: scroll;
 
-        margin-block: var(--bar-height);
+        margin-top: var(--bar-height);
 
         position: fixed;
         inset: 0;
+        z-index: 10;
         background-color: var(--lightest-color);
 
         button,
         img,
-        .retry-action {
+        .retry-action,
+        p {
             display: block;
+        }
+
+        p {
+            grid-column: span 2;
         }
 
         button {
@@ -174,6 +186,7 @@ form.picture {
         img {
             grid-column: span 2;
             width: 100%;
+
             aspect-ratio: 1/1;
 
             object-fit: cover;
