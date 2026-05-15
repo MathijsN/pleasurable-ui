@@ -181,6 +181,7 @@ form.picture {
             background-color: transparent;
             border: 0;
             font-size: calc(var(--font-size-xs) * 0.8);
+            color: var(--lightest-color);
         }
 
         label,
