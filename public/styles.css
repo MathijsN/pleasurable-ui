@@ -48,6 +48,7 @@ html {
     --font-size-m: calc(clamp(1.5rem, 0.583vw + 1.376rem, 2.25rem));
     --font-size-s: 1.5rem;
     --font-size-xs: 1rem;
+    --font-size-xxs: .7rem;
 
     /* Spacing and heights */
     --bar-height: 9dvh;
@@ -77,15 +78,22 @@ body {
 
 ul.groups {
     min-width: 223px;
+
+    a {
+        text-decoration: none;
+        color: var(--dark-text-color-on-light-bg);
+        display: flex;
+        align-items: center;
+        flex: 1;
+    }
 }
 
 .group-list-container {
     border-bottom: var(--text-color-on-light-bg) 1px solid;
     padding: 14px 10px;
     display: flex;
-    flex-direction: row;
-    align-items: center;
     justify-content: space-between;
+    flex: 1;
 
     .group-list-stats {
         display: flex;
@@ -93,37 +101,29 @@ ul.groups {
         justify-content: center;
 
         h2 {
-            margin: 0;
-            padding: 0;
             line-height: 1.25;
+            font-size: var(--font-size-xs);
+            font-weight: 400;
 
-            a {
-                display: block;
-                margin: 0;
-                padding: 0;
-                line-height: 1.25;
-                text-decoration: none;
-                color: var(--dark-text-color-on-light-bg);
-                font-size: 22px;
-                font-weight: 400;
+            &.active {
+                font-weight: 700;
             }
         }
 
         p {
-            font-size: 16px;
+            font-size: var(--font-size-xxs);
             color: var(--text-color-on-light-bg);
 
             &.active {
                 color: var(--accent-color-on-light-bg);
+                font-weight: 700;
             }
         }
     }
 
     .group-list-interactive {
         display: flex;
-        flex-direction: row;
         align-items: center;
-        justify-content: space-between;
         gap: .5rem;
 
         svg {
