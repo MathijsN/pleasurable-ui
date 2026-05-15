@@ -1,3 +1,41 @@
-{% render 'partials/head.liquid' %}
+{% render 'partials/head.liquid', title: 'SnappThis' %}
+
+{% for snappmap in allSnappmaps %}
+  {% comment %} Maak variabelen aan om te checken of de eind tijd van de snappmap overschreden is met de datum van 'vandaag' {% endcomment %}
+  {% assign today_date = 'now' | date: '%Y%m%d' %}
+  {% assign target_date = snappmap.time_end | date: '%Y%m%d' %}
+
+  <section class="home-page-snappmaps-list">
+    <h2>{{ snappmap.name }}</h2>
+ 
+    {% comment %} Gebruik variabelen om te checken of de eind tijd van de snappmap overschreden is {% endcomment %}
+    {% if target_date > today_date %}
+      <p class="active"><strong>Add your snapp!</strong></p>
+    {% endif %}
+
+    <figure class="image-thumbnails">
+      <a href="/snappmaps/{{ snappmap.slug }}" aria-label="{{ snappmap.snaps | size }} snapps in {{ snappmap.name }} snappmap">
+        <figcaption>
+          {{ snappmap.snaps | size }}
+          <svg width="50" height="43" viewBox="0 0 50 43" xmlns="http://www.w3.org/2000/svg" fill="">
+            <path d="M39.3936 10.6064V42.4238L23.1816 25.7578L13.7881 35.3027L10.3027 31.8184L0 42.4238V10.6064H39.3936Z" fill=""/>
+            <path d="M50 0V31.8184H43.9395V6.06055H10.6064V0H50Z" fill=""/>
+          </svg>
+        </figcaption>
+
+        {% for snapp in snappmap.snaps limit: 4 %}
+          <picture>
+            <source srcset="https://fdnd-agency.directus.app/assets/{{ snapp.picture }}?width=200&format=avif" type="image/avif" width="200" height="200"
+            >
+            <source srcset="https://fdnd-agency.directus.app/assets/{{ snapp.picture }}?width=200&format=webp" type="image/webp" width="200" height="200"
+            >
+            <img loading="lazy" src="https://fdnd-agency.directus.app/assets/{{ snapp.picture }}?width=200" alt="" width="200" height="200" style="object-fit: cover;"
+            >
+          </picture>
+        {% endfor %}
+      </a>
+    </figure>
+  </section>
+{% endfor %}
 
 {% render 'partials/footer.liquid', currentPage: 'home' %}
