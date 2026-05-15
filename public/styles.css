@@ -72,7 +72,7 @@ background-color:red;
 } */
 
 body {
-    margin-bottom: var(--bar-height);
+    margin-block: var(--bar-height);
 }
 
 nav {
@@ -112,6 +112,112 @@ nav {
     }
 }
 
+body:has(form.picture:valid) {
+    overflow-y: hidden;
+}
+
+form.picture {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-block: var(--spacing-m) calc(var(--spacing-m) * 2);
+
+    img,
+    .retry-action,
+    p,
+    button[type="submit"] {
+        display: none;
+    }
+
+    label {
+        position: relative;
+
+        &:focus-within {
+            outline: 2px solid darkblue;
+        }
+    }
+
+    input {
+        position: absolute;
+        inset: 0;
+        opacity: 0;
+    }
+
+    button {
+        background-color: transparent;
+        border: 0;
+        border-radius: 50%;
+    }
+
+    &:valid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: min-content min-content 1fr;
+        place-items: start center;
+        row-gap: var(--spacing-s);
+        padding-block: 0;
+
+        overflow-y: auto;
+
+        margin-top: var(--bar-height);
+
+        position: fixed;
+        inset: 0;
+        z-index: 10;
+        background-color: var(--lightest-color);
+
+        button[type="submit"],
+        img,
+        .retry-action,
+        p {
+            display: block;
+        }
+
+        p {
+            grid-column: span 2;
+        }
+
+        button[type="submit"] {
+            background-color: transparent;
+            border: 0;
+            font-size: calc(var(--font-size-xs) * 0.8);
+            color: var(--lightest-color);
+        }
+
+        label,
+        button[type="submit"] {
+            width: 2rem;
+            aspect-ratio: 1/1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: var(--accent-color-on-light-bg);
+            border-radius: 50%;
+
+            svg {
+                width: 50%;
+                aspect-ratio: 1/1;
+            }
+        }
+
+        label {
+            background-color: #BDC7CC;
+        }
+
+        img {
+            grid-column: span 2;
+            width: 100%;
+
+            aspect-ratio: 1/1;
+
+            object-fit: cover;
+        }
+
+        .picture-icon {
+            display: none;
+        }
+    }
+  
 .home-page-snappmaps-list {
     display: grid;
     align-items: center;
@@ -179,5 +285,4 @@ nav {
             }
         }
     }
-
 }
