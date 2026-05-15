@@ -150,7 +150,7 @@ nav {
             gap: 0.05rem;
             text-decoration: none;
 
-            span,
+            figcaption,
             img {
                 aspect-ratio: 1 / 1;
                 width: 100%;
@@ -158,7 +158,7 @@ nav {
                 display: block;
             }
 
-            span {
+            figcaption {
                 display: flex;
                 flex-direction: column;
                 justify-content: center;
