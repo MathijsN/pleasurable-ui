@@ -180,6 +180,7 @@ form.picture {
         button[type="submit"] {
             background-color: transparent;
             border: 0;
+            font-size: calc(var(--font-size-xs) * 0.8);
         }
 
         label,
