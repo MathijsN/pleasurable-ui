@@ -1,0 +1,16 @@
+{% render 'partials/head.liquid', title: 'Snapp' %}
+{% render 'partials/snapp-actions.liquid',
+  snappUuid: snappUuid,
+  oneSnappInfo: oneSnappInfo,
+  likesCount: likesCount,
+  tomatoCount: tomatoCount,
+  starCount: starCount,
+  status: status,
+  hasLike: hasLike,
+  hasTomato: hasTomato,
+  hasStar: hasStar
+%}
+
+
+
+{% render 'partials/footer.liquid', currentPage: 'oneSnapp' %}
