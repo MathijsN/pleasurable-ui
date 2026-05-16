@@ -39,12 +39,14 @@ pictureForm.addEventListener('submit', async function (e) {
 
         document.getElementById('file').value = ''
         document.getElementById('succes-dialog').show()
+        document.querySelector('#succes-dialog button').style.display = 'none'
 
         setTimeout(() => {
             document.getElementById('succes-dialog').close()
         }, 3000)
     } else {
         document.getElementById('failure-dialog').show()
+        document.querySelector('#succes-dialog button').style.display = 'none'
 
         setTimeout(() => {
             document.getElementById('failure-dialog').close()
