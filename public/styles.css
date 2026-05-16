@@ -342,3 +342,7 @@ nav {
         }
     }
 }
+
+@view-transition {
+  navigation: auto;
+}
