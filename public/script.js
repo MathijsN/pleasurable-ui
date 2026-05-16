@@ -45,6 +45,10 @@ pictureForm.addEventListener('submit', async function (e) {
         }, 3000)
     } else {
         document.getElementById('failure-dialog').show()
+
+        setTimeout(() => {
+            document.getElementById('failure-dialog').close()
+        }, 3000)
     }
 
 
