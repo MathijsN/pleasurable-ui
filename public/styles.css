@@ -35,6 +35,7 @@ html {
     --accent-color-on-dark-bg: #00ff44;
     --alert-accent-color: #ff2a34;
     --icon-color-on-light-bg: #4e6977;
+    --background-color-dialog: #F5F5F5;
 
     --heart-icon-color-active: var(--accent-color-on-dark-bg);
     --heart-icon-color-inactive: #99FFB4;
@@ -217,7 +218,90 @@ form.picture {
             display: none;
         }
     }
-  
+}
+
+.loader {
+    width: var(--font-size-s);
+    aspect-ratio: 1/1;
+    border-radius: 50%;
+    position: relative;
+    animation: rotate 1s linear infinite;
+    display: none;
+}
+
+.loader::before {
+    content: "";
+    box-sizing: border-box;
+    position: absolute;
+    inset: 0px;
+    border-radius: 50%;
+    border: 5px solid #FFF;
+    animation: prixClipFix 2s linear infinite;
+}
+
+@keyframes rotate {
+    100% {
+        transform: rotate(360deg)
+    }
+}
+
+@keyframes prixClipFix {
+    0% {
+        clip-path: polygon(50% 50%, 0 0, 0 0, 0 0, 0 0, 0 0)
+    }
+
+    25% {
+        clip-path: polygon(50% 50%, 0 0, 100% 0, 100% 0, 100% 0, 100% 0)
+    }
+
+    50% {
+        clip-path: polygon(50% 50%, 0 0, 100% 0, 100% 100%, 100% 100%, 100% 100%)
+    }
+
+    75% {
+        clip-path: polygon(50% 50%, 0 0, 100% 0, 100% 100%, 0 100%, 0 100%)
+    }
+
+    100% {
+        clip-path: polygon(50% 50%, 0 0, 100% 0, 100% 100%, 0 100%, 0 0)
+    }
+}
+
+dialog[open] {
+    position: fixed;
+    inset: 0;
+    border: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    align-self: center;
+    justify-self: center;
+    background-color: var(--background-color-dialog);
+    width: 80%;
+    line-height: 1.2;
+
+    z-index: 1;
+
+    h2 {
+        text-align: center;
+        font-size: var(--font-size-xs);
+        width: 70%;
+        margin-block: var(--spacing-m);
+    }
+
+    button {
+        width: max-content;
+        padding: var(--spacing-s);
+        font-size: var(--font-size-xs);
+        background-color: var(--accent-color-on-light-bg);
+        color: var(--lightest-color);
+        border: 0;
+        border-radius: 2rem;
+        margin-bottom: var(--spacing-m);
+    }
+}
+
+
 .home-page-snappmaps-list {
     display: grid;
     align-items: center;
@@ -284,5 +368,25 @@ form.picture {
                 }
             }
         }
+    }
+}
+
+
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(3, 33%);
+    gap: var(--grid-gap);
+
+    li {
+        list-style: none;
+        overflow: hidden;
+    }
+
+    img {
+        width: 100%;
+        height: 100%;
+        aspect-ratio: 1/1;
+        object-fit: cover;
     }
 }

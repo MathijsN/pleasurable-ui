@@ -1,5 +1,5 @@
 <form
-  action="/snappmaps/{{ snappmapId }}"
+  action="/snappmaps/{{ snappmapSlug }}"
   method="POST"
   enctype="multipart/form-data"
   class="picture"
@@ -31,7 +31,11 @@
     </svg>
 
     <input type="file" name="file" id="file" accept="image/*" capture="environment" required>
+    <input type="hidden" name="uuid" value="{{ snappmapUuid }}">
   </label>
 
-  <button type="submit">OK</button>
+  <button type="submit">
+    <span class="submit-text">OK</span>
+    <span class="loader"></span>
+  </button>
 </form>
