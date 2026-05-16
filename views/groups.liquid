@@ -12,7 +12,7 @@
         <li class="group-list-container">
           <a href="/groups/{{ groups.slug }}">
             <div class="group-list-stats">
-              <h1 class="active">{{ groups.name }}</h1>
+              <h2 class="active">{{ groups.name }}</h2>
               <p class="active">Add your snapp!</p>
             </div>
           </a>
@@ -39,7 +39,7 @@
         <li class="group-list-container">
           <a href="/groups/{{ groups.slug }}">
             <div class="group-list-stats">
-              <h1>{{ groups.name }}</h1>
+              <h2>{{ groups.name }}</h2>
               {% if group.users_count == null %}
                 <p>{{ groups.users_count }} members</p>
               {% else %}

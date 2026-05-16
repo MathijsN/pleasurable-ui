@@ -100,7 +100,7 @@ ul.groups {
         flex-direction: column;
         justify-content: center;
 
-        h1 {
+        h2 {
             line-height: 1.25;
             font-size: var(--font-size-xs);
             font-weight: 400;
