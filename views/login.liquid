@@ -1,0 +1,24 @@
+{% render 'partials/head.liquid' %}
+
+<section class="login-page">
+  <img class="login-logo" src="assets/snappthis-logo.svg" alt="">
+
+  <form class="login-form" method="post" action="/login">
+    <fieldset>
+      <legend>Log in</legend>
+
+      <div class="form-inputs">
+        <label class="visually-hidden" for="email">Email</label>
+        <input type="email" id="email" name="email" placeholder="email" required>
+
+        <label class="visually-hidden" for="password" >Wachtwoord</label>
+        <input type="password" id="password" name="password" placeholder="password" required>
+      </div>
+    </fieldset>
+    <a href="#">Forgot password</a>
+    <div class="button-div">
+      <button type="submit"  class="login-button">Login</button>
+    </div>
+  </form>
+
+</section>
