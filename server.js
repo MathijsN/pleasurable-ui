@@ -22,7 +22,7 @@ const userEndpoint = `${baseURL}/snappthis_user`
 app.get('/', async function (request, response) {
   const params = new URLSearchParams()
   params.set('fields', '*,snaps.*')
-  params.set('sort','-time_end')
+  params.set('sort', '-time_end')
   params.set('deep[snaps][_sort]', '-date_created')
 
   const allSnappmapsApiResponse = await fetch(`${snappmapEndpoint}?${params.toString()}`)
@@ -130,13 +130,49 @@ app.get('/snapps/user/:uuid', async function (request, response) {
 // Aanpassen
 
 app.get('/snapps/:uuid', async function (request, response) {
+  const userUuid = "467a4442-69e4-44ae-829a-b95e25c4dd7b"
+  const snappUuid = request.params.uuid
+  const status = request.query.status
+
   const params = new URLSearchParams()
+  params.set('fields', '*,snapmap.name,snapmap.uuid,snapmap.slug,snapmap.groups.snappthis_group_uuid.name,author.*')
+  params.set('filter[uuid]', `${snappUuid}`)
 
-  const allGroupsApiResponse = await fetch(`${groupEndpoint}?${params.toString()}`)
-  const allGroupsApiResponseJSON = await allGroupsApiResponse.json()
-  const allGroups = allGroupsApiResponseJSON.data
+  const oneSnappApiResponse = await fetch(`${snappEndpoint}?${params.toString()}`)
+  const oneSnappApiResponseJSON = await oneSnappApiResponse.json()
+  const oneSnappInfo = oneSnappApiResponseJSON.data
 
-  response.render('snapp.liquid', { allGroups })
+
+  const paramsAction = new URLSearchParams()
+  paramsAction.set('fields', '*,user.name,snap.*,snap.author.*,snap.snapmap.name,snap.snapmap.groups.snappthis_group_uuid.name')
+  paramsAction.set('filter[snap]', `${snappUuid}`)
+
+  const likesCountApiResponse = await fetch(`${actionEndpoint}?${paramsAction.toString()}&filter[action]=like`)
+  const likesCountApiResponseJSON = await likesCountApiResponse.json()
+  const likesCount = likesCountApiResponseJSON.data
+
+  const tomatoCountApiResponse = await fetch(`${actionEndpoint}?${paramsAction.toString()}&filter[action]=tomato`)
+  const tomatoCountApiResponseJSON = await tomatoCountApiResponse.json()
+  const tomatoCount = tomatoCountApiResponseJSON.data
+
+  const starCountApiResponse = await fetch(`${actionEndpoint}?${paramsAction.toString()}&filter[action]=star`)
+  const starCountApiResponseJSON = await starCountApiResponse.json()
+  const starCount = starCountApiResponseJSON.data
+
+
+  const paramsUserActionState = new URLSearchParams()
+  paramsUserActionState.set('filter[user][_eq]', `${userUuid}`)
+  paramsUserActionState.set('filter[snap][_eq]', `${snappUuid}`)
+
+  const userActionResponse = await fetch(`${actionEndpoint}?${paramsUserActionState.toString()}`)
+  const userActionData = await userActionResponse.json()
+
+  const actions = userActionData.data || []
+  const hasLike = actions.some(a => a.action === "like")
+  const hasTomato = actions.some(a => a.action === "tomato")
+  const hasStar = actions.some(a => a.action === "star")
+
+  response.render('snapp.liquid', { snappUuid, oneSnappInfo, likesCount, tomatoCount, starCount, hasLike, hasTomato, hasStar, status })
 })
 
 

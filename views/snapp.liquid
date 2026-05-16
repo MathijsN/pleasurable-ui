@@ -1,0 +1,6 @@
+{% render 'partials/head.liquid', title: 'Snapp' %}
+
+{% assign snap = oneSnappInfo[0] %}
+{% render 'partials/pill-link.liquid', snap: snap %}
+
+{% render 'partials/footer.liquid', currentPage: 'oneSnapp' %}

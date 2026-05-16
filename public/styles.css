@@ -29,7 +29,7 @@ html {
     --primary-color: #172f3b;
     --text-color-on-light-bg: #90a1aa;
     --dark-text-color-on-light-bg: #224455;
-    --pill-button-bg-color: #e9ecee;
+    --pill-link-bg-color: #e9ecee;
     --lightest-color: #ffffff;
     --accent-color-on-light-bg: #00e53d;
     --accent-color-on-dark-bg: #00ff44;
@@ -128,10 +128,11 @@ ul.groups {
 
         svg {
             transition: var(--transition-duration);
+
             @media (any-pointer:fine) {
                 &:hover {
-                cursor: pointer;
-                scale: var(--hover-scale);
+                    cursor: pointer;
+                    scale: var(--hover-scale);
                 }
             }
         }
@@ -232,7 +233,7 @@ nav {
                 font-size: 0.9rem;
                 line-height: 1;
                 color: var(--dark-text-color-on-light-bg);
-                background-color: var(--pill-button-bg-color);
+                background-color: var(--pill-link-bg-color);
 
                 svg {
                     display: block;
@@ -245,4 +246,29 @@ nav {
         }
     }
 
+}
+
+.pill-link-list {
+    display: flex;
+    gap: 4px;
+    flex-wrap: wrap;
+
+    li {
+        height: var(--bar-height);
+        list-style: none;
+        align-content: center;
+
+        &:last-of-type {
+            color: var(--text-color-on-light-bg);
+        }
+
+        a {
+            text-decoration: none;
+            color: var(--dark-text-color-on-light-bg);
+            background-color: var(--pill-link-bg-color);
+            padding: var(--spacing-s) var(--spacing-m);
+            display: inline-block;
+            border-radius: 1.5rem;
+        }
+    }
 }
