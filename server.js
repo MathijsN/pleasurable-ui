@@ -1,7 +1,10 @@
-import express from 'express'
+import express, { response } from 'express'
 import { Liquid } from 'liquidjs';
+import multer from 'multer';
 
 const app = express()
+
+const upload = multer({ storage: multer.memoryStorage() });
 
 app.use(express.urlencoded({ extended: true }))
 
@@ -22,7 +25,7 @@ const userEndpoint = `${baseURL}/snappthis_user`
 app.get('/', async function (request, response) {
   const params = new URLSearchParams()
   params.set('fields', '*,snaps.*')
-  params.set('sort','-time_end')
+  params.set('sort', '-time_end')
   params.set('deep[snaps][_sort]', '-date_created')
 
   const allSnappmapsApiResponse = await fetch(`${snappmapEndpoint}?${params.toString()}`)
@@ -69,8 +72,67 @@ app.get('/snappmaps/:slug', async function (request, response) {
   response.render('snappmap.liquid', { snappmap })
 })
 
-// app.post('/snappmaps/:slug',async function (request, response) {
-// })
+
+
+
+
+app.post('/snappmaps/:slug', upload.single('file'), async function (request, response) {
+
+  const snappmapid = request.body.uuid
+  const snappmapSlug = request.params.slug
+  const file = request.file
+
+  console.log(snappmapid)
+
+  const formData = new FormData()
+  const blob = new Blob([file.buffer], { type: file.mimetype })
+  formData.append("file", blob, file.originalname)
+
+  const uploadResponse = await fetch('https://fdnd-agency.directus.app/files', {
+    method: "POST",
+    body: formData,
+  })
+
+  const uploadResponseData = await uploadResponse.json()
+  console.log(uploadResponse.status)
+  console.log(uploadResponseData)
+
+  if (uploadResponseData.data.id != null) {
+    let newSnap = {
+      location: 'Haarlem',
+      snapmap: snappmapid,
+      author: '505c32d4-88fc-4102-8ef8-0847e9d9292b',
+      picture: uploadResponseData.data.id,
+    }
+
+    const snapResponse = await fetch(`${snappEndpoint}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(newSnap),
+    })
+
+
+    if (snapResponse.ok) {
+      response.redirect(303, `/snappmaps/${snappmapSlug}?status=succes`)
+    } else {
+      response.redirect(303, `/snappmaps/${snappmapSlug}?status=upload_failed`)
+    }
+
+  } else {
+    return response.redirect(303, `/snappmaps/${snappmapSlug}?status=upload_failed`)
+  }
+
+})
+
+
+
+
+
+
+
+
 
 
 app.get('/snapps', async function (request, response) {

@@ -1,0 +1,23 @@
+<dialog
+  id="succes-dialog"
+  {% if path contains 'status=succes' %}
+    open
+  {% endif %}
+>
+  <h2>Your snapp has been added successfully!</h2>
+  <form method="dialog">
+    <button>OK</button>
+  </form>
+</dialog>
+
+<dialog
+  id="failure-dialog"
+  {% if path contains 'status=upload_failed' %}
+    open
+  {% endif %}
+>
+  <h2>Something went wrong, please try again.</h2>
+  <form method="dialog">
+    <button>OK</button>
+  </form>
+</dialog>

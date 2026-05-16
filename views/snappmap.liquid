@@ -1,6 +1,22 @@
 {% render 'partials/head.liquid' %}
+{% assign snappmap = snappmap[0] %}
 
 {% comment %} maak if statement die checked of jij in de snappmap kan posten {% endcomment %}
-{% render 'partials/uploadSnapForm.liquid' %}
+{% render 'partials/uploadSnapForm.liquid', snappmapSlug: snappmap.slug, snappmapUuid: snappmap.uuid %}
+
+{% render 'partials/formStatusMessage.liquid', path: path %}
+
+{% assign sorted_snaps = snappmap.snaps | sort: 'date_created' | reverse %}
+<ul class="grid">
+  {% for snaps in sorted_snaps %}
+    <li>
+      <img
+        src="https://fdnd-agency.directus.app/assets/{{ snaps.picture }}?width=300&format=webp"
+        alt=""
+        loading="lazy"
+      >
+    </li>
+  {% endfor %}
+</ul>
 
 {% render 'partials/footer.liquid', currentPage: 'home' %}
