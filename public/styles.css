@@ -163,6 +163,8 @@ nav {
                 svg {
                     height: 36%;
                     width: auto;
+
+                    fill: var(--lightest-color);
                 }
             }
         }
