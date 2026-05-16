@@ -226,7 +226,6 @@ dialog[open] {
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: var(--spacing-m);
     align-self: center;
     justify-self: center;
 
@@ -234,18 +233,20 @@ dialog[open] {
 
     h2 {
         text-align: center;
-        font-size: var(--text-size-s);
-        margin-bottom: var(--spacing-s);
-        width: 13rem;
+        font-size: var(--font-size-xs);
+        width: 70%;
+        margin-block: var(--spacing-m);
     }
 
     button {
         width: max-content;
         padding: var(--spacing-s);
-        background-color: var(--color-accent);
-        color: var(--color-secondary);
+        font-size: var(--font-size-xs);
+        background-color: var(--accent-color-on-light-bg);
+        color: var(--lightest-color);
         border: 0;
         border-radius: 2rem;
+        margin-bottom: var(--spacing-m);
     }
 }
 

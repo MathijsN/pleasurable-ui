@@ -69,7 +69,9 @@ app.get('/snappmaps/:slug', async function (request, response) {
   const snappmapApiResponseJSON = await snappmapApiResponse.json()
   const snappmap = snappmapApiResponseJSON.data
 
-  response.render('snappmap.liquid', { snappmap })
+  const status = request.query.status
+
+  response.render('snappmap.liquid', { snappmap, status })
 })
 
 
@@ -82,8 +84,6 @@ app.post('/snappmaps/:slug', upload.single('file'), async function (request, res
   const snappmapSlug = request.params.slug
   const file = request.file
 
-  console.log(snappmapid)
-
   const formData = new FormData()
   const blob = new Blob([file.buffer], { type: file.mimetype })
   formData.append("file", blob, file.originalname)
@@ -94,8 +94,6 @@ app.post('/snappmaps/:slug', upload.single('file'), async function (request, res
   })
 
   const uploadResponseData = await uploadResponse.json()
-  console.log(uploadResponse.status)
-  console.log(uploadResponseData)
 
   if (uploadResponseData.data.id != null) {
     let newSnap = {
@@ -123,7 +121,6 @@ app.post('/snappmaps/:slug', upload.single('file'), async function (request, res
   } else {
     return response.redirect(303, `/snappmaps/${snappmapSlug}?status=upload_failed`)
   }
-
 })
 
 

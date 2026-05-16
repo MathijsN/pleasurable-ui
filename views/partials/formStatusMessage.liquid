@@ -1,6 +1,6 @@
 <dialog
   id="succes-dialog"
-  {% if path contains 'status=succes' %}
+  {% if status == 'succes' %}
     open
   {% endif %}
 >
@@ -12,7 +12,7 @@
 
 <dialog
   id="failure-dialog"
-  {% if path contains 'status=upload_failed' %}
+  {% if status == 'upload_failed' %}
     open
   {% endif %}
 >
