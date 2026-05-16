@@ -7,7 +7,7 @@
 {% render 'partials/formStatusMessage.liquid', status: status %}
 
 {% assign sorted_snaps = snappmap.snaps | sort: 'date_created' | reverse %}
-<ul class="grid">
+<ul class="grid" id="grid">
   {% for snaps in sorted_snaps %}
     <li>
       <img
