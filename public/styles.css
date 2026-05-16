@@ -247,7 +247,7 @@ nav {
             }
         }
     }
-
+}
 /*--------------- login pagina --------- */
 .login-page {
     background-color: var(--primary-color);
@@ -298,13 +298,21 @@ nav {
         border: 0;
         padding: 0.5rem;
 
-        &[type="email"] {
-            border-bottom: 1px solid #979797;
+        &[type="email"],
+        &[type="password"] {
+            border: 1px solid #979797;
         }
 
-        &::placeholder{
+        &::placeholder {
             color: #90A1AAFF;
         }
+    }
+
+    .login-error{
+        color: var(--alert-accent-color);
+        width: 90%;
+        margin: 0 auto;
+        padding-top: 10px;
     }
 
     a {
@@ -319,19 +327,18 @@ nav {
 
     .button-div {
         display: flex;
-        justify-content: end;
         margin: 0 auto;
         width: 90%;
 
         button {
             font-family: inherit;
-            background-color: #1DA341;
+            background-color: var(--accent-color-on-dark-bg);
             color: var(--lightest-color);
             font-size: var(--font-size-xs);
             border-radius: 2rem;
             border: none;
             padding: 0.75rem 2rem;
+            margin-left: auto;
         }
     }
-}
 }

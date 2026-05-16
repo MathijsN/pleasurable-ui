@@ -51,8 +51,8 @@ app.post("/login", async function (request, response) {
     response.redirect(303, '/'); 
     console.log("succesvol Ingelogd");
   } else {
-    response.redirect(303, '/login')
-    console.log("inloggen mislukt pik");
+    response.render('login.liquid', {error:true})
+    console.log("inloggen mislukt");
   }
 
 });

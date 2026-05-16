@@ -15,10 +15,16 @@
         <input type="password" id="password" name="password" placeholder="password" required>
       </div>
     </fieldset>
+
+    {% if error %}
+      <p class="login-error">Onjuist e-mail en/of wachtwoord</p>
+      {% endif %}
+
     <a href="#">Forgot password</a>
     <div class="button-div">
       <button type="submit"  class="login-button">Login</button>
     </div>
+
   </form>
 
 </section>
