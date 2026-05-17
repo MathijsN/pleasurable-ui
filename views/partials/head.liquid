@@ -11,4 +11,18 @@
     <script src="/script.js" type="module"></script>
 </head>
 <body>
+    {% comment %} voor snapp.liquid {% endcomment %}
+    {% if oneSnapp %}
+        {%  render 'partials/snapp-actions.liquid', 
+            snappUuid: snappUuid,
+            oneSnappInfo: oneSnappInfo,
+            likesCount: likesCount,
+            tomatoCount: tomatoCount,
+            starCount: starCount,
+            status: status,
+            hasLike: hasLike,
+            hasTomato: hasTomato,
+            hasStar: hasStar %}
+    {% endif %}
+
     <main>
