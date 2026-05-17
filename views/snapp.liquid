@@ -1,5 +1,6 @@
-{% render 'partials/head.liquid', title: 'Snapp' %}
-{% render 'partials/snapp-actions.liquid',
+{% render 'partials/head.liquid', 
+  title: 'Snapp',
+  oneSnapp: true,
   snappUuid: snappUuid,
   oneSnappInfo: oneSnappInfo,
   likesCount: likesCount,
@@ -8,8 +9,7 @@
   status: status,
   hasLike: hasLike,
   hasTomato: hasTomato,
-  hasStar: hasStar
-%}
+  hasStar: hasStar %}
 
 
 
