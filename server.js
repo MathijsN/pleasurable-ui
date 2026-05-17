@@ -32,6 +32,31 @@ app.get('/', async function (request, response) {
   response.render('index.liquid', { allSnappmaps })
 })
 
+app.get('/login', async function (request, response) {
+
+response.render('login.liquid')  
+})
+
+app.post("/login", async function (request, response) {
+  const loginInfo = {
+    email: request.body.email,
+    password: request.body.password,
+  };
+  console.log(loginInfo);
+
+  const testEmail = "fdnd@hva.nl";
+  const testPassword = "snappthis";
+
+  if (loginInfo.email == testEmail && loginInfo.password == testPassword) {
+    response.redirect(303, '/'); 
+    console.log("succesvol Ingelogd");
+  } else {
+    response.render('login.liquid', {error:true})
+    console.log("inloggen mislukt");
+  }
+
+});
+
 app.get('/groups', async function (request, response) {
   const params = new URLSearchParams()
   params.set('fields', 'name,slug,snappmap.snappthis_snapmap_uuid.*,count(users)')
