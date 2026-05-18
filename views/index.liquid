@@ -7,14 +7,17 @@
 
   <section class="home-page-snappmaps-list">
     <h2>{{ snappmap.name }}</h2>
- 
+
     {% comment %} Gebruik variabelen om te checken of de eind tijd van de snappmap overschreden is {% endcomment %}
     {% if target_date > today_date %}
       <p class="active"><strong>Add your snapp!</strong></p>
     {% endif %}
 
     <figure class="image-thumbnails">
-      <a href="/snappmaps/{{ snappmap.slug }}" aria-label="{{ snappmap.snaps | size }} snapps in {{ snappmap.name }} snappmap">
+      <a
+        href="/snappmaps/{{ snappmap.slug }}"
+        aria-label="{{ snappmap.snaps | size }} snapps in {{ snappmap.name }} snappmap"
+      >
         <figcaption>
           {{ snappmap.snaps | size }}
           <svg width="50" height="43" viewBox="0 0 50 43" xmlns="http://www.w3.org/2000/svg" fill="">
@@ -25,9 +28,26 @@
 
         {% for snapp in snappmap.snaps limit: 4 %}
           <picture>
-            <source srcset="https://fdnd-agency.directus.app/assets/{{ snapp.picture }}?width=200&format=avif" type="image/avif" width="200" height="200">
-            <source srcset="https://fdnd-agency.directus.app/assets/{{ snapp.picture }}?width=200&format=webp" type="image/webp" width="200" height="200">
-            <img loading="lazy" src="https://fdnd-agency.directus.app/assets/{{ snapp.picture }}?width=200" alt="" width="200" height="200" style="object-fit: cover;">
+            <source
+              srcset="https://fdnd-agency.directus.app/assets/{{ snapp.picture }}?width=200&format=avif"
+              type="image/avif"
+              width="200"
+              height="200"
+            >
+            <source
+              srcset="https://fdnd-agency.directus.app/assets/{{ snapp.picture }}?width=200&format=webp"
+              type="image/webp"
+              width="200"
+              height="200"
+            >
+            <img
+              loading="lazy"
+              src="https://fdnd-agency.directus.app/assets/{{ snapp.picture }}?width=200"
+              alt=""
+              width="200"
+              height="200"
+              style="object-fit: cover;"
+            >
           </picture>
         {% endfor %}
       </a>
