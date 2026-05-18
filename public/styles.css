@@ -80,6 +80,7 @@ body {
     &:has(.login-page) {
         margin-bottom: 0;
     }
+
     margin-block: var(--bar-height);
 }
 
@@ -135,10 +136,11 @@ ul.groups {
 
         svg {
             transition: var(--transition-duration);
+
             @media (any-pointer:fine) {
                 &:hover {
-                cursor: pointer;
-                scale: var(--hover-scale);
+                    cursor: pointer;
+                    scale: var(--hover-scale);
                 }
             }
         }
@@ -441,6 +443,7 @@ dialog[open] {
         }
     }
 }
+
 /*--------------- login pagina --------- */
 .login-page {
     background-color: var(--primary-color);
@@ -502,7 +505,7 @@ dialog[open] {
         }
     }
 
-    .login-error{
+    .login-error {
         color: var(--alert-accent-color);
         width: 90%;
         margin: 0 auto;
@@ -538,7 +541,7 @@ dialog[open] {
 }
 
 @view-transition {
-  navigation: auto;
+    navigation: auto;
 }
 
 
@@ -558,67 +561,30 @@ dialog[open] {
         height: 100%;
         aspect-ratio: 1/1;
         object-fit: cover;
-}
-
-header {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    align-items: center;
-    padding: 0 0.65rem;
-    height: var(--bar-height);
-    background-color: var(--primary-color);
-    color: var(--lightest-color);
-
-    h1 {
-        grid-column: 2;
-        font-size: var(--font-size-xs);
-        width: max-content;
     }
 
-    .go-back-link {
-        width: 1rem;
-        height: 1rem;
-        transition: 0.1s;
-
-        @media (any-pointer:fine) {
-            &:hover {
-                scale: 1.15;
-            }
-        }
-
-        svg {
-            display: block;
-            width: 100%;
-            height: 100%;
-            fill: var(--lightest-color);
-        }
-    }
-}
-
-/* Like, dislike and save form in header for 1 snapp */
-.like-dislike-save-form {
-    grid-column: 3;
-    display: flex;
-    justify-content: end;
-    align-items: center;
-    gap: 1em;
-
-    label {
-        display: flex;
+    header {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
         align-items: center;
-        gap: 0.2em;
-        font-size: 0.7rem;
+        padding: 0 0.65rem;
+        height: var(--bar-height);
+        background-color: var(--primary-color);
+        color: var(--lightest-color);
 
-        button {
-            height: 0.7rem;
-            width: 0.7rem;
-            background: none;
-            border: none;
+        h1 {
+            grid-column: 2;
+            font-size: var(--font-size-xs);
+            width: max-content;
+        }
+
+        .go-back-link {
+            width: 1rem;
+            height: 1rem;
             transition: 0.1s;
 
             @media (any-pointer:fine) {
                 &:hover {
-                    cursor: pointer;
                     scale: 1.15;
                 }
             }
@@ -632,74 +598,112 @@ header {
         }
     }
 
-    .like-active {
-        color: var(--heart-icon-color-active);
+    /* Like, dislike and save form in header for 1 snapp */
+    .like-dislike-save-form {
+        grid-column: 3;
+        display: flex;
+        justify-content: end;
+        align-items: center;
+        gap: 1em;
 
-        svg {
-            fill: var(--heart-icon-color-active);
+        label {
+            display: flex;
+            align-items: center;
+            gap: 0.2em;
+            font-size: 0.7rem;
+
+            button {
+                height: 0.7rem;
+                width: 0.7rem;
+                background: none;
+                border: none;
+                transition: 0.1s;
+
+                @media (any-pointer:fine) {
+                    &:hover {
+                        cursor: pointer;
+                        scale: 1.15;
+                    }
+                }
+
+                svg {
+                    display: block;
+                    width: 100%;
+                    height: 100%;
+                    fill: var(--lightest-color);
+                }
+            }
+        }
+
+        .like-active {
+            color: var(--heart-icon-color-active);
+
+            svg {
+                fill: var(--heart-icon-color-active);
+            }
+        }
+
+        .tomato-active {
+            color: var(--tomato-icon-color-active);
+
+            svg {
+                fill: var(--tomato-icon-color-active);
+            }
+        }
+
+        .star-active {
+            color: var(--star-icon-color-active);
+
+            svg {
+                fill: var(--star-icon-color-active);
+            }
         }
     }
 
-    .tomato-active {
-        color: var(--tomato-icon-color-active);
+    /* pop-up for like, tomato and star when clicked */
+    .action-popup {
+        position: fixed;
+        top: var(--bar-height);
+        display: grid;
+        grid-template-columns: max-content 2fr;
+        padding: 0.65rem;
+        column-gap: 0.5em;
+        width: 100%;
+        z-index: 1;
 
-        svg {
+        opacity: 0;
+        background-color: var(--lightest-color);
+        animation-name: --fade-popup;
+        animation-duration: 3s;
+        animation-timing-function: ease-in-out;
+
+        h2 {
+            font-size: var(--font-size-xs);
+        }
+
+
+        p {
+            grid-column: 2;
+            font-size: 0.8rem;
+        }
+
+        /* colors in pop-up */
+        .heart-color {
+            fill: var(--heart-icon-color-active);
+        }
+
+        .tomato-color {
             fill: var(--tomato-icon-color-active);
         }
     }
 
-    .star-active {
-        color: var(--star-icon-color-active);
-
-        svg {
-            fill: var(--star-icon-color-active);
+    @keyframes --fade-popup {
+        0% {
+            opacity: 1;
         }
-    }
-}
 
-/* pop-up for like, tomato and star when clicked */
-.action-popup {
-    position: fixed;
-    top: var(--bar-height);
-    display: grid;
-    grid-template-columns: max-content 2fr;
-    padding: 0.65rem;
-    column-gap: 0.5em;
-    width: 100%;
-    z-index: 1;
-
-    opacity: 0;
-    background-color: var(--lightest-color);
-    animation-name: --fade-popup;
-    animation-duration: 3s;
-    animation-timing-function: ease-in-out;
-
-    h2 {
-        font-size: var(--font-size-xs);
-    }
-
-
-    p {
-        grid-column: 2;
-        font-size: 0.8rem;
-    }
-
-    /* colors in pop-up */
-    .heart-color {
-        fill: var(--heart-icon-color-active);
-    }
-
-    .tomato-color {
-        fill: var(--tomato-icon-color-active);
-    }
-}
-
-@keyframes --fade-popup {
-    0% {
-        opacity: 1;
-    }
-
-    100% {
-        opacity: 0;
+        100% {
+            opacity: 0;
+        }
     }
 }
