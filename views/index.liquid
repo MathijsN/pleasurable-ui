@@ -55,4 +55,8 @@
   </section>
 {% endfor %}
 
+{% for snappmap in allSnappmaps %}
+    <h2>{{ snappmap.name }}</h2>
+{% endfor %}
+
 {% render 'partials/footer.liquid', currentPage: 'home' %}
