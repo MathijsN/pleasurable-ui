@@ -254,7 +254,7 @@ nav {
     flex-wrap: wrap;
 
     li {
-        height: var(--bar-height);
+        /* height: var(--bar-height); */
         list-style: none;
         align-content: center;
 
