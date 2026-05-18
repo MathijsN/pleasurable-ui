@@ -503,7 +503,7 @@ dialog[open] {
             border-radius: 1.5rem;
         }
     }
-  
+} 
 /*--------------- login pagina --------- */
 .login-page {
     background-color: var(--primary-color);
