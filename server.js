@@ -189,18 +189,143 @@ app.get('/snapps/user/:uuid', async function (request, response) {
 // Aanpassen
 
 app.get('/snapps/:uuid', async function (request, response) {
+  const userUuid = "467a4442-69e4-44ae-829a-b95e25c4dd7b"
+  const snappUuid = request.params.uuid
+  const status = request.query.status
+
   const params = new URLSearchParams()
+  params.set('fields', '*,snapmap.name,snapmap.uuid,snapmap.slug,snapmap.groups.snappthis_group_uuid.name,author.*')
+  params.set('filter[uuid]', `${snappUuid}`)
 
-  const allGroupsApiResponse = await fetch(`${groupEndpoint}?${params.toString()}`)
-  const allGroupsApiResponseJSON = await allGroupsApiResponse.json()
-  const allGroups = allGroupsApiResponseJSON.data
+  const oneSnappApiResponse = await fetch(`${snappEndpoint}?${params.toString()}`)
+  const oneSnappApiResponseJSON = await oneSnappApiResponse.json()
+  const oneSnappInfo = oneSnappApiResponseJSON.data
+ 
 
-  response.render('snapp.liquid', { allGroups })
+  const paramsAction = new URLSearchParams()
+  paramsAction.set('fields', '*,user.name,snap.*,snap.author.*,snap.snapmap.name,snap.snapmap.groups.snappthis_group_uuid.name')
+  paramsAction.set('filter[snap]', `${snappUuid}`)
+
+  const likesCountApiResponse = await fetch(`${actionEndpoint}?${paramsAction.toString()}&filter[action]=like`)
+  const likesCountApiResponseJSON = await likesCountApiResponse.json()
+  const likesCount =  likesCountApiResponseJSON.data
+
+  const tomatoCountApiResponse = await fetch(`${actionEndpoint}?${paramsAction.toString()}&filter[action]=tomato`)
+  const tomatoCountApiResponseJSON = await tomatoCountApiResponse.json()
+  const tomatoCount = tomatoCountApiResponseJSON.data
+
+  const starCountApiResponse = await fetch(`${actionEndpoint}?${paramsAction.toString()}&filter[action]=star`)
+  const starCountApiResponseJSON = await starCountApiResponse.json()
+  const starCount = starCountApiResponseJSON.data
+
+  
+  const paramsUserActionState = new URLSearchParams()
+  paramsUserActionState.set('filter[user][_eq]', `${userUuid}`)
+  paramsUserActionState.set('filter[snap][_eq]', `${snappUuid}`)
+
+  const userActionResponse = await fetch(`${actionEndpoint}?${paramsUserActionState.toString()}`)
+  const userActionData = await userActionResponse.json()
+
+  const actions = userActionData.data || []
+  const hasLike = actions.some(a => a.action === "like")
+  const hasTomato = actions.some(a => a.action === "tomato")
+  const hasStar = actions.some(a => a.action === "star")
+
+  response.render('snapp.liquid', { snappUuid, oneSnappInfo, likesCount, tomatoCount, starCount, hasLike, hasTomato, hasStar, status })
 })
 
 
+app.post('/snapps/:uuid/action', async function (request, response) {
+  const actionType = request.body.action
+  const snappUuid = request.params.uuid
+  const userUuid = "467a4442-69e4-44ae-829a-b95e25c4dd7b"
 
+  const params = new URLSearchParams()
+  params.set('filter[snap][_eq]', `${snappUuid}`)
+  params.set('filter[user][_eq]', `${userUuid}`)
 
+  const starResponse = await fetch(`${actionEndpoint}?${params.toString()}&filter[action][_eq]=star`)
+  const starData = await starResponse.json()
+  const starAction = starData.data[0]
+
+  const likeOrTomatoResponse = await fetch(`${actionEndpoint}?${params.toString()}&filter[action][_neq]=star`)
+  const likeOrTomatoData = await likeOrTomatoResponse.json()
+  const likeOrTomatoAction = likeOrTomatoData.data[0]
+
+  try {
+    if (actionType === "star") {
+      if (starAction) {
+        await fetch(`${actionEndpoint}/${starAction.uuid}`, {
+          method: "DELETE",
+        })
+
+        return response.redirect(303, `/snapps/${snappUuid}?status=star-removed`)
+
+      } else {
+        await fetch(`${actionEndpoint}`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+
+          body: JSON.stringify({
+            snap: snappUuid,
+            user: userUuid,
+            action: "star"
+          })
+        })
+
+        return response.redirect(303, `/snapps/${snappUuid}?status=star-added`)
+      }
+
+    } else {
+      if (!likeOrTomatoAction) {
+        await fetch(`${actionEndpoint}`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+
+          body: JSON.stringify({
+            snap: snappUuid,
+            user: userUuid,
+            action: actionType
+          })
+        })
+
+        return response.redirect(303, `/snapps/${snappUuid}?status=${actionType}-added`)
+
+      } else {
+
+        if (likeOrTomatoAction.action === actionType) {
+          await fetch(`${actionEndpoint}/${likeOrTomatoAction.uuid}`, {
+            method: "DELETE",
+          })
+
+          return response.redirect(303, `/snapps/${snappUuid}?status=${actionType}-removed`)
+
+        } else {
+          await fetch(`${actionEndpoint}/${likeOrTomatoAction.uuid}`, {
+            method: "PATCH",
+            headers: {
+              "Content-Type": "application/json"
+            },
+
+            body: JSON.stringify({
+              action: actionType
+            })
+          })
+
+          return response.redirect(303, `/snapps/${snappUuid}?status=switched-to-${actionType}`)
+        }
+      }
+    }
+
+  } catch (error) {
+    console.error(error)
+    return response.redirect(303, `/snapps/${snappUuid}?status=error`)
+  }
+})
 
 
 // Aanpassen
