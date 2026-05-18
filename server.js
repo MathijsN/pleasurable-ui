@@ -224,8 +224,7 @@ app.get('/snapps/:uuid', async function (request, response) {
 
   const oneSnappApiResponse = await fetch(`${snappEndpoint}?${params.toString()}`)
   const oneSnappApiResponseJSON = await oneSnappApiResponse.json()
-  const oneSnappInfo = oneSnappApiResponseJSON.data
- 
+  const oneSnappInfo = oneSnappApiResponseJSON.data 
 
   const paramsAction = new URLSearchParams()
   paramsAction.set('fields', '*,user.name,snap.*,snap.author.*,snap.snapmap.name,snap.snapmap.groups.snappthis_group_uuid.name')
@@ -243,7 +242,6 @@ app.get('/snapps/:uuid', async function (request, response) {
   const starCountApiResponseJSON = await starCountApiResponse.json()
   const starCount = starCountApiResponseJSON.data
 
-  
   const paramsUserActionState = new URLSearchParams()
   paramsUserActionState.set('filter[user][_eq]', `${userUuid}`)
   paramsUserActionState.set('filter[snap][_eq]', `${snappUuid}`)

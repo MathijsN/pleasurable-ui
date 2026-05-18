@@ -9,7 +9,6 @@
 
 html {
     font-family: 'Bariol-Regular', Verdana, Geneva, Tahoma, sans-serif;
-    font-size: var(--font-size-m);
 
     /* Scrollen in html element-gaat smooth */
     @media (prefers-reduced-motion: no-preference) {
@@ -29,8 +28,8 @@ html {
     --primary-color: #172f3b;
     --text-color-on-light-bg: #90a1aa;
     --dark-text-color-on-light-bg: #224455;
+    --pill-link-bg-color: #e9ecee;
     --light-text-color-on-dark-bg: #BDC7CC;
-    --pill-button-bg-color: #e9ecee;
     --lightest-color: #ffffff;
     --accent-color-on-light-bg: #00e53d;
     --accent-color-on-dark-bg: #00ff44;
@@ -468,7 +467,7 @@ dialog[open] {
                 font-size: 0.9rem;
                 line-height: 1;
                 color: var(--dark-text-color-on-light-bg);
-                background-color: var(--pill-button-bg-color);
+                background-color: var(--pill-link-bg-color);
 
                 svg {
                     display: block;
@@ -482,6 +481,29 @@ dialog[open] {
     }
 }
 
+.pill-link-list {
+    display: flex;
+    gap: 4px;
+    flex-wrap: wrap;
+
+    li {
+        list-style: none;
+        align-content: center;
+
+        &:last-of-type {
+            color: var(--text-color-on-light-bg);
+        }
+
+        a {
+            text-decoration: none;
+            color: var(--dark-text-color-on-light-bg);
+            background-color: var(--pill-link-bg-color);
+            padding: var(--spacing-s) var(--spacing-m);
+            display: inline-block;
+            border-radius: 1.5rem;
+        }
+    }
+  
 /*--------------- login pagina --------- */
 .login-page {
     background-color: var(--primary-color);
