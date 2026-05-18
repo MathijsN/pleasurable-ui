@@ -1,0 +1,12 @@
+<ul class="pill-link-list">
+  <li>
+    <a href="/snappmaps/{{ snap.snapmap.slug }}">{{ snap.snapmap.name }}</a>
+  </li>
+  <li>
+    <a href="/snapps/user/{{ snap.author.name }}">{{ snap.author.name }}</a>
+  </li>
+  <li>
+    <a href="/snapps/location/{{ snap.location }}">{{ snap.location }}</a>
+  </li>
+  <li>{{ snap.date_created | date: '%d %B %Y' }}</li>
+</ul>
