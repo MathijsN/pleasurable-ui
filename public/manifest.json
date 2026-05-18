@@ -1,0 +1,43 @@
+{
+    "name": "Snappthis",
+    "short_name": "Snappthis",
+    "lang": "nl",
+    "start_url": "/login",
+    "id": "Snappthhis",
+    "display": "standalone",
+    "theme_color": "#172f3b",
+    "background_color": "#172f3b",
+    "description": "Bekijk en deel jouw snapps",
+    "orientation": "portrait",
+    "display_override": [
+        "fullscreen",
+        "minimal-ui"
+    ],
+    "scope": "/",
+    "icons": [
+        {
+            "src": "/assets/snappthis-logo.png",
+            "sizes": "192x192",
+            "type": "image/png",
+            "purpose": "any maskable"
+        },
+        {
+            "src": "/assets/snappthis-logo.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "any maskable"
+        },
+        {
+            "src": "/assets/snappthis-logo.svg",
+            "sizes": "any",
+            "type": "image/svg+xml",
+            "purpose": "any maskable"
+        }
+    ],
+    "shortcuts": [
+        {
+            "name": "test snappmap",
+            "url": "/snappmaps/test"
+        }
+    ]
+}
