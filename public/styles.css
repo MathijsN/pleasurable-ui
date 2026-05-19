@@ -691,6 +691,7 @@ dialog[open] {
     position: fixed;
     top: var(--bar-height);
     display: grid;
+    align-items: center;
     grid-template-columns: max-content 2fr;
     padding: 0.65rem;
     column-gap: 0.5em;
@@ -702,15 +703,22 @@ dialog[open] {
     animation-name: --fade-popup;
     animation-duration: 3s;
     animation-timing-function: ease-in-out;
+    animation-fill-mode: forwards;
 
     h2 {
         font-size: var(--font-size-xs);
+        color: var(--dark-text-color-on-light-bg);
     }
 
 
     p {
         grid-column: 2;
         font-size: 0.8rem;
+        color: var(--dark-text-color-on-light-bg);
+    }   
+
+    svg {
+        grid-row: 1 / 3;
     }
 
     /* colors in pop-up */
@@ -724,11 +732,9 @@ dialog[open] {
 }
 
 @keyframes --fade-popup {
-    0% {
-        opacity: 1;
-    }
+    0% { opacity: 1; }
+    100% { opacity: 0; }
+}
 
-    100% {
-        opacity: 0;
     }
 }
