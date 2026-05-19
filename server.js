@@ -83,7 +83,6 @@ app.get('/groups/:slug', async function (request, response) {
   response.render('groups.liquid', { snappMapslist })
 })
 
-
 app.get('/snappmaps/:slug', async function (request, response) {
   const params = new URLSearchParams()
 
@@ -93,8 +92,6 @@ app.get('/snappmaps/:slug', async function (request, response) {
   const snappmapApiResponse = await fetch(`${snappmapEndpoint}?${params.toString()}`)
   const snappmapApiResponseJSON = await snappmapApiResponse.json()
   const snappmap = snappmapApiResponseJSON.data
-
-  console.log(snappmap[0].groups)
 
   const status = request.query.status
 

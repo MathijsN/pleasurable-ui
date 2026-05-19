@@ -1,17 +1,22 @@
 <header class="top-nav">
-  <details>
-    <summary>
-      <h1>{{ snappmap.name }}</h1>
-    </summary>
-    <ul>
-      {% if not snappmap.groups.empty %}
-        <li>hello</li>
-        {% for snappmaps in snappmap.groups[0].snappthis_group_uuid.snappmap %}
-          {{ snappmaps.name }}
-        {% endfor %}
-      {% else %}
-        <li class="inactive">Ik ben leeg</li>
-      {% endif %}
-    </ul>
-  </details>
+  {% if currentPage == 'snappmap' %}
+    <details>
+      <summary>
+        <h1>{{ snappmap.name }}</h1>
+      </summary>
+      <ul>
+        {% if snappmap.groups and snappmap.groups.size > 0 %}
+          {% for group in snappmap.groups %}
+            {% for relatedSnappmap in group.snappthis_group_uuid.snappmap %}
+              <li>
+                <a href="#">{{ relatedSnappmap.snappthis_snapmap_uuid.name }}</a>
+              </li>
+            {% endfor %}
+          {% endfor %}
+        {% else %}
+          <li class="inactive">No other snappmaps in this group, yet</li>
+        {% endif %}
+      </ul>
+    </details>
+  {% endif %}
 </header>

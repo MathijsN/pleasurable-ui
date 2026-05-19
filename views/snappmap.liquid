@@ -1,5 +1,5 @@
 {% assign snappmap = snappmap[0] %}
-{% render 'partials/head.liquid', title: 'Snappmap', oneSnappmap: true, snappmap: snappmap %}
+{% render 'partials/head.liquid', title: 'Snappmap', currentPage: 'snappmap', snappmap: snappmap %}
 
 {% comment %} maak if statement die checked of jij in de snappmap kan posten {% endcomment %}
 {% render 'partials/uploadSnapForm.liquid', snappmapSlug: snappmap.slug, snappmapUuid: snappmap.uuid %}
