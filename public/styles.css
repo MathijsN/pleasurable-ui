@@ -736,5 +736,24 @@ dialog[open] {
     100% { opacity: 0; }
 }
 
+.loading-actions ~ .loading-count {
+    visibility: hidden;
+    position: relative;
+    
+    &::after {
+        content: "...";
+        visibility: visible;
+        position: absolute;
+        left: 0;
+        overflow: hidden;
+        animation-name: --loading-actions;
+        animation-duration: 1.5s;
+        animation-timing-function: steps(4);
+        animation-iteration-count: infinite;
     }
+}
+
+@keyframes --loading-actions {
+    0% { max-width: 0; }
+    100% { max-width: 1em; }
 }
