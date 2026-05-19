@@ -64,3 +64,95 @@
     <p>You have swapped from like to tomato</p>
   </section>
 {% endif %}
+
+{% comment %} Likes, dislikes & favorites - loading & succes state {% endcomment %}
+
+<script>
+  
+  // Stap 1: Submit een formulier / like, dislike of favorite een snapp
+  document.addEventListener('submit', async function(event) {
+
+    const form = event.target // Hou in een variabele bij welk formulier dat was
+    const actionURL = form.getAttribute("action") // Zet de action van het formulier om in een variabele: (action="/snapps/{snappUuid}/action")
+    const buttons = form.querySelectorAll("button[name='action']") // buttons in huidig formulier
+    const formData = new URLSearchParams() // Maak de data die we gaan sturen (alleen de action knop)
+    const clickedButton = event.submitter // Pak welke knop is geklikt
+
+    // Als dit geen like/dislike/star formulier is, doe niks speciaals
+    if (!form.classList.contains('like-dislike-save-form')) {
+      return
+    }
+
+    // Stap 2: Voorkom de standaard submit van de browser
+    event.preventDefault()
+    
+    // Stap 3: Toon de loading-state en disable alle knoppen 
+    // Zet loading state op geklikte knop
+    if (clickedButton) {
+      clickedButton.classList.add("loading-actions")
+    }
+
+    // Disable alle knoppen als de loading state aan staat 
+    buttons.forEach(function(btn) {
+      btn.disabled = true
+    })
+
+    // Voeg alleen de data van de geklikte knop toe aan de body van het formulier
+    if (clickedButton) {
+      formData.append(clickedButton.name, clickedButton.value)
+    }
+
+    // Stap 4: Data fetchen
+    // Verstuur naar server
+    const response = await fetch(actionURL, {
+      method: form.method,
+      body: formData
+    })
+
+    // Stap 5: Verwerk de data
+    // Server geeft HTML terug
+    const responseText = await response.text()
+
+    // Stap 6: Voeg data toe aan de DOM
+    // Maak nieuwe DOM van die HTML
+    const parser = new DOMParser()
+    const responseDOM = parser.parseFromString(responseText, 'text/html')
+    
+    // Zoek het nieuwe formulier in de response
+    const newForm = responseDOM.querySelector('.like-dislike-save-form')
+    if (!newForm) {
+      console.error('No updated form found')
+      return
+    }
+
+    // Vervang oud formulier met nieuw formulier
+    form.replaceWith(newForm)
+
+    // Stap 7: Haal de loading-state weg en maak de knoppen in het nieuwe formulier klikbaar
+    const newButtons = newForm.querySelectorAll("button[name='action']")
+    newButtons.forEach(function(btn) {
+      btn.disabled = false
+      btn.classList.remove("loading-actions")
+    })
+
+    // Stap 8: Toon de succes-state (pop-up)
+    // Zoek naar de pop-up in de response van de URL
+    const newPopup = responseDOM.querySelector('.action-popup')
+    const existingPopup = document.querySelector('.action-popup')
+    
+    if (existingPopup) {
+      existingPopup.remove()
+    }
+
+    if (newPopup) {
+      document.body.insertAdjacentElement('afterbegin', newPopup)
+    }
+
+    // Stap 9: Haal de succes-state (pop-up) uit de DOM als de animatie over is 
+    if (newPopup) {
+      newPopup.addEventListener('animationend', function() {
+        newPopup.remove()
+      })
+    }
+  })
+</script>
