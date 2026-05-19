@@ -1,0 +1,17 @@
+<header class="top-nav">
+  <details>
+    <summary>
+      <h1>{{ snappmap.name }}</h1>
+    </summary>
+    <ul>
+      {% if not snappmap.groups.empty %}
+        <li>hello</li>
+        {% for snappmaps in snappmap.groups[0].snappthis_group_uuid.snappmap %}
+          {{ snappmaps.name }}
+        {% endfor %}
+      {% else %}
+        <li class="inactive">Ik ben leeg</li>
+      {% endif %}
+    </ul>
+  </details>
+</header>
