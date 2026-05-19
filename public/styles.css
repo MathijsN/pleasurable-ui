@@ -152,6 +152,11 @@ header {
             fill: var(--lightest-color);
         }
     }
+
+    .right-center-icon {
+        justify-self: end;
+    }
+
 }
 
 ul.groups {
