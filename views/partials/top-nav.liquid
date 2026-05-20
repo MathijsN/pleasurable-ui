@@ -6,7 +6,7 @@
         <h1>{{ snappmap.name | truncate: 19 }}</h1>
       </summary>
       <ul>
-        {% if snappmap.groups and snappmap.groups.size > 0 %}
+        {% if snappmap.groups and snappmap.groups.size > 0 and snappmap.groups[0].snappmap != undefined %}
           {% for group in snappmap.groups %}
             {% for relatedSnappmap in group.snappthis_group_uuid.snappmap %}
               {% assign listName = relatedSnappmap.snappthis_snapmap_uuid.name %}
@@ -39,6 +39,6 @@
   {% endif %}
 
   {% if currentPage == 'index' %}
-    <h1>Welcome back, Marije</h1>
+    <h1>Welcome back</h1>
   {% endif %}
 </header>
