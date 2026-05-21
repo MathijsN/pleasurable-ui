@@ -1,4 +1,4 @@
-{% render 'partials/head.liquid', 
+{% render 'partials/head.liquid',
   title: 'Snapp',
   oneSnapp: true,
   snappUuid: snappUuid,
@@ -9,9 +9,14 @@
   status: status,
   hasLike: hasLike,
   hasTomato: hasTomato,
-  hasStar: hasStar %}
+  hasStar: hasStar
+%}
 
 {% assign snap = oneSnappInfo[0] %}
+<img
+  src="https://fdnd-agency.directus.app/assets/{{ snap.picture }}}?width=700&format=webp"
+  alt=""
+  class="snapp-detail-img"
+>
 {% render 'partials/pill-link.liquid', snap: snap %}
-
 {% render 'partials/footer.liquid', currentPage: 'oneSnapp' %}
