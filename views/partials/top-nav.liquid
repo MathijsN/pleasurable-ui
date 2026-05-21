@@ -11,7 +11,7 @@
             {% assign listName = relatedSnappmap.snappthis_snapmap_uuid.name %}
             {% if listName != headerName %}
               <li>
-                <a href="http://localhost:3000/snappmaps/{{ relatedSnappmap.snappthis_snapmap_uuid.slug }}">
+                <a href="/snappmaps/{{ relatedSnappmap.snappthis_snapmap_uuid.slug }}">
                   {{ relatedSnappmap.snappthis_snapmap_uuid.name }}
                 </a>
               </li>
