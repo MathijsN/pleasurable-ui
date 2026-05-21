@@ -524,8 +524,7 @@ dialog[open] {
 }
 
 .pill-link-list {
-    margin: 4px;
-    height: var(--bar-height);
+    padding: 4px 4px 6px;
     display: flex;
     align-items: center;
     gap: 4px;
@@ -534,15 +533,15 @@ dialog[open] {
     li {
         display: flex;
         align-items: center;
-        height: 80%;
+        height: calc(var(--bar-height) * 0.8);
         list-style: none;
-        align-self: center;
-        /* Hoort bij de ul */
+        align-self: center; /* Hoort bij de ul */
 
 
         &:last-of-type {
             color: var(--text-color-on-light-bg);
             padding-left: 8px;
+            padding-block: 4px;
             height: fit-content;
         }
 
