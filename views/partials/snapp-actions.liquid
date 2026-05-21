@@ -128,13 +128,19 @@
     // Vervang oud formulier met nieuw formulier
     form.replaceWith(newForm)
 
-    // Stap 7: Haal de loading-state weg en maak de knoppen in het nieuwe formulier klikbaar
+    // Stap 7a: Haal de loading-state weg en maak de knoppen in het nieuwe formulier klikbaar
     const newButtons = newForm.querySelectorAll("button[name='action']")
     newButtons.forEach(function(btn) {
       btn.disabled = false
       btn.classList.remove("loading-actions")
     })
 
+    // Stap 7b: Animeer de geklikte knop
+    const newClickedLabel = newForm.querySelector(`button[value="${clickedButton.value}"]`).closest('label');
+    newClickedLabel.classList.add('just-activated');
+    newClickedLabel.addEventListener('animationend', function () {
+      newClickedLabel.classList.remove('just-activated');
+    });
     // Stap 8: Toon de succes-state (pop-up)
     // Zoek naar de pop-up in de response van de URL
     const newPopup = responseDOM.querySelector('.action-popup')

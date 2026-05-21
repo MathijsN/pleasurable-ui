@@ -503,7 +503,8 @@ dialog[open] {
             border-radius: 1.5rem;
         }
     }
-} 
+}
+
 /*--------------- login pagina --------- */
 .login-page {
     background-color: var(--primary-color);
@@ -684,6 +685,20 @@ dialog[open] {
             fill: var(--star-icon-color-active);
         }
     }
+
+    .just-activated {
+        svg {
+            animation-name: --icon-bounce;
+            animation-duration: 0.4s;
+            animation-timing-function: ease-in-out;
+        }
+    }
+}
+
+@keyframes --icon-bounce {
+    0%   { scale: 1; }
+    50%  { scale: 1.5; }
+    100% { scale: 1; }
 }
 
 /* pop-up for like, tomato and star when clicked */
@@ -715,7 +730,7 @@ dialog[open] {
         grid-column: 2;
         font-size: 0.8rem;
         color: var(--dark-text-color-on-light-bg);
-    }   
+    }
 
     svg {
         grid-row: 1 / 3;
@@ -732,14 +747,19 @@ dialog[open] {
 }
 
 @keyframes --fade-popup {
-    0% { opacity: 1; }
-    100% { opacity: 0; }
+    0% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0;
+    }
 }
 
-.loading-actions ~ .loading-count {
+.loading-actions~.loading-count {
     visibility: hidden;
     position: relative;
-    
+
     &::after {
         content: "...";
         visibility: visible;
@@ -754,6 +774,11 @@ dialog[open] {
 }
 
 @keyframes --loading-actions {
-    0% { max-width: 0; }
-    100% { max-width: 1em; }
+    0% {
+        max-width: 0;
+    }
+
+    100% {
+        max-width: 1em;
+    }
 }
