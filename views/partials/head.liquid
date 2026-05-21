@@ -24,6 +24,8 @@
             hasLike: hasLike,
             hasTomato: hasTomato,
             hasStar: hasStar %}
-        {% endif %}
+    {% else %}
         {% render 'partials/top-nav.liquid', currentPage: currentPage, snappmap: snappmap %}
+    {% endif %}
+    
     <main>
