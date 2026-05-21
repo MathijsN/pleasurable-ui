@@ -748,6 +748,39 @@ dialog[open] {
             animation-timing-function: ease-in-out;
         }
     }
+
+    .inactive {
+        &:hover {
+            scale: 0;
+        }
+        color: #90A1AA;
+        svg {
+            fill: #90A1AA
+        }
+        
+    }
+
+    .heart-inactive {
+        color: var(--heart-icon-color-inactive);
+        svg {
+            fill: var(--heart-icon-color-inactive);
+        }
+    }
+
+    .tomato-inactive {
+        color: var(--tomato-icon-color-inactive);
+        svg {
+            fill: var(--tomato-icon-color-inactive);
+        }
+    }
+
+    .star-inactive {
+        color: var(--star-icon-color-inactive);
+        svg {
+            fill: var(--star-icon-color-inactive);
+        }
+    }
+
 }
 
 @keyframes --icon-bounce {
