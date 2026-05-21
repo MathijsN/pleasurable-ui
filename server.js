@@ -45,9 +45,8 @@ app.post("/login", async function (request, response) {
     email: request.body.email,
     password: request.body.password,
   };
-  console.log(loginInfo);
 
-  const testEmail = "fdnd@hva.nl";
+  const testEmail = "anne-fleur@snappthis.com";
   const testPassword = "snappthis";
 
   if (loginInfo.email == testEmail && loginInfo.password == testPassword) {
