@@ -37,7 +37,7 @@ app.get('/', async function (request, response) {
 
 app.get('/login', async function (request, response) {
 
-response.render('login.liquid')  
+  response.render('login.liquid')
 })
 
 app.post("/login", async function (request, response) {
@@ -51,10 +51,10 @@ app.post("/login", async function (request, response) {
   const testPassword = "snappthis";
 
   if (loginInfo.email == testEmail && loginInfo.password == testPassword) {
-    response.redirect(303, '/'); 
+    response.redirect(303, '/');
     console.log("succesvol Ingelogd");
   } else {
-    response.render('login.liquid', {error:true})
+    response.render('login.liquid', { error: true })
     console.log("inloggen mislukt");
   }
 
@@ -219,12 +219,12 @@ app.get('/snapps/:uuid', async function (request, response) {
   const status = request.query.status
 
   const params = new URLSearchParams()
-  params.set('fields', '*,snapmap.name,snapmap.uuid,snapmap.slug,snapmap.groups.snappthis_group_uuid.name,author.*')
+  params.set('fields', '*,snapmap.name,snapmap.uuid,snapmap.slug,snapmap.groups.snappthis_group_uuid.*.*,author.*')
   params.set('filter[uuid]', `${snappUuid}`)
 
   const oneSnappApiResponse = await fetch(`${snappEndpoint}?${params.toString()}`)
   const oneSnappApiResponseJSON = await oneSnappApiResponse.json()
-  const oneSnappInfo = oneSnappApiResponseJSON.data 
+  const oneSnappInfo = oneSnappApiResponseJSON.data
 
   const paramsAction = new URLSearchParams()
   paramsAction.set('fields', '*,user.name,snap.*,snap.author.*,snap.snapmap.name,snap.snapmap.groups.snappthis_group_uuid.name')
@@ -232,7 +232,7 @@ app.get('/snapps/:uuid', async function (request, response) {
 
   const likesCountApiResponse = await fetch(`${actionEndpoint}?${paramsAction.toString()}&filter[action]=like`)
   const likesCountApiResponseJSON = await likesCountApiResponse.json()
-  const likesCount =  likesCountApiResponseJSON.data
+  const likesCount = likesCountApiResponseJSON.data
 
   const tomatoCountApiResponse = await fetch(`${actionEndpoint}?${paramsAction.toString()}&filter[action]=tomato`)
   const tomatoCountApiResponseJSON = await tomatoCountApiResponse.json()
@@ -254,7 +254,8 @@ app.get('/snapps/:uuid', async function (request, response) {
   const hasTomato = actions.some(a => a.action === "tomato")
   const hasStar = actions.some(a => a.action === "star")
 
-  response.render('snapp.liquid', { snappUuid, oneSnappInfo, likesCount, tomatoCount, starCount, hasLike, hasTomato, hasStar, status })
+
+  response.render('snapp.liquid', { userUuid, snappUuid, oneSnappInfo, likesCount, tomatoCount, starCount, hasLike, hasTomato, hasStar, status })
 })
 
 

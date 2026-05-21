@@ -503,7 +503,8 @@ dialog[open] {
             border-radius: 1.5rem;
         }
     }
-} 
+}
+
 /*--------------- login pagina --------- */
 .login-page {
     background-color: var(--primary-color);
@@ -731,4 +732,24 @@ dialog[open] {
     100% {
         opacity: 0;
     }
+}
+
+.snapp-detail-group-info {
+    height: var(--bar-height);
+    padding-left: var(--spacing-s);
+    align-items: center;
+    display: flex;
+
+    svg {
+        height: 36%;
+        fill: var(--text-color-on-light-bg);
+    }
+
+    h2 {
+        font-size: var(--font-size-s);
+        color: var(--text-color-on-light-bg);
+        margin-left: 0.5rem;
+        transform: translateY(5px);
+    }
+
 }
