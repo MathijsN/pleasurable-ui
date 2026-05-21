@@ -22,6 +22,9 @@ const snappEndpoint = `${baseURL}/snappthis_snap`
 const actionEndpoint = `${baseURL}/snappthis_action`
 const userEndpoint = `${baseURL}/snappthis_user`
 
+// Gebruikers id Anne-Fleur Pietersen
+const userUuid = "5e9589a5-ebfa-4a99-87a6-010f2f571444"
+
 app.get('/', async function (request, response) {
   const params = new URLSearchParams()
   params.set('fields', '*,snaps.*')
@@ -200,7 +203,6 @@ app.get('/snapps/user/:uuid', async function (request, response) {
 
 
 app.get('/snapps/:uuid', async function (request, response) {
-  const userUuid = "5e9589a5-ebfa-4a99-87a6-010f2f571444"
   const snappUuid = request.params.uuid
   const status = request.query.status
 
@@ -247,7 +249,6 @@ app.get('/snapps/:uuid', async function (request, response) {
 app.post('/snapps/:uuid/action', async function (request, response) {
   const actionType = request.body.action
   const snappUuid = request.params.uuid
-  const userUuid = "5e9589a5-ebfa-4a99-87a6-010f2f571444"
 
   const params = new URLSearchParams()
   params.set('filter[snap][_eq]', `${snappUuid}`)
