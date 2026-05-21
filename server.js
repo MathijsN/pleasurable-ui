@@ -98,13 +98,10 @@ app.get('/snappmaps/:slug', async function (request, response) {
   const snappmap = snappmapApiResponseJSON.data
 
   const status = request.query.status
+  const path = request.path
 
-  response.render('snappmap.liquid', { snappmap, status })
+  response.render('snappmap.liquid', { snappmap, status, path })
 })
-
-
-
-
 
 app.post('/snappmaps/:slug', upload.single('file'), async function (request, response) {
 
@@ -150,15 +147,6 @@ app.post('/snappmaps/:slug', upload.single('file'), async function (request, res
     return response.redirect(303, `/snappmaps/${snappmapSlug}?status=upload_failed`)
   }
 })
-
-
-
-
-
-
-
-
-
 
 app.get('/snapps', async function (request, response) {
   const params = new URLSearchParams()
