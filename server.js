@@ -210,7 +210,7 @@ app.get('/snapps/:uuid', async function (request, response) {
   const status = request.query.status
 
   const params = new URLSearchParams()
-  params.set('fields', '*,snapmap.name,snapmap.uuid,snapmap.slug,snapmap.groups.snappthis_group_uuid.name,author.*')
+  params.set('fields', '*,snapmap.name,snapmap.uuid,snapmap.slug,snapmap.groups.snappthis_group_uuid.*.*,author.*')
   params.set('filter[uuid]', `${snappUuid}`)
 
   const oneSnappApiResponse = await fetch(`${snappEndpoint}?${params.toString()}`)
@@ -245,11 +245,7 @@ app.get('/snapps/:uuid', async function (request, response) {
   const hasTomato = actions.some(a => a.action === "tomato")
   const hasStar = actions.some(a => a.action === "star")
 
-  console.log(
-    oneSnappInfo
-  )
-
-  response.render('snapp.liquid', { snappUuid, oneSnappInfo, likesCount, tomatoCount, starCount, hasLike, hasTomato, hasStar, status })
+  response.render('snapp.liquid', { userUuid, snappUuid, oneSnappInfo, likesCount, tomatoCount, starCount, hasLike, hasTomato, hasStar, status })
 })
 
 

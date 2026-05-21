@@ -772,6 +772,25 @@ dialog[open] {
     }
 }
 
+.snapp-detail-group-info {
+    height: var(--bar-height);
+    padding-left: var(--spacing-s);
+    align-items: center;
+    display: flex;
+
+    svg {
+        height: var(--font-size-m);
+        fill: var(--text-color-on-light-bg);
+    }
+
+    h2 {
+        font-size: var(--font-size-m);
+        color: var(--text-color-on-light-bg);
+        margin-left: 0.5rem;
+        transform: translateY(5px);
+        font-weight: 400;
+    }
+}
 .snapp-detail-img {
     width: 100%;
     max-height: 40rem;
