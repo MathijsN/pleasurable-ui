@@ -1,3 +1,7 @@
+if ('serviceWorker' in navigator){
+    navigator.serviceWorker.register('/sw.js')
+}
+
 const preview = document.querySelector('.image-preview');
 
 document.getElementById('file').onchange = function (evt) {
