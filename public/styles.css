@@ -66,11 +66,15 @@ html {
     --hover-scale: 1.05;
 }
 
+@view-transition {
+    navigation: auto;
+}
+
 /* Kopieer dit voor hover states */
 /* @media (any-pointer:fine) {
- &:hover {
-background-color:red;
-}
+    &:hover {
+        background-color: red;
+    }
 } */
 
 body {
