@@ -746,7 +746,7 @@ dialog[open] {
     }
 
     h2 {
-        font-size: var(--font-size-s);
+        font-size: var(--font-size-m);
         color: var(--text-color-on-light-bg);
         margin-left: 0.5rem;
         transform: translateY(5px);
