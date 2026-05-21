@@ -1,5 +1,10 @@
-{% render 'partials/head.liquid' %}
 {% assign snappmap = snappmap[0] %}
+
+{% if path contains 'snappmap' %}
+  {% render 'partials/head.liquid', title: 'Snappmap', currentPage: 'snappmap', snappmap: snappmap %}
+{% elsif path contains 'snapps' %}
+  {% render 'partials/head.liquid', title: 'Snappmap', currentPage: 'snapps', snappmap: snappmap %}
+{% endif %}
 
 {% comment %} maak if statement die checked of jij in de snappmap kan posten {% endcomment %}
 {% render 'partials/uploadSnapForm.liquid', snappmapSlug: snappmap.slug, snappmapUuid: snappmap.uuid %}

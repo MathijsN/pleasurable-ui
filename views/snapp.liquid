@@ -23,6 +23,11 @@
   </div>
 {% endif %}
 
-{% render 'partials/pill-link.liquid', snap: snap %}
+<img
+  src="https://fdnd-agency.directus.app/assets/{{ snap.picture }}}?width=700&format=webp"
+  alt=""
+  class="snapp-detail-img"
+>
 
+{% render 'partials/pill-link.liquid', snap: snap %}
 {% render 'partials/footer.liquid', currentPage: 'oneSnapp' %}
