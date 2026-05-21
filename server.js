@@ -68,7 +68,9 @@ app.get('/groups', async function (request, response) {
   const allGroupsApiResponseJSON = await allGroupsApiResponse.json()
   const allGroups = allGroupsApiResponseJSON.data
 
-  response.render('groups.liquid', { allGroups })
+  const path = request.path
+
+  response.render('groups.liquid', { allGroups, path })
 })
 
 app.get('/groups/:slug', async function (request, response) {
@@ -80,7 +82,9 @@ app.get('/groups/:slug', async function (request, response) {
   const snappMapsApiResponseJSON = await snappMapsApiResponse.json()
   const snappMapslist = snappMapsApiResponseJSON.data
 
-  response.render('groups.liquid', { snappMapslist })
+  const path = request.path
+
+  response.render('groups.liquid', { snappMapslist, path })
 })
 
 app.get('/snappmaps/:slug', async function (request, response) {

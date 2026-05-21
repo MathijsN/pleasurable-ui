@@ -1,4 +1,8 @@
-{% render 'partials/head.liquid', title: 'Groups', currentPage: 'groups' %}
+{% if path contains '/groups/' %}
+  {% render 'partials/head.liquid', title: 'Groups', currentPage: 'yourSnappmaps' %}
+{% else %}
+  {% render 'partials/head.liquid', title: 'Groups', currentPage: 'groups' %}
+{% endif %}
 
 <ul class="groups">
   {% for groups in allGroups %}

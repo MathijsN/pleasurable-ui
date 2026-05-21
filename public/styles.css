@@ -45,7 +45,6 @@ html {
     --star-icon-color-inactive: #FCF6A6;
 
     /* Font sizes */
-    /* --font-size-l: ; */
     --font-size-m: calc(clamp(1.5rem, 0.583vw + 1.376rem, 2.25rem));
     --font-size-s: 1.5rem;
     --font-size-xs: 1rem;
