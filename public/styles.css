@@ -125,9 +125,9 @@ header {
                     border-bottom: none;
                 }
 
-                &.inactive {
-                    background-color: lightgray;
-                    color: gray;
+                a {
+                    color: var(--lightest-color);
+                    text-decoration: none;
                 }
             }
         }
