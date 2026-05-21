@@ -245,6 +245,10 @@ app.get('/snapps/:uuid', async function (request, response) {
   const hasTomato = actions.some(a => a.action === "tomato")
   const hasStar = actions.some(a => a.action === "star")
 
+  console.log(
+    oneSnappInfo
+  )
+
   response.render('snapp.liquid', { snappUuid, oneSnappInfo, likesCount, tomatoCount, starCount, hasLike, hasTomato, hasStar, status })
 })
 
