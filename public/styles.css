@@ -177,10 +177,11 @@ ul.groups {
 
 .group-list-container {
     border-bottom: var(--text-color-on-light-bg) 1px solid;
-    padding: 14px 10px;
+    padding-inline: var(--spacing-s);
     display: flex;
     justify-content: space-between;
     flex: 1;
+    height: var(--bar-height);
 
     .group-list-stats {
         display: flex;
@@ -189,7 +190,7 @@ ul.groups {
 
         h2 {
             line-height: 1.25;
-            font-size: var(--font-size-xs);
+            font-size: var(--font-size-m);
             font-weight: 400;
 
             &.active {
@@ -198,7 +199,7 @@ ul.groups {
         }
 
         p {
-            font-size: var(--font-size-xxs);
+            font-size: var(--font-size-xs);
             color: var(--text-color-on-light-bg);
 
             &.active {
@@ -238,8 +239,7 @@ nav {
 
         ul {
             display: flex;
-            justify-content: center;
-            gap: 25%;
+            justify-content: space-around;
             height: 100%;
             list-style: none;
 
@@ -251,9 +251,12 @@ nav {
                 svg {
                     height: 36%;
                     width: auto;
-
                     fill: var(--lightest-color);
                 }
+            }
+
+            li:nth-of-type(1) svg {
+                height: 45%;
             }
         }
     }
