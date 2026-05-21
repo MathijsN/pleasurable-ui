@@ -456,71 +456,68 @@ dialog[open] {
     }
 }
 
-
+/*--------------- homepagina --------- */
 .home-page-snappmaps-list {
     display: grid;
     align-items: center;
     grid-template-columns: 1fr max-content;
-    font-size: 0.6rem;
 
     h2,
     .active {
-        padding: 0.65rem;
+        padding-inline: var(--spacing-s);
     }
 
     h2 {
-        font-size: var(--font-size-xs);
+        font-size: var(--font-size-m);
         font-weight: 400;
-        color: var(--dark-text-color-on-light-bg);
+        height: var(--bar-height);
+        display: flex;
+        align-items: center;
+
+        a {
+            text-decoration: none;
+            display: inline-block;
+            color: var(--dark-text-color-on-light-bg);
+
+            @media (any-pointer:fine) {
+                &:hover {
+                    transition: var(--transition-duration);
+                    scale: var(--hover-scale);
+                }
+            }
+
+        }
     }
 
     .active {
         color: var(--accent-color-on-light-bg);
+        font-size: var(--font-size-xs);
     }
 
     .image-thumbnails {
         grid-column: 1/-1;
         grid-row: 2;
-
-        @media (any-pointer:fine) {
-            &:hover svg {
-                transition: 0.1s;
-                scale: 1.1;
-            }
-        }
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        gap: var(--grid-gap);
 
         a {
-            display: grid;
-            grid-template-columns: repeat(5, 1fr);
-            gap: 0.05rem;
+            display: inline-block;
             text-decoration: none;
+            
 
-            figcaption,
+            @media (any-pointer:fine) {
+                &:hover {
+                    transition: var(--transition-duration);
+                    translate: 0 -0.2rem;
+                }
+            }
+
             img {
                 aspect-ratio: 1 / 1;
                 width: 100%;
                 height: auto;
                 display: block;
-            }
-
-            figcaption {
-                display: flex;
-                flex-direction: column;
-                justify-content: center;
-                align-items: center;
-                row-gap: 0.1rem;
-                font-size: 0.9rem;
-                line-height: 1;
-                color: var(--dark-text-color-on-light-bg);
-                background-color: var(--pill-link-bg-color);
-
-                svg {
-                    display: block;
-                    order: -1;
-                    width: 1.1rem;
-                    height: auto;
-                    fill: currentColor;
-                }
             }
         }
     }
