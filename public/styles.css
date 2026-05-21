@@ -524,25 +524,45 @@ dialog[open] {
 }
 
 .pill-link-list {
+    margin: 4px;
+    height: var(--bar-height);
     display: flex;
+    align-items: center;
     gap: 4px;
     flex-wrap: wrap;
 
     li {
+        display: flex;
+        align-items: center;
+        height: 80%;
         list-style: none;
-        align-content: center;
+        align-self: center;
+        /* Hoort bij de ul */
+
 
         &:last-of-type {
             color: var(--text-color-on-light-bg);
+            padding-left: 8px;
+            height: fit-content;
         }
 
         a {
+            display: flex;
+            align-items: center;
             text-decoration: none;
             color: var(--dark-text-color-on-light-bg);
             background-color: var(--pill-link-bg-color);
-            padding: var(--spacing-s) var(--spacing-m);
-            display: inline-block;
+            padding-inline: 1.4rem;
             border-radius: 1.5rem;
+            height: 100%;
+
+            @media (any-pointer:fine) {
+                &:hover {
+                    transition: var(--transition-duration);
+                    scale: var(--hover-scale);
+                }
+            }
+
         }
     }
 }
@@ -641,10 +661,6 @@ dialog[open] {
             margin-left: auto;
         }
     }
-}
-
-@view-transition {
-    navigation: auto;
 }
 
 
