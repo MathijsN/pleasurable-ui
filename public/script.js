@@ -2,6 +2,16 @@ if ('serviceWorker' in navigator){
     navigator.serviceWorker.register('/sw.js')
 }
 
+const offlineMelding = document.querySelector(".offline-melding")
+//met window wordt er naar de browser geluisterd of er een internet verbinding is
+window.addEventListener("offline", () => {
+    offlineMelding.hidden = false
+})
+
+window.addEventListener("online", () => {
+    offlineMelding.hidden = true
+})
+
 const preview = document.querySelector('.image-preview');
 
 document.getElementById('file').onchange = function (evt) {
