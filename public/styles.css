@@ -524,7 +524,7 @@ dialog[open] {
 }
 
 .pill-link-list {
-    padding: 4px 4px 6px;
+    padding: 0px 4px 4px;
     display: flex;
     align-items: center;
     gap: 4px;
