@@ -180,6 +180,7 @@ ul.groups {
     padding-inline: var(--spacing-s);
     display: flex;
     justify-content: space-between;
+    height: var(--bar-height);
     flex: 1;
     height: var(--bar-height);
 
@@ -187,6 +188,11 @@ ul.groups {
         display: flex;
         flex-direction: column;
         justify-content: center;
+
+        &.snappmap {
+            width: 100%;
+            height: 100%;
+        }
 
         h2 {
             line-height: 1.25;
