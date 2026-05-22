@@ -78,44 +78,53 @@
 {% elsif snappMapslist %}
   <ul class="groups">
     {% assign current_group = snappMapslist | first %}
-      {% for snappmap in current_group.snappmap %}
-          {% assign startDay = snappmap.snappthis_snapmap_uuid.time_start | date: "%d" | plus: 0 %}
-          {% assign startMonth = snappmap.snappthis_snapmap_uuid.time_start | date: "%b" %}
-          {% assign startWeekday = snappmap.snappthis_snapmap_uuid.time_start | date: "%a" %}
-          {% assign endDay = snappmap.snappthis_snapmap_uuid.time_end | date: "%d" | plus: 0 %}
-          {% assign endMonth = snappmap.snappthis_snapmap_uuid.time_end | date: "%b" %}
-          {% assign endWeekday = snappmap.snappthis_snapmap_uuid.time_end | date: "%a" %}
+    {% assign today_date = 'now' | date: '%Y%m%d' %}
 
-          {% assign startSuffix = "th" %}
-          {% case startDay %}
-            {% when 1 or 21 or 31 %}{% assign startSuffix = "st" %}
-            {% when 2 or 22 %}{% assign startSuffix = "nd" %}
-            {% when 3 or 23 %}{% assign startSuffix = "rd" %}
-          {% endcase %}
+    {% for snappmap in current_group.snappmap %}
+      {% assign target_date = snappmap.snappthis_snapmap_uuid.time_end | date: '%Y%m%d' %}
 
-          {% assign endSuffix = "th" %}
-          {% case endDay %}
-            {% when 1 or 21 or 31 %}{% assign endSuffix = "st" %}
-            {% when 2 or 22 %}{% assign endSuffix = "nd" %}
-            {% when 3 or 23 %}{% assign endSuffix = "rd" %}
-          {% endcase %}
+      {% assign startDay = snappmap.snappthis_snapmap_uuid.time_start | date: "%d" | plus: 0 %}
+      {% assign startMonth = snappmap.snappthis_snapmap_uuid.time_start | date: "%b" %}
+      {% assign startWeekday = snappmap.snappthis_snapmap_uuid.time_start | date: "%a" %}
+      {% assign endDay = snappmap.snappthis_snapmap_uuid.time_end | date: "%d" | plus: 0 %}
+      {% assign endMonth = snappmap.snappthis_snapmap_uuid.time_end | date: "%b" %}
+      {% assign endWeekday = snappmap.snappthis_snapmap_uuid.time_end | date: "%a" %}
 
-          <li class="group-list-container">
-            <div class="group-list-stats">
-              <h2><a href="/snappmaps/{{ snappmap.snappthis_snapmap_uuid.slug }}">{{ snappmap.snappthis_snapmap_uuid.name }}</a></h2>
-              <p>
-                {{ startWeekday | capitalize }} {{ startMonth | capitalize }} {{ startDay }}{{ startSuffix }}
-                {{ snappmap.snappthis_snapmap_uuid.time_start | date: "%H:%M" }}
-                -
-                {% if startDay != endDay %}
-                  {{ endWeekday | capitalize }} {{ endMonth | capitalize }} {{ endDay }}{{ endSuffix }}
-                {% endif %}
-                {{ snappmap.snappthis_snapmap_uuid.time_end | date: "%H:%M" }}
-              </p>
-            </div>
-          </li>
-      {% endfor %}
-    </ul>
+      {% assign startSuffix = "th" %}
+      {% case startDay %}
+        {% when 1 or 21 or 31 %}{% assign startSuffix = "st" %}
+        {% when 2 or 22 %}{% assign startSuffix = "nd" %}
+        {% when 3 or 23 %}{% assign startSuffix = "rd" %}
+      {% endcase %}
+
+      {% assign endSuffix = "th" %}
+      {% case endDay %}
+        {% when 1 or 21 or 31 %}{% assign endSuffix = "st" %}
+        {% when 2 or 22 %}{% assign endSuffix = "nd" %}
+        {% when 3 or 23 %}{% assign endSuffix = "rd" %}
+      {% endcase %}
+
+      <li class="group-list-container">
+        <div class="group-list-stats">
+          {% if target_date > today_date and target_date != '' %}
+            <h2 class="active"><a href="/snappmaps/{{ snappmap.snappthis_snapmap_uuid.slug }}">{{ snappmap.snappthis_snapmap_uuid.name }}</a></h2>
+            <p class="active">Add your snapp!</p>
+          {% else %}
+            <h2><a href="/snappmaps/{{ snappmap.snappthis_snapmap_uuid.slug }}">{{ snappmap.snappthis_snapmap_uuid.name }}</a></h2>
+            <p>
+              {{ startWeekday | capitalize }} {{ startMonth | capitalize }} {{ startDay }}{{ startSuffix }}
+              {{ snappmap.snappthis_snapmap_uuid.time_start | date: "%H:%M" }}
+              -
+              {% if startDay != endDay %}
+                {{ endWeekday | capitalize }} {{ endMonth | capitalize }} {{ endDay }}{{ endSuffix }}
+              {% endif %}
+              {{ snappmap.snappthis_snapmap_uuid.time_end | date: "%H:%M" }}
+            </p>
+          {% endif %}
+        </div>
+      </li>
+    {% endfor %}
+  </ul>
 
 {% else %}
   <p>Er is geen data beschikbaar.</p>
