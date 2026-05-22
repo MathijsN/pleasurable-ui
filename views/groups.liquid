@@ -1,8 +1,8 @@
-{% if allGroups %}
-  <ul class="groups">
-    {% for group in allGroups %}
-      {% assign today_date = 'now' | date: '%Y%m%d' %}
-      {% assign target_date = '' %}
+{% if path contains '/groups/' %}
+  {% render 'partials/head.liquid', title: 'Groups', currentPage: 'yourSnappmaps' %}
+{% else %}
+  {% render 'partials/head.liquid', title: 'Groups', currentPage: 'groups' %}
+{% endif %}
 
       {% for snappmap in group.snappmap %}
         {% assign target_date = snappmap.snappthis_snapmap_uuid.time_end | date: '%Y%m%d' %}

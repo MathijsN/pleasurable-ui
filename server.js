@@ -1,7 +1,10 @@
-import express from 'express'
+import express, { response } from 'express'
 import { Liquid } from 'liquidjs';
+import multer from 'multer';
 
 const app = express()
+
+const upload = multer({ storage: multer.memoryStorage() });
 
 app.use(express.urlencoded({ extended: true }))
 
@@ -22,7 +25,7 @@ const userEndpoint = `${baseURL}/snappthis_user`
 app.get('/', async function (request, response) {
   const params = new URLSearchParams()
   params.set('fields', '*,snaps.*')
-  params.set('sort','-time_end')
+  params.set('sort', '-time_end')
   params.set('deep[snaps][_sort]', '-date_created')
 
   const allSnappmapsApiResponse = await fetch(`${snappmapEndpoint}?${params.toString()}`)
@@ -32,6 +35,31 @@ app.get('/', async function (request, response) {
   response.render('index.liquid', { allSnappmaps })
 })
 
+app.get('/login', async function (request, response) {
+
+  response.render('login.liquid')
+})
+
+app.post("/login", async function (request, response) {
+  const loginInfo = {
+    email: request.body.email,
+    password: request.body.password,
+  };
+  console.log(loginInfo);
+
+  const testEmail = "fdnd@hva.nl";
+  const testPassword = "snappthis";
+
+  if (loginInfo.email == testEmail && loginInfo.password == testPassword) {
+    response.redirect(303, '/');
+    console.log("succesvol Ingelogd");
+  } else {
+    response.render('login.liquid', { error: true })
+    console.log("inloggen mislukt");
+  }
+
+});
+
 app.get('/groups', async function (request, response) {
   const params = new URLSearchParams()
   params.set('fields', 'name,slug,snappmap.snappthis_snapmap_uuid.*,count(users)')
@@ -40,7 +68,9 @@ app.get('/groups', async function (request, response) {
   const allGroupsApiResponseJSON = await allGroupsApiResponse.json()
   const allGroups = allGroupsApiResponseJSON.data
 
-  response.render('groups.liquid', { allGroups })
+  const path = request.path
+
+  response.render('groups.liquid', { allGroups, path })
 })
 
 app.get('/groups/:slug', async function (request, response) {
@@ -52,9 +82,10 @@ app.get('/groups/:slug', async function (request, response) {
   const snappMapsApiResponseJSON = await snappMapsApiResponse.json()
   const snappMapslist = snappMapsApiResponseJSON.data
 
-  response.render('groups.liquid', { snappMapslist })
-})
+  const path = request.path
 
+  response.render('groups.liquid', { snappMapslist, path })
+})
 
 app.get('/snappmaps/:slug', async function (request, response) {
   const params = new URLSearchParams()
@@ -66,12 +97,56 @@ app.get('/snappmaps/:slug', async function (request, response) {
   const snappmapApiResponseJSON = await snappmapApiResponse.json()
   const snappmap = snappmapApiResponseJSON.data
 
-  response.render('snappmap.liquid', { snappmap })
+  const status = request.query.status
+  const path = request.path
+
+  response.render('snappmap.liquid', { snappmap, status, path })
 })
 
-// app.post('/snappmaps/:slug',async function (request, response) {
-// })
+app.post('/snappmaps/:slug', upload.single('file'), async function (request, response) {
 
+  const snappmapid = request.body.uuid
+  const snappmapSlug = request.params.slug
+  const file = request.file
+
+  const formData = new FormData()
+  const blob = new Blob([file.buffer], { type: file.mimetype })
+  formData.append("file", blob, file.originalname)
+
+  const uploadResponse = await fetch('https://fdnd-agency.directus.app/files', {
+    method: "POST",
+    body: formData,
+  })
+
+  const uploadResponseData = await uploadResponse.json()
+
+  if (uploadResponseData.data.id != null) {
+    let newSnap = {
+      location: 'Haarlem',
+      snapmap: snappmapid,
+      author: '505c32d4-88fc-4102-8ef8-0847e9d9292b',
+      picture: uploadResponseData.data.id,
+    }
+
+    const snapResponse = await fetch(`${snappEndpoint}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(newSnap),
+    })
+
+
+    if (snapResponse.ok) {
+      response.redirect(303, `/snappmaps/${snappmapSlug}?status=succes`)
+    } else {
+      response.redirect(303, `/snappmaps/${snappmapSlug}?status=upload_failed`)
+    }
+
+  } else {
+    return response.redirect(303, `/snappmaps/${snappmapSlug}?status=upload_failed`)
+  }
+})
 
 app.get('/snapps', async function (request, response) {
   const params = new URLSearchParams()
@@ -135,13 +210,12 @@ app.get('/snapps/:uuid', async function (request, response) {
   const status = request.query.status
 
   const params = new URLSearchParams()
-  params.set('fields', '*,snapmap.name,snapmap.uuid,snapmap.slug,snapmap.groups.snappthis_group_uuid.name,author.*')
+  params.set('fields', '*,snapmap.name,snapmap.uuid,snapmap.slug,snapmap.groups.snappthis_group_uuid.*.*,author.*')
   params.set('filter[uuid]', `${snappUuid}`)
 
   const oneSnappApiResponse = await fetch(`${snappEndpoint}?${params.toString()}`)
   const oneSnappApiResponseJSON = await oneSnappApiResponse.json()
   const oneSnappInfo = oneSnappApiResponseJSON.data
- 
 
   const paramsAction = new URLSearchParams()
   paramsAction.set('fields', '*,user.name,snap.*,snap.author.*,snap.snapmap.name,snap.snapmap.groups.snappthis_group_uuid.name')
@@ -149,7 +223,7 @@ app.get('/snapps/:uuid', async function (request, response) {
 
   const likesCountApiResponse = await fetch(`${actionEndpoint}?${paramsAction.toString()}&filter[action]=like`)
   const likesCountApiResponseJSON = await likesCountApiResponse.json()
-  const likesCount =  likesCountApiResponseJSON.data
+  const likesCount = likesCountApiResponseJSON.data
 
   const tomatoCountApiResponse = await fetch(`${actionEndpoint}?${paramsAction.toString()}&filter[action]=tomato`)
   const tomatoCountApiResponseJSON = await tomatoCountApiResponse.json()
@@ -159,7 +233,6 @@ app.get('/snapps/:uuid', async function (request, response) {
   const starCountApiResponseJSON = await starCountApiResponse.json()
   const starCount = starCountApiResponseJSON.data
 
-  
   const paramsUserActionState = new URLSearchParams()
   paramsUserActionState.set('filter[user][_eq]', `${userUuid}`)
   paramsUserActionState.set('filter[snap][_eq]', `${snappUuid}`)
@@ -172,7 +245,7 @@ app.get('/snapps/:uuid', async function (request, response) {
   const hasTomato = actions.some(a => a.action === "tomato")
   const hasStar = actions.some(a => a.action === "star")
 
-  response.render('snapp.liquid', { snappUuid, oneSnappInfo, likesCount, tomatoCount, starCount, hasLike, hasTomato, hasStar, status })
+  response.render('snapp.liquid', { userUuid, snappUuid, oneSnappInfo, likesCount, tomatoCount, starCount, hasLike, hasTomato, hasStar, status })
 })
 
 
