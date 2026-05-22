@@ -699,19 +699,21 @@ dialog[open] {
             border: none;
             transition: 0.1s;
 
+            svg {
+                display: block;
+                height: 1rem;
+                width: auto;
+                fill: var(--lightest-color);
+            }
+        }
+
+        button[type="submit"] {
             @media (any-pointer:fine) {
                 &:hover {
                     transition: var(--transition-duration);
                     cursor: pointer;
                     scale: 1.15;
                 }
-            }
-
-            svg {
-                display: block;
-                height: 1rem;
-                width: auto;
-                fill: var(--lightest-color);
             }
         }
     }
@@ -749,9 +751,6 @@ dialog[open] {
     }
 
     .inactive {
-        &:hover {
-            scale: 0;
-        }
         color: #90A1AA;
         svg {
             fill: #90A1AA
@@ -779,7 +778,6 @@ dialog[open] {
             fill: var(--star-icon-color-inactive);
         }
     }
-
 }
 
 @keyframes --icon-bounce {
