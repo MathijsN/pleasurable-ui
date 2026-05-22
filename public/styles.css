@@ -464,7 +464,7 @@ dialog[open] {
 
     h2,
     .active {
-        padding-inline: var(--spacing-s);
+        padding-inline: 4px;
     }
 
     h2 {
