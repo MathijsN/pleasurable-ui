@@ -4,6 +4,12 @@
   {% render 'partials/head.liquid', title: 'Groups', currentPage: 'groups' %}
 {% endif %}
 
+{% if allGroups %}
+  <ul class="groups">
+    {% for group in allGroups %}
+      {% assign today_date = 'now' | date: '%Y%m%d' %}
+      {% assign target_date = '' %}
+      
       {% for snappmap in group.snappmap %}
         {% assign target_date = snappmap.snappthis_snapmap_uuid.time_end | date: '%Y%m%d' %}
       {% endfor %}
