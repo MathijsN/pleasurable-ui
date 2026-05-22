@@ -1,6 +1,6 @@
-{% render 'partials/head.liquid', title: 'Groups' %}
-
 {% if allGroups %}
+  {% render 'partials/head.liquid', title: 'Groups' %}
+
   <ul class="groups">
     {% for group in allGroups %}
       {% assign today_date = 'now' | date: '%Y%m%d' %}
@@ -76,6 +76,7 @@
   </ul>
 
 {% elsif snappMapslist %}
+  {% render 'partials/head.liquid', title: 'Snappmaps' %}
   <ul class="groups">
     {% assign current_group = snappMapslist | first %}
     {% assign today_date = 'now' | date: '%Y%m%d' %}
@@ -105,7 +106,7 @@
       {% endcase %}
 
       <li class="group-list-container">
-        <div class="group-list-stats">
+        <div class="group-list-stats snappmap">
           {% if target_date > today_date and target_date != '' %}
             <h2 class="active"><a href="/snappmaps/{{ snappmap.snappthis_snapmap_uuid.slug }}">{{ snappmap.snappthis_snapmap_uuid.name }}</a></h2>
             <p class="active">Add your snapp!</p>
