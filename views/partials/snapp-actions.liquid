@@ -12,7 +12,7 @@
     {% comment %} Like button {% endcomment %}
     <label class="{% if hasLike == true %}like-active{% endif %} {% if isOwner %}inactive{% endif %} {% if isOwner and likesCount.size > 0 %}heart-inactive{% endif %}">
       {% if isOwner %}
-        <button type="button">
+        <button type="button" tabindex="-1">
         {% else %}
         <button type="submit" name="action" value="like">
       {% endif %}
@@ -27,7 +27,7 @@
     {% comment %} Dislike button {% endcomment %}
     <label class="{% if hasTomato == true %}tomato-active{% endif %} {% if isOwner %}inactive{% endif %} {% if isOwner and tomatoCount.size > 0 %}tomato-inactive{% endif %}">
       {% if isOwner %}
-        <button type="button">
+        <button type="button" tabindex="-1">
         {% else %}
         <button type="submit" name="action" value="tomato">
       {% endif %}
@@ -42,7 +42,7 @@
     {% comment %} Star button {% endcomment %}
     <label class="{% if hasStar == true %}star-active{% endif %} {% if isOwner %}inactive{% endif %} {% if isOwner and starCount.size > 0 %}star-inactive{% endif %}">
       {% if isOwner %}
-        <button type="button">
+        <button type="button" tabindex="-1">
         {% else %}
         <button type="submit" name="action" value="star">
       {% endif %}
