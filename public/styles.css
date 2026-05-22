@@ -93,6 +93,7 @@ ul.groups {
     padding: 14px 10px;
     display: flex;
     justify-content: space-between;
+    height: var(--bar-height);
     flex: 1;
 
     .group-list-stats {
@@ -107,7 +108,7 @@ ul.groups {
 
         h2 {
             line-height: 1.25;
-            font-size: var(--font-size-xs);
+            font-size: var(--font-size-m);
             font-weight: 400;
 
             &.active {
@@ -116,7 +117,7 @@ ul.groups {
         }
 
         p {
-            font-size: var(--font-size-xxs);
+            font-size: var(--font-size-xs);
             color: var(--text-color-on-light-bg);
 
             &.active {
