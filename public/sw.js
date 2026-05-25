@@ -6,7 +6,7 @@ const AssetsToCache = [
     "/script.js",
     "/login.js",
     "/manifest.json",
-    "/assets/snappthis-logo.png",
+    "/assets/logo.png",
     "/assets/snappthis-logo.svg",
     "/fonts/Bariol_Regular.otf",
     //routes
