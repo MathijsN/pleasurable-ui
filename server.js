@@ -108,26 +108,25 @@ app.get('/snappmaps/:slug', async function (request, response) {
 // Maak een functie aan die van coördinaten een plaatsnaam maakt
 async function reverseGeocode(latitude, longitude) {
 
-  // Vraag aan Nominatim wat de plaatsnaam is van de coördinaten
+  // Vraag aan Photon wat de plaatsnaam is van de coördinaten
   const reverseGeocodeResponse = await fetch(
-    `https://nominatim.openstreetmap.org/reverse?lat=${latitude}&lon=${longitude}&format=json`,
-    // Vertel Nominatim welke app de aanvraag doet (dit is verplicht)
+    `https://photon.komoot.io/reverse?lat=${latitude}&lon=${longitude}`,
     { headers: { 'User-Agent': 'snappmaps-app/1.0 (yourname@email.com)' } }
   )
 
   // Controleer of de response wel JSON is voordat we hem parsen
   const contentType = reverseGeocodeResponse.headers.get('content-type')
   if (!contentType || !contentType.includes('application/json')) {
-    console.log('Nominatim gaf geen JSON terug:', await reverseGeocodeResponse.text())
     return 'Unknown'
   }
-
   const reverseGeocodeData = await reverseGeocodeResponse.json()
 
+  // Photon geeft data terug in features[0].properties
+  const properties = reverseGeocodeData.features?.[0]?.properties
   // Zoek de stadsnaam op, probeer eerst 'city', dan 'town', dan 'village'
-  const city = reverseGeocodeData.address?.city ?? reverseGeocodeData.address?.town ?? reverseGeocodeData.address?.village
-  // Zoek de wijknaam op, probeer eerst 'suburb', dan 'neighbourhood'
-  const district = reverseGeocodeData.address?.suburb ?? reverseGeocodeData.address?.neighbourhood
+  const city = properties?.city ?? properties?.town ?? properties?.village
+  // Zoek de wijknaam op, probeer eerst 'district', dan 'suburb', dan 'neighbourhood'
+  const district = properties?.district ?? properties?.suburb ?? properties?.neighbourhood
 
   // Als we zowel een stad als een wijk hebben, combineer ze dan (vb: Amsterdam-Zuid)
   if (city && district) return `${city}-${district}`
@@ -146,7 +145,7 @@ app.post('/snappmaps/:slug', upload.single('file'), async function (request, res
   // Haal de lengte- en breedtegraad op uit de 'hidden' inputs
   const latitude = request.body.latitude
   const longitude = request.body.longitude
-  
+
   let location
   if (latitude && longitude) {
     // Als we beide coördinaten hebben, zet ze om naar een plaatsnaam
