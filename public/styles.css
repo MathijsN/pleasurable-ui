@@ -84,6 +84,10 @@ body {
         margin-bottom: 0;
     }
 
+    &:has(.login-page) header {
+        display: none;
+    }
+
     /* margin-block: var(--bar-height); */
 }
 
@@ -792,6 +796,95 @@ dialog[open] {
     100% { scale: 1; }
 }
 
+
+
+.login-page {
+    .login-logo {
+        width: 30%;
+        margin: 0 auto;
+    }
+    
+.visually-hidden {
+        border: 0;
+        clip-path: inset(50%);
+        height: 1px;
+        margin: 0;
+        overflow: hidden;
+        position: absolute;
+        white-space: nowrap;
+        width: 1px;
+    }
+    fieldset {
+        border: none;
+
+        legend {
+            margin: auto;
+            padding-top: 1rem;
+            padding-bottom: 0.3rem;
+            color: var(--lightest-color);
+        }
+    }
+
+    .form-inputs {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    input {
+        font-family: inherit;
+        font-size: var(--font-size-xs);
+        width: 90%;
+        border-radius: 0;
+        border: 0;
+        padding: 0.5rem;
+
+        &[type="email"],
+        &[type="password"] {
+            border: 1px solid #979797;
+        }
+
+        &::placeholder {
+            color: #90A1AAFF;
+            font-size: var(--font-size-xs);
+        }
+    }
+
+    .login-error{
+        color: var(--alert-accent-color);
+        width: 90%;
+        margin: 0 auto;
+        padding-top: 10px;
+    }
+
+    a {
+        display: block;
+        font-size: var(--font-size-xs);
+        color: var(--light-text-color-on-dark-bg);
+        text-decoration: none;
+        width: 90%;
+        margin: 0 auto;
+        padding-top: 10px;
+    }
+
+    .button-div {
+        display: flex;
+        margin: 0 auto;
+        width: 90%;
+
+        button {
+            font-family: inherit;
+            background-color: var(--accent-color-on-dark-bg);
+            color: var(--lightest-color);
+            font-size: var(--font-size-xs);
+            border-radius: 2rem;
+            border: none;
+            padding: 0.75rem 2rem;
+            margin-left: auto;
+        }
+    }
+}
+
 /* pop-up for like, tomato and star when clicked */
 .action-popup {
     position: fixed;
@@ -883,10 +976,46 @@ dialog[open] {
         font-weight: 400;
     }
 }
-
 .snapp-detail-img {
     width: 100%;
     max-height: 40rem;
     aspect-ratio: 1/1;
     object-fit: cover;
+}
+
+@view-transition {
+  navigation: auto;
+}
+
+.offline-melding,
+.offline-pagina {
+    position: fixed;
+    top: 50%;
+    left: 0;
+    translate: 0 -50%;
+    width: 100%;
+    padding: 3rem 0;
+    display: flex;
+    justify-content: center;
+    background-color: #ffffffd9;
+    color: var(--dark-text-color-on-light-bg);
+    font-size: var(--font-size-xs);
+    z-index: 10;
+
+    a {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.75rem;
+        text-decoration: none;
+        color: inherit;
+
+        p{
+          font-size: var(--font-size-m);
+        }
+    }
+
+    &[hidden] {
+        display: none;
+    }
 }

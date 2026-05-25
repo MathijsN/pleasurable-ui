@@ -43,6 +43,11 @@ app.get('/login', async function (request, response) {
   response.render('login.liquid')
 })
 
+app.get('/offline', async function (request, response) {
+
+response.render('offline.liquid')  
+})
+
 app.post("/login", async function (request, response) {
   const loginInfo = {
     email: request.body.email,
