@@ -31,7 +31,7 @@
             "src": "/assets/snappthis-logo.svg",
             "sizes": "any",
             "type": "image/svg+xml",
-            "purpose": "any maskable"
+            "purpose": "any"
         }
     ],
     "shortcuts": [
