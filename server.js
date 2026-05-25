@@ -137,7 +137,7 @@ async function reverseGeocode(latitude, longitude) {
 }
 
 app.post('/snappmaps/:slug', upload.single('file'), async function (request, response) {
-
+  console.log('1. Start:', Date.now())
   const snappmapid = request.body.uuid
   const snappmapSlug = request.params.slug
   const file = request.file
@@ -159,12 +159,15 @@ app.post('/snappmaps/:slug', upload.single('file'), async function (request, res
   const blob = new Blob([file.buffer], { type: file.mimetype })
   formData.append("file", blob, file.originalname)
 
+  console.log('2. Na geocoding:', Date.now())
   const uploadResponse = await fetch('https://fdnd-agency.directus.app/files', {
     method: "POST",
     body: formData,
   })
 
+  console.log('3. Na Directus upload:', Date.now())
   const uploadResponseData = await uploadResponse.json()
+  console.log('4. Na JSON parsen:', Date.now())
 
   if (uploadResponseData.data.id != null) {
     let newSnap = {
@@ -182,7 +185,7 @@ app.post('/snappmaps/:slug', upload.single('file'), async function (request, res
       body: JSON.stringify(newSnap),
     })
 
-
+    console.log('5. Na snap opslaan:', Date.now())
     if (snapResponse.ok) {
       response.redirect(303, `/snappmaps/${snappmapSlug}?status=succes`)
     } else {
