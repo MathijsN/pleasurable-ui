@@ -105,11 +105,48 @@ app.get('/snappmaps/:slug', async function (request, response) {
   response.render('snappmap.liquid', { snappmap, status, path })
 })
 
+// Maak een functie aan die van coördinaten een plaatsnaam maakt
+async function reverseGeocode(latitude, longitude) {
+
+  // Vraag aan Nominatim wat de plaatsnaam is van de coördinaten
+  const reverseGeocodeResponse = await fetch(
+    `https://nominatim.openstreetmap.org/reverse?lat=${latitude}&lon=${longitude}&format=json`,
+    // Vertel Nominatim welke app de aanvraag doet (dit is verplicht)
+    { headers: { 'User-Agent': 'snappmaps-app' } }
+  )
+  const reverseGeocodeData = await reverseGeocodeResponse.json()
+
+  // Zoek de stadsnaam op, probeer eerst 'city', dan 'town', dan 'village'
+  const city = reverseGeocodeData.address?.city ?? reverseGeocodeData.address?.town ?? reverseGeocodeData.address?.village
+  // Zoek de wijknaam op, probeer eerst 'suburb', dan 'neighbourhood'
+  const district = reverseGeocodeData.address?.suburb ?? reverseGeocodeData.address?.neighbourhood
+
+  // Als we zowel een stad als een wijk hebben, combineer ze dan (vb: Amsterdam-Zuid)
+  if (city && district) return `${city}-${district}`
+  // Als we alleen een stad hebben, geef dan alleen de stad terug (vb: Amsterdam)
+  if (city) return city
+  // Als we niks hebben, geef dan 'Unknown' terug
+  return 'Unknown'
+}
+
 app.post('/snappmaps/:slug', upload.single('file'), async function (request, response) {
 
   const snappmapid = request.body.uuid
   const snappmapSlug = request.params.slug
   const file = request.file
+
+  // Haal de lengte- en breedtegraad op uit de 'hidden' inputs
+  const latitude = request.body.latitude
+  const longitude = request.body.longitude
+  
+  let location
+  if (latitude && longitude) {
+    // Als we beide coördinaten hebben, zet ze om naar een plaatsnaam
+    location = await reverseGeocode(latitude, longitude)
+  } else {
+    // Als één van de twee er niet is, gebruik dan 'Unknown'
+    location = 'Unknown'
+  }
 
   const formData = new FormData()
   const blob = new Blob([file.buffer], { type: file.mimetype })
@@ -124,7 +161,7 @@ app.post('/snappmaps/:slug', upload.single('file'), async function (request, res
 
   if (uploadResponseData.data.id != null) {
     let newSnap = {
-      location: 'Amsterdam-Zuid',
+      location: location,
       snapmap: snappmapid,
       author: '5e9589a5-ebfa-4a99-87a6-010f2f571444',
       picture: uploadResponseData.data.id,
