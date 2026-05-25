@@ -112,8 +112,16 @@ async function reverseGeocode(latitude, longitude) {
   const reverseGeocodeResponse = await fetch(
     `https://nominatim.openstreetmap.org/reverse?lat=${latitude}&lon=${longitude}&format=json`,
     // Vertel Nominatim welke app de aanvraag doet (dit is verplicht)
-    { headers: { 'User-Agent': 'snappmaps-app' } }
+    { headers: { 'User-Agent': 'snappmaps-app/1.0 (yourname@email.com)' } }
   )
+
+  // Controleer of de response wel JSON is voordat we hem parsen
+  const contentType = reverseGeocodeResponse.headers.get('content-type')
+  if (!contentType || !contentType.includes('application/json')) {
+    console.log('Nominatim gaf geen JSON terug:', await reverseGeocodeResponse.text())
+    return 'Unknown'
+  }
+
   const reverseGeocodeData = await reverseGeocodeResponse.json()
 
   // Zoek de stadsnaam op, probeer eerst 'city', dan 'town', dan 'village'
