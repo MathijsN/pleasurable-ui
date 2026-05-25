@@ -344,13 +344,48 @@ app.post('/snapps/:uuid/action', async function (request, response) {
 
 // Aanpassen
 
-app.get('/user', async function (request, response) {
-  const params = new URLSearchParams()
+app.get('/user/:uuid', async function (request, response) {
+  const userUuid = request.params.uuid
 
-  response.render('snapp.liquid', { user })
+  const userParams = new URLSearchParams()
+  userParams.set('fields', '*')
+  userParams.set('filter[uuid]', userUuid)
+
+  const userResponse = await fetch(`${userEndpoint}?${userParams.toString()}`)
+  const userResponseJSON = await userResponse.json()
+  const user = userResponseJSON.data?.[0]
+
+  if (user.birthdate) {
+    const year = new Date(user.birthdate).getFullYear()
+    const decade = Math.floor((year % 100) / 10) * 10
+    user.birthDecade = `born in the ${decade.toString().padStart(2, '0')}s`
+  }
+
+  const groupsCount = Array.isArray(user.groups) ? user.groups.length : 0
+
+  const userSnapsParams = new URLSearchParams()
+  userSnapsParams.set('fields', 'uuid')
+  userSnapsParams.set('filter[author][_eq]', userUuid)
+
+  const userSnapsResponse = await fetch(`${snappEndpoint}?${userSnapsParams.toString()}`)
+  const userSnapsResponseJSON = await userSnapsResponse.json()
+  const userSnappsCount = userSnapsResponseJSON.data?.length || 0
+  const userSnapIds = userSnapsResponseJSON.data?.map((snap) => snap.uuid).filter(Boolean) || []
+
+  let starCount = 0
+  if (userSnapIds.length > 0) {
+    const starParams = new URLSearchParams()
+    starParams.set('fields', 'uuid')
+    starParams.set('filter[action][_eq]', 'star')
+    starParams.set('filter[snap][_in]', userSnapIds.join(','))
+
+    const starResponse = await fetch(`${actionEndpoint}?${starParams.toString()}`)
+    const starResponseJSON = await starResponse.json()
+    starCount = starResponseJSON.data?.length || 0
+  }
+
+  response.render('user.liquid', { user, currentPage: 'user', userSnappsCount, groupsCount, starCount })
 })
-
-
 
 
 app.use((req, res) => {
