@@ -470,7 +470,7 @@ dialog[open] {
 
     h2,
     .active {
-        padding-inline: var(--spacing-s);
+        padding-inline: 4px;
     }
 
     h2 {
@@ -530,8 +530,7 @@ dialog[open] {
 }
 
 .pill-link-list {
-    margin: 4px;
-    height: var(--bar-height);
+    padding: 0px 4px 4px;
     display: flex;
     align-items: center;
     gap: 4px;
@@ -540,15 +539,15 @@ dialog[open] {
     li {
         display: flex;
         align-items: center;
-        height: 80%;
+        height: calc(var(--bar-height) * 0.8);
         list-style: none;
-        align-self: center;
-        /* Hoort bij de ul */
+        align-self: center; /* Hoort bij de ul */
 
 
         &:last-of-type {
             color: var(--text-color-on-light-bg);
             padding-left: 8px;
+            padding-block: 4px;
             height: fit-content;
         }
 
@@ -706,19 +705,21 @@ dialog[open] {
             border: none;
             transition: 0.1s;
 
+            svg {
+                display: block;
+                height: 1rem;
+                width: auto;
+                fill: var(--lightest-color);
+            }
+        }
+
+        button[type="submit"] {
             @media (any-pointer:fine) {
                 &:hover {
                     transition: var(--transition-duration);
                     cursor: pointer;
                     scale: 1.15;
                 }
-            }
-
-            svg {
-                display: block;
-                height: 1rem;
-                width: auto;
-                fill: var(--lightest-color);
             }
         }
     }
@@ -752,6 +753,35 @@ dialog[open] {
             animation-name: --icon-bounce;
             animation-duration: 0.4s;
             animation-timing-function: ease-in-out;
+        }
+    }
+
+    .inactive {
+        color: #90A1AA;
+        svg {
+            fill: #90A1AA
+        }
+        
+    }
+
+    .heart-inactive {
+        color: var(--heart-icon-color-inactive);
+        svg {
+            fill: var(--heart-icon-color-inactive);
+        }
+    }
+
+    .tomato-inactive {
+        color: var(--tomato-icon-color-inactive);
+        svg {
+            fill: var(--tomato-icon-color-inactive);
+        }
+    }
+
+    .star-inactive {
+        color: var(--star-icon-color-inactive);
+        svg {
+            fill: var(--star-icon-color-inactive);
         }
     }
 }

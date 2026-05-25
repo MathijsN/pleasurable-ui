@@ -22,6 +22,9 @@ const snappEndpoint = `${baseURL}/snappthis_snap`
 const actionEndpoint = `${baseURL}/snappthis_action`
 const userEndpoint = `${baseURL}/snappthis_user`
 
+// Gebruikers id Anne-Fleur Pietersen
+const userUuid = "5e9589a5-ebfa-4a99-87a6-010f2f571444"
+
 app.get('/', async function (request, response) {
   const params = new URLSearchParams()
   params.set('fields', '*,snaps.*')
@@ -45,9 +48,8 @@ app.post("/login", async function (request, response) {
     email: request.body.email,
     password: request.body.password,
   };
-  console.log(loginInfo);
 
-  const testEmail = "fdnd@hva.nl";
+  const testEmail = "anne-fleur@snappthis.com";
   const testPassword = "snappthis";
 
   if (loginInfo.email == testEmail && loginInfo.password == testPassword) {
@@ -122,9 +124,9 @@ app.post('/snappmaps/:slug', upload.single('file'), async function (request, res
 
   if (uploadResponseData.data.id != null) {
     let newSnap = {
-      location: 'Haarlem',
+      location: 'Amsterdam-Zuid',
       snapmap: snappmapid,
-      author: '505c32d4-88fc-4102-8ef8-0847e9d9292b',
+      author: '5e9589a5-ebfa-4a99-87a6-010f2f571444',
       picture: uploadResponseData.data.id,
     }
 
@@ -200,12 +202,7 @@ app.get('/snapps/user/:uuid', async function (request, response) {
 })
 
 
-
-
-// Aanpassen
-
 app.get('/snapps/:uuid', async function (request, response) {
-  const userUuid = "467a4442-69e4-44ae-829a-b95e25c4dd7b"
   const snappUuid = request.params.uuid
   const status = request.query.status
 
@@ -252,7 +249,6 @@ app.get('/snapps/:uuid', async function (request, response) {
 app.post('/snapps/:uuid/action', async function (request, response) {
   const actionType = request.body.action
   const snappUuid = request.params.uuid
-  const userUuid = "467a4442-69e4-44ae-829a-b95e25c4dd7b"
 
   const params = new URLSearchParams()
   params.set('filter[snap][_eq]', `${snappUuid}`)
