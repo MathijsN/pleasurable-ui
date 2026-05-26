@@ -35,7 +35,22 @@ app.get('/', async function (request, response) {
   const allSnappmapsApiResponseJSON = await allSnappmapsApiResponse.json()
   const allSnappmaps = allSnappmapsApiResponseJSON.data
 
-  response.render('index.liquid', { allSnappmaps })
+  allSnappmaps.sort((snappmapA, snappmapB) => {
+    // check of de gebruiker een snap heeft in snappmap A en B
+    const userHasSnapInA = snappmapA.snaps?.some(snap => snap.author === userUuid)
+    const userHasSnapInB = snappmapB.snaps?.some(snap => snap.author === userUuid)
+
+    // 1. als alleen A een snap van de gebruiker heeft → A komt eerst
+    if (userHasSnapInA && !userHasSnapInB) return -1
+
+    // 2. als alleen B een snap van de gebruiker heeft → B komt eerst
+    if (!userHasSnapInA && userHasSnapInB) return 1
+
+    // 3. anders: sorteren op einddatum (nieuwste eerst)
+    return new Date(snappmapB.time_end) - new Date(snappmapA.time_end)
+  })
+
+  response.render('index.liquid', { allSnappmaps, userUuid })
 })
 
 app.get('/login', async function (request, response) {
@@ -45,7 +60,7 @@ app.get('/login', async function (request, response) {
 
 app.get('/offline', async function (request, response) {
 
-response.render('offline.liquid')  
+  response.render('offline.liquid')
 })
 
 app.post("/login", async function (request, response) {
@@ -69,7 +84,7 @@ app.post("/login", async function (request, response) {
 
 app.get('/groups', async function (request, response) {
   const params = new URLSearchParams()
-  params.set('fields', 'name,slug,snappmap.snappthis_snapmap_uuid.*,count(users)')
+  params.set('fields', 'name,slug,snappmap.snappthis_snapmap_uuid.*,users.snappthis_user_uuid.uuid,count(users)')
 
   const allGroupsApiResponse = await fetch(`${groupEndpoint}?${params.toString()}`)
   const allGroupsApiResponseJSON = await allGroupsApiResponse.json()
@@ -77,12 +92,12 @@ app.get('/groups', async function (request, response) {
 
   const path = request.path
 
-  response.render('groups.liquid', { allGroups, path })
+  response.render('groups.liquid', { allGroups, path, userUuid })
 })
 
 app.get('/groups/:slug', async function (request, response) {
   const params = new URLSearchParams()
-  params.set('fields', '*.*,snappmap.snappthis_snapmap_uuid.*')
+  params.set('fields', '*.*,snappmap.snappthis_snapmap_uuid.*,snappmap.snappthis_snapmap_uuid.snaps.author')
   params.set('filter[slug]', request.params.slug)
 
   const snappMapsApiResponse = await fetch(`${groupEndpoint}?${params.toString()}`)
@@ -91,7 +106,7 @@ app.get('/groups/:slug', async function (request, response) {
 
   const path = request.path
 
-  response.render('groups.liquid', { snappMapslist, path })
+  response.render('groups.liquid', { snappMapslist, path, userUuid })
 })
 
 app.get('/snappmaps/:slug', async function (request, response) {

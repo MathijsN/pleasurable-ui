@@ -4,12 +4,14 @@
   {% comment %} Maak variabelen aan om te checken of de eind tijd van de snappmap overschreden is met de datum van 'vandaag' {% endcomment %}
   {% assign today_date = 'now' | date: '%Y%m%d' %}
   {% assign target_date = snappmap.time_end | date: '%Y%m%d' %}
+  {% assign this_user_has_a_snapp = snappmap.snaps | where: 'author', userUuid | first %}
 
   <section class="home-page-snappmaps-list">
     <h2><a href="/snappmaps/{{ snappmap.slug }}">{{ snappmap.name }}</a></h2>
 
-    {% comment %} Gebruik variabelen om te checken of de eind tijd van de snappmap overschreden is {% endcomment %}
-    {% if target_date > today_date %}
+    {% comment %} Gebruik variabelen om te checken of de eind tijd van de snappmap overschreden is 
+    + of er een snapp is gemaakt met de ingelogte gebruiker {% endcomment %}
+    {% if target_date > today_date and this_user_has_a_snapp %}
       <p class="active"><strong>Add your snapp!</strong></p>
     {% endif %}
 
