@@ -110,11 +110,54 @@ app.get('/snappmaps/:slug', async function (request, response) {
   response.render('snappmap.liquid', { snappmap, status, path })
 })
 
-app.post('/snappmaps/:slug', upload.single('file'), async function (request, response) {
+// Maak een functie aan die van coördinaten een plaatsnaam maakt
+async function reverseGeocode(latitude, longitude) {
 
+  // Vraag aan Photon wat de plaatsnaam is van de coördinaten
+  const reverseGeocodeResponse = await fetch(
+    `https://photon.komoot.io/reverse?lat=${latitude}&lon=${longitude}`,
+    { headers: { 'User-Agent': 'snappmaps-app/1.0 (yourname@email.com)' } }
+  )
+
+  // Controleer of de response wel JSON is voordat we hem parsen
+  const contentType = reverseGeocodeResponse.headers.get('content-type')
+  if (!contentType || !contentType.includes('application/json')) {
+    return 'Unknown'
+  }
+  const reverseGeocodeData = await reverseGeocodeResponse.json()
+
+  // Photon geeft data terug in features[0].properties
+  const properties = reverseGeocodeData.features?.[0]?.properties
+  // Zoek de stadsnaam op, probeer eerst 'city', dan 'town', dan 'village'
+  const city = properties?.city ?? properties?.town ?? properties?.village
+  // Zoek de wijknaam op, probeer eerst 'district', dan 'suburb', dan 'neighbourhood'
+  const district = properties?.district ?? properties?.suburb ?? properties?.neighbourhood
+
+  // Als we zowel een stad als een wijk hebben, combineer ze dan (vb: Amsterdam-Zuid)
+  if (city && district) return `${city}-${district}`
+  // Als we alleen een stad hebben, geef dan alleen de stad terug (vb: Amsterdam)
+  if (city) return city
+  // Als we niks hebben, geef dan 'Unknown' terug
+  return 'Unknown'
+}
+
+app.post('/snappmaps/:slug', upload.single('file'), async function (request, response) {
   const snappmapid = request.body.uuid
   const snappmapSlug = request.params.slug
   const file = request.file
+
+  // Haal de lengte- en breedtegraad op uit de 'hidden' inputs
+  const latitude = request.body.latitude
+  const longitude = request.body.longitude
+
+  let location
+  if (latitude && longitude) {
+    // Als we beide coördinaten hebben, zet ze om naar een plaatsnaam
+    location = await reverseGeocode(latitude, longitude)
+  } else {
+    // Als één van de twee er niet is, gebruik dan 'Unknown'
+    location = 'Unknown'
+  }
 
   const formData = new FormData()
   const blob = new Blob([file.buffer], { type: file.mimetype })
@@ -129,7 +172,7 @@ app.post('/snappmaps/:slug', upload.single('file'), async function (request, res
 
   if (uploadResponseData.data.id != null) {
     let newSnap = {
-      location: 'Amsterdam-Zuid',
+      location: location,
       snapmap: snappmapid,
       author: '5e9589a5-ebfa-4a99-87a6-010f2f571444',
       picture: uploadResponseData.data.id,
@@ -142,7 +185,6 @@ app.post('/snappmaps/:slug', upload.single('file'), async function (request, res
       },
       body: JSON.stringify(newSnap),
     })
-
 
     if (snapResponse.ok) {
       response.redirect(303, `/snappmaps/${snappmapSlug}?status=succes`)
