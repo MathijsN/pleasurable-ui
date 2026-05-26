@@ -286,7 +286,7 @@ form.picture {
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding-block: var(--spacing-m) calc(var(--spacing-m) * 2);
+    padding-block: var(--spacing-m) calc(var(--spacing-m) * 2.5);
 
     img,
     .retry-action,
@@ -514,7 +514,7 @@ dialog[open] {
         a {
             display: inline-block;
             text-decoration: none;
-            
+
 
             @media (any-pointer:fine) {
                 &:hover {
@@ -545,7 +545,8 @@ dialog[open] {
         align-items: center;
         height: calc(var(--bar-height) * 0.8);
         list-style: none;
-        align-self: center; /* Hoort bij de ul */
+        align-self: center;
+        /* Hoort bij de ul */
 
 
         &:last-of-type {
@@ -676,6 +677,7 @@ dialog[open] {
     display: grid;
     grid-template-columns: repeat(3, 33%);
     gap: var(--grid-gap);
+    margin-top: var(--grid-gap);
 
     li {
         list-style: none;
@@ -762,14 +764,16 @@ dialog[open] {
 
     .inactive {
         color: #90A1AA;
+
         svg {
             fill: #90A1AA
         }
-        
+
     }
 
     .heart-inactive {
         color: var(--heart-icon-color-inactive);
+
         svg {
             fill: var(--heart-icon-color-inactive);
         }
@@ -777,6 +781,7 @@ dialog[open] {
 
     .tomato-inactive {
         color: var(--tomato-icon-color-inactive);
+
         svg {
             fill: var(--tomato-icon-color-inactive);
         }
@@ -784,6 +789,7 @@ dialog[open] {
 
     .star-inactive {
         color: var(--star-icon-color-inactive);
+
         svg {
             fill: var(--star-icon-color-inactive);
         }
@@ -791,9 +797,17 @@ dialog[open] {
 }
 
 @keyframes --icon-bounce {
-    0%   { scale: 1; }
-    50%  { scale: 1.5; }
-    100% { scale: 1; }
+    0% {
+        scale: 1;
+    }
+
+    50% {
+        scale: 1.5;
+    }
+
+    100% {
+        scale: 1;
+    }
 }
 
 
@@ -803,8 +817,8 @@ dialog[open] {
         width: 30%;
         margin: 0 auto;
     }
-    
-.visually-hidden {
+
+    .visually-hidden {
         border: 0;
         clip-path: inset(50%);
         height: 1px;
@@ -814,6 +828,7 @@ dialog[open] {
         white-space: nowrap;
         width: 1px;
     }
+
     fieldset {
         border: none;
 
@@ -850,7 +865,7 @@ dialog[open] {
         }
     }
 
-    .login-error{
+    .login-error {
         color: var(--alert-accent-color);
         width: 90%;
         margin: 0 auto;
@@ -931,8 +946,13 @@ dialog[open] {
 }
 
 @keyframes --fade-popup {
-    0% { opacity: 1; }
-    100% { opacity: 0; }
+    0% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0;
+    }
 }
 
 .loading-actions~.loading-count {
@@ -953,8 +973,13 @@ dialog[open] {
 }
 
 @keyframes --loading-actions {
-    0% { max-width: 0; }
-  100% { max-width: 1em; }
+    0% {
+        max-width: 0;
+    }
+
+    100% {
+        max-width: 1em;
+    }
 }
 
 .snapp-detail-group-info {
@@ -976,6 +1001,7 @@ dialog[open] {
         font-weight: 400;
     }
 }
+
 .snapp-detail-img {
     width: 100%;
     max-height: 40rem;
@@ -984,7 +1010,7 @@ dialog[open] {
 }
 
 @view-transition {
-  navigation: auto;
+    navigation: auto;
 }
 
 .offline-melding,
@@ -1010,12 +1036,18 @@ dialog[open] {
         text-decoration: none;
         color: inherit;
 
-        p{
-          font-size: var(--font-size-m);
+        p {
+            font-size: var(--font-size-m);
         }
     }
 
     &[hidden] {
         display: none;
     }
+}
+
+/* Snappmap */
+
+.current-group {
+    color: var(--text-color-on-light-bg);
 }
