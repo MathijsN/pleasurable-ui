@@ -32,4 +32,32 @@
   </div>
 </section>
 
+{% if userGroups and userGroups.size > 0 %}
+  {% for group in userGroups %}
+    <section class="home-page-snappmaps-list">
+      <h2><a href="/groups/{{ group.slug }}">{{ group.name }}</a></h2>
+
+      {% if group.snaps and group.snaps.size > 0 %}
+        <figure class="image-thumbnails">
+          {% for snapp in group.snaps limit: 5 %}
+            <a href="/snapps/{{ snapp.uuid }}" aria-label="Snapp {{ forloop.index }} in groep {{ group.name }}">
+              <picture>
+                <source srcset="https://fdnd-agency.directus.app/assets/{{ snapp.picture }}?width=200&format=avif" type="image/avif" width="200" height="200">
+                <source srcset="https://fdnd-agency.directus.app/assets/{{ snapp.picture }}?width=200&format=webp" type="image/webp" width="200" height="200">
+                <img loading="lazy" src="https://fdnd-agency.directus.app/assets/{{ snapp.picture }}?width=200" alt="" width="200" height="200" style="object-fit: cover;">
+              </picture>
+            </a>
+          {% endfor %}
+        </figure>
+      {% else %}
+        <p>No snapps yet.</p>
+      {% endif %}
+    </section>
+  {% endfor %}
+{% else %}
+  <section class="home-page-snappmaps-list">
+    <p>No groups yet.</p>
+  </section>
+{% endif %}
+
 {% render 'partials/footer.liquid', currentPage: 'user' %}

@@ -344,6 +344,11 @@ app.post('/snapps/:uuid/action', async function (request, response) {
 
 // Aanpassen
 
+app.get('/user', async function (request, response) {
+  const currentUserUuid = '5e9589a5-ebfa-4a99-87a6-010f2f571444'
+  return response.redirect(302, `/user/${currentUserUuid}`)
+})
+
 app.get('/user/:uuid', async function (request, response) {
   const userUuid = request.params.uuid
 
@@ -355,22 +360,66 @@ app.get('/user/:uuid', async function (request, response) {
   const userResponseJSON = await userResponse.json()
   const user = userResponseJSON.data?.[0]
 
+  if (!user) {
+    return response.status(404).render('404.liquid')
+  }
+
   if (user.birthdate) {
     const year = new Date(user.birthdate).getFullYear()
     const decade = Math.floor((year % 100) / 10) * 10
     user.birthDecade = `born in the ${decade.toString().padStart(2, '0')}s`
   }
 
-  const groupsCount = Array.isArray(user.groups) ? user.groups.length : 0
-
   const userSnapsParams = new URLSearchParams()
-  userSnapsParams.set('fields', 'uuid')
+  userSnapsParams.set('fields', 'uuid,picture,snapmap.groups.snappthis_group_uuid.name,snapmap.groups.snappthis_group_uuid.slug')
   userSnapsParams.set('filter[author][_eq]', userUuid)
+  userSnapsParams.set('filter[picture][_neq]', 'null')
 
   const userSnapsResponse = await fetch(`${snappEndpoint}?${userSnapsParams.toString()}`)
   const userSnapsResponseJSON = await userSnapsResponse.json()
-  const userSnappsCount = userSnapsResponseJSON.data?.length || 0
-  const userSnapIds = userSnapsResponseJSON.data?.map((snap) => snap.uuid).filter(Boolean) || []
+  const rawUserSnaps = userSnapsResponseJSON.data || []
+  const uniqueUserSnaps = Array.from(
+    new Map(
+      rawUserSnaps
+        .filter((snap) => snap?.uuid && snap?.picture)
+        .map((snap) => [snap.uuid, snap])
+    ).values()
+  )
+
+  const validUserSnaps = uniqueUserSnaps.filter((snap) => {
+    const groups = Array.isArray(snap.snapmap?.groups) ? snap.snapmap.groups : []
+    return groups.some((group) => group?.snappthis_group_uuid?.slug && group?.snappthis_group_uuid?.name)
+  })
+
+  const userSnappsCount = validUserSnaps.length
+  const userSnapIds = [...new Set(validUserSnaps.map((snap) => snap.uuid).filter(Boolean))]
+
+  const userSnapsByGroup = new Map()
+
+  for (const snap of validUserSnaps) {
+    const groups = Array.isArray(snap.snapmap?.groups) ? snap.snapmap.groups : []
+
+    for (const group of groups) {
+      const groupData = group.snappthis_group_uuid
+
+      if (!groupData?.slug || !groupData?.name) {
+        continue
+      }
+
+      if (!userSnapsByGroup.has(groupData.slug)) {
+        userSnapsByGroup.set(groupData.slug, {
+          name: groupData.name,
+          slug: groupData.slug,
+          snaps: []
+        })
+      }
+
+      userSnapsByGroup.get(groupData.slug).snaps.push(snap)
+    }
+  }
+
+  const userGroups = Array.from(userSnapsByGroup.values())
+  const groupsCount = userGroups.length
 
   let starCount = 0
   if (userSnapIds.length > 0) {
@@ -384,7 +433,7 @@ app.get('/user/:uuid', async function (request, response) {
     starCount = starResponseJSON.data?.length || 0
   }
 
-  response.render('user.liquid', { user, currentPage: 'user', userSnappsCount, groupsCount, starCount })
+  response.render('user.liquid', { user, currentPage: 'user', userSnappsCount, groupsCount, starCount, userGroups })
 })
 
 
