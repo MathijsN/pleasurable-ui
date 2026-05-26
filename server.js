@@ -45,7 +45,7 @@ app.get('/login', async function (request, response) {
 
 app.get('/offline', async function (request, response) {
 
-response.render('offline.liquid')  
+  response.render('offline.liquid')
 })
 
 app.post("/login", async function (request, response) {
@@ -104,10 +104,21 @@ app.get('/snappmaps/:slug', async function (request, response) {
   const snappmapApiResponseJSON = await snappmapApiResponse.json()
   const snappmap = snappmapApiResponseJSON.data
 
+  const userParams = new URLSearchParams()
+
+  userParams.set('fields', '*.*.*')
+  userParams.set('filter[name][_icontains]', 'anne-fleur')
+
+  const userApiResponse = await fetch(`${userEndpoint}?${userParams.toString()}`)
+  const userApiResponseJSON = await userApiResponse.json()
+  const user = userApiResponseJSON.data
+
   const status = request.query.status
   const path = request.path
 
-  response.render('snappmap.liquid', { snappmap, status, path })
+  console.log(user[0].groups)
+
+  response.render('snappmap.liquid', { snappmap, status, path, user })
 })
 
 app.post('/snappmaps/:slug', upload.single('file'), async function (request, response) {
