@@ -21,6 +21,7 @@ const snappmapEndpoint = `${baseURL}/snappthis_snapmap`
 const snappEndpoint = `${baseURL}/snappthis_snap`
 const actionEndpoint = `${baseURL}/snappthis_action`
 const userEndpoint = `${baseURL}/snappthis_user`
+const currentUserUuid = '5e9589a5-ebfa-4a99-87a6-010f2f571444'
 
 app.get('/', async function (request, response) {
   const params = new URLSearchParams()
@@ -205,7 +206,7 @@ app.get('/snapps/user/:uuid', async function (request, response) {
 // Aanpassen
 
 app.get('/snapps/:uuid', async function (request, response) {
-  const userUuid = "467a4442-69e4-44ae-829a-b95e25c4dd7b"
+  const userUuid = currentUserUuid
   const snappUuid = request.params.uuid
   const status = request.query.status
 
@@ -252,7 +253,7 @@ app.get('/snapps/:uuid', async function (request, response) {
 app.post('/snapps/:uuid/action', async function (request, response) {
   const actionType = request.body.action
   const snappUuid = request.params.uuid
-  const userUuid = "467a4442-69e4-44ae-829a-b95e25c4dd7b"
+  const userUuid = currentUserUuid
 
   const params = new URLSearchParams()
   params.set('filter[snap][_eq]', `${snappUuid}`)
@@ -345,7 +346,6 @@ app.post('/snapps/:uuid/action', async function (request, response) {
 // Aanpassen
 
 app.get('/user', async function (request, response) {
-  const currentUserUuid = '5e9589a5-ebfa-4a99-87a6-010f2f571444'
   return response.redirect(302, `/user/${currentUserUuid}`)
 })
 
