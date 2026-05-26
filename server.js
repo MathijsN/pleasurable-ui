@@ -152,6 +152,7 @@ app.get('/snapps', async function (request, response) {
   const params = new URLSearchParams()
   params.set('fields', '*,snapmap.groups.snappthis_group_uuid.name')
   params.set('filter[picture][_neq]', 'null')
+  params.set('sort', '-date_created')
 
   const allSnappsApiResponse = await fetch(`${snappEndpoint}?${params.toString()}`)
   const allSnappsApiResponseJSON = await allSnappsApiResponse.json()
@@ -159,11 +160,13 @@ app.get('/snapps', async function (request, response) {
 
   const path = request.path
 
-  response.render('snappmap.liquid', { allSnapps, path })
+  response.render('snapps.liquid', { allSnapps, path })
 })
 
-
-
+// Geef 404 error bij '/snapps/location'
+app.get('/snapps/location', (req, res) => {
+  res.status(404).render('404.liquid')
+})
 
 app.get('/snapps/location/:location', async function (request, response) {
   const params = new URLSearchParams()
@@ -177,18 +180,19 @@ app.get('/snapps/location/:location', async function (request, response) {
 
   const path = request.path
 
-  response.render('snappmap.liquid', { allSnapps, path })
+  response.render('snapps.liquid', { allSnapps, path })
 })
 
+// Geef 404 error bij '/snapps/user'
+app.get('/snapps/user', (req, res) => {
+  res.status(404).render('404.liquid')
+})
 
-
-// Aanpassen
-
-app.get('/snapps/user/:uuid', async function (request, response) {
+app.get('/snapps/user/:name', async function (request, response) {
   const params = new URLSearchParams()
-  params.set('fields', '*,snapmap.groups.snappthis_group_uuid.name')
+  params.set('fields', '*,author.name,snapmap.groups.snappthis_group_uuid.name')
   params.set('filter[picture][_neq]', 'null')
-  params.set('filter[user]', request.params.location)
+  params.set('filter[author][name]', request.params.name)
 
   const allSnappsApiResponse = await fetch(`${snappEndpoint}?${params.toString()}`)
   const allSnappsApiResponseJSON = await allSnappsApiResponse.json()
@@ -196,13 +200,8 @@ app.get('/snapps/user/:uuid', async function (request, response) {
 
   const path = request.path
 
-  response.render('snappmap.liquid', { allSnapps, path })
+  response.render('snapps.liquid', { allSnapps, path })
 })
-
-
-
-
-// Aanpassen
 
 app.get('/snapps/:uuid', async function (request, response) {
   const userUuid = "467a4442-69e4-44ae-829a-b95e25c4dd7b"
@@ -247,7 +246,6 @@ app.get('/snapps/:uuid', async function (request, response) {
 
   response.render('snapp.liquid', { userUuid, snappUuid, oneSnappInfo, likesCount, tomatoCount, starCount, hasLike, hasTomato, hasStar, status })
 })
-
 
 app.post('/snapps/:uuid/action', async function (request, response) {
   const actionType = request.body.action
