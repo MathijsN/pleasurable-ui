@@ -286,7 +286,7 @@ form.picture {
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding-block: var(--spacing-m) calc(var(--spacing-m) * 2);
+    padding-block: var(--spacing-m) calc(var(--spacing-m) * 2.5);
 
     img,
     .retry-action,
