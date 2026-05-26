@@ -2,8 +2,6 @@
 
 {% if path contains 'snappmap' %}
   {% render 'partials/head.liquid', title: 'Snappmap', currentPage: 'snappmap', snappmap: snappmap %}
-{% elsif path contains 'snapps' %}
-  {% render 'partials/head.liquid', title: 'Snappmap', currentPage: 'snapps', snappmap: snappmap %}
 {% endif %}
 
 {% comment %} maak if statement die checked of jij in de snappmap kan posten {% endcomment %}
