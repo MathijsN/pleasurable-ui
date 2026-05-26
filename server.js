@@ -394,6 +394,13 @@ app.get('/user/:uuid', async function (request, response) {
   const userSnappsCount = validUserSnaps.length
   const userSnapIds = [...new Set(validUserSnaps.map((snap) => snap.uuid).filter(Boolean))]
 
+  const userActions = []
+  if (userSnapIds.length > 0) {
+    const userActionsResponse = await fetch(`${actionEndpoint}?fields=action,snap&filter[snap][_in]=${userSnapIds.join(',')}`)
+    const userActionsResponseJSON = await userActionsResponse.json()
+    userActions.push(...(userActionsResponseJSON.data || []))
+  }
+
   const userSnapsByGroup = new Map()
 
   for (const snap of validUserSnaps) {
@@ -410,12 +417,55 @@ app.get('/user/:uuid', async function (request, response) {
         userSnapsByGroup.set(groupData.slug, {
           name: groupData.name,
           slug: groupData.slug,
-          snaps: []
+          snaps: [],
+          likes: 0,
+          tomatoes: 0,
+          stars: 0
         })
       }
 
       userSnapsByGroup.get(groupData.slug).snaps.push(snap)
     }
+  }
+
+  const actionCountsByGroup = new Map()
+
+  for (const action of userActions) {
+    const snapUuid = action?.snap
+    const actionType = action?.action
+
+    if (!snapUuid || !actionType) {
+      continue
+    }
+
+    const snap = validUserSnaps.find((s) => s.uuid === snapUuid)
+    if (!snap) {
+      continue
+    }
+
+    const groups = Array.isArray(snap.snapmap?.groups) ? snap.snapmap.groups : []
+    for (const group of groups) {
+      const groupData = group.snappthis_group_uuid
+
+      if (!groupData?.slug || !groupData?.name) {
+        continue
+      }
+
+      if (!actionCountsByGroup.has(groupData.slug)) {
+        actionCountsByGroup.set(groupData.slug, { like: 0, tomato: 0, star: 0 })
+      }
+
+      if (actionType === 'like' || actionType === 'tomato' || actionType === 'star') {
+        actionCountsByGroup.get(groupData.slug)[actionType] += 1
+      }
+    }
+  }
+
+  for (const group of userSnapsByGroup.values()) {
+    const counts = actionCountsByGroup.get(group.slug) || { like: 0, tomato: 0, star: 0 }
+    group.likes = counts.like
+    group.tomatoes = counts.tomato
+    group.stars = counts.star
   }
 
   const userGroups = Array.from(userSnapsByGroup.values())

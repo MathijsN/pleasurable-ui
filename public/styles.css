@@ -495,6 +495,29 @@ dialog[open] {
         }
     }
 
+    .group-action-summary {
+        grid-column: 2;
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        gap: var(--spacing-s);
+        padding-inline: var(--spacing-s);
+    }
+
+    .group-action-stat {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.35rem;
+        color: var(--dark-text-color-on-light-bg);
+        font-size: var(--font-size-xs);
+
+        svg {
+            width: 1rem;
+            height: 1rem;
+            fill: var(--icon-color-on-light-bg);
+        }
+    }
+
     .active {
         color: var(--accent-color-on-light-bg);
         font-size: var(--font-size-xs);
