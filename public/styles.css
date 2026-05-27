@@ -1075,6 +1075,9 @@ dialog[open] {
 
 .no-data {
     padding-inline: var(--spacing-s);
+    height: 5dvh
+}
+
 @view-transition {
     navigation: auto;
 }
