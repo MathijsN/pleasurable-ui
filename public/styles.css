@@ -1053,3 +1053,11 @@ dialog[open] {
 .current-group {
     color: var(--text-color-on-light-bg);
 }
+
+.page-404 {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 80dvh;
+}
