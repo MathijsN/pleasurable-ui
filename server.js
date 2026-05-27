@@ -353,7 +353,7 @@ app.get('/user/:uuid', async function (request, response) {
   const userUuid = request.params.uuid
 
   const userParams = new URLSearchParams()
-  userParams.set('fields', '*')
+  userParams.set('fields', '*,groups.snappthis_group_uuid.name,groups.snappthis_group_uuid.slug')
   userParams.set('filter[uuid]', userUuid)
 
   const userResponse = await fetch(`${userEndpoint}?${userParams.toString()}`)
@@ -368,6 +368,27 @@ app.get('/user/:uuid', async function (request, response) {
     const year = new Date(user.birthdate).getFullYear()
     const decade = Math.floor((year % 100) / 10) * 10
     user.birthDecade = `born in the ${decade.toString().padStart(2, '0')}s`
+  }
+
+  const userGroupsMap = new Map()
+  const rawUserGroups = Array.isArray(user.groups) ? user.groups : []
+
+  for (const groupRelation of rawUserGroups) {
+    const groupData = groupRelation?.snappthis_group_uuid
+    if (!groupData?.slug || !groupData?.name) {
+      continue
+    }
+
+    if (!userGroupsMap.has(groupData.slug)) {
+      userGroupsMap.set(groupData.slug, {
+        name: groupData.name,
+        slug: groupData.slug,
+        snaps: [],
+        likes: 0,
+        tomatoes: 0,
+        stars: 0,
+      })
+    }
   }
 
   const userSnapsParams = new URLSearchParams()
@@ -401,8 +422,6 @@ app.get('/user/:uuid', async function (request, response) {
     userActions.push(...(userActionsResponseJSON.data || []))
   }
 
-  const userSnapsByGroup = new Map()
-
   for (const snap of validUserSnaps) {
     const groups = Array.isArray(snap.snapmap?.groups) ? snap.snapmap.groups : []
 
@@ -413,8 +432,8 @@ app.get('/user/:uuid', async function (request, response) {
         continue
       }
 
-      if (!userSnapsByGroup.has(groupData.slug)) {
-        userSnapsByGroup.set(groupData.slug, {
+      if (!userGroupsMap.has(groupData.slug)) {
+        userGroupsMap.set(groupData.slug, {
           name: groupData.name,
           slug: groupData.slug,
           snaps: [],
@@ -424,7 +443,7 @@ app.get('/user/:uuid', async function (request, response) {
         })
       }
 
-      userSnapsByGroup.get(groupData.slug).snaps.push(snap)
+      userGroupsMap.get(groupData.slug).snaps.push(snap)
     }
   }
 
@@ -461,14 +480,14 @@ app.get('/user/:uuid', async function (request, response) {
     }
   }
 
-  for (const group of userSnapsByGroup.values()) {
+  for (const group of userGroupsMap.values()) {
     const counts = actionCountsByGroup.get(group.slug) || { like: 0, tomato: 0, star: 0 }
     group.likes = counts.like
     group.tomatoes = counts.tomato
     group.stars = counts.star
   }
 
-  const userGroups = Array.from(userSnapsByGroup.values())
+  const userGroups = Array.from(userGroupsMap.values())
   const groupsCount = userGroups.length
 
   let starCount = 0
