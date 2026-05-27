@@ -1,25 +1,39 @@
 {% if path contains 'location' %}
-    {% render 'partials/head.liquid', title: allSnapps[0].location , currentPage: 'snappsLocation' %}
+  {% render 'partials/head.liquid', topNavTitle: allSnapps[0].location, currentPage: 'snappsLocation' %}
 {% elsif path contains 'user' %}
-    {% render 'partials/head.liquid', title: allSnapps[0].author.name , currentPage: 'snappsUser' %}
+  {% render 'partials/head.liquid', topNavTitle: allSnapps[0].author.name, currentPage: 'snappsUser' %}
 {% else %}
-    {% render 'partials/head.liquid', title: 'Snapps', currentPage: 'snapps' %}
+  {% render 'partials/head.liquid', topNavTitle: 'Snapps', currentPage: 'snapps' %}
 {% endif %}
 
-
 <ul class="grid">
-    {% for oneSnapp in allSnapps %}
-        <li>
-          <a href="/snapps/{{ oneSnapp.uuid }}">
-            <picture>
-              <source srcset="https://fdnd-agency.directus.app/assets/{{ oneSnapp.picture }}?width=300&format=avif" type="image/avif" width="300" height="auto">            
-              <source srcset="https://fdnd-agency.directus.app/assets/{{ oneSnapp.picture }}?width=300&format=webp" type="image/webp" width="300" height="auto">
-              <img loading="lazy" src="https://fdnd-agency.directus.app/assets/{{ oneSnapp.picture }}?width=300" alt="" width="300" height="auto">
-            </picture>
-          </a>
-        </li>
-    {% endfor %}
+  {% for oneSnapp in allSnapps %}
+    <li>
+      <a href="/snapps/{{ oneSnapp.uuid }}">
+        <picture>
+          <source
+            srcset="https://fdnd-agency.directus.app/assets/{{ oneSnapp.picture }}?width=300&format=avif"
+            type="image/avif"
+            width="300"
+            height="auto"
+          >
+          <source
+            srcset="https://fdnd-agency.directus.app/assets/{{ oneSnapp.picture }}?width=300&format=webp"
+            type="image/webp"
+            width="300"
+            height="auto"
+          >
+          <img
+            loading="lazy"
+            src="https://fdnd-agency.directus.app/assets/{{ oneSnapp.picture }}?width=300"
+            alt=""
+            width="300"
+            height="auto"
+          >
+        </picture>
+      </a>
+    </li>
+  {% endfor %}
 </ul>
-
 
 {% render 'partials/footer.liquid', currentPage: 'snapps' %}
