@@ -896,6 +896,10 @@ dialog[open] {
 
     p {
         color: var(--dark-text-color-on-light-bg);
+
+        &.user-email {
+            font-weight: 700;
+        }
     }
 
     .user-stats-container {
