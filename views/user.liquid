@@ -1,0 +1,84 @@
+{% render 'partials/head.liquid', title: user.name, currentPage: 'user' %}
+
+<section class="user-profile">
+  <div class="user-info-container">
+    <h2>{{ user.name }}</h2>
+    <p>{{ user.gender }} - {{ user.birthDecade }} - @{{ user.usecase }}</p>
+    <p class="user-email">{{ user.email }}</p>
+
+    <div class="user-stats-container">
+        <div class="user-stats">
+            <svg width="28" height="25" viewBox="0 0 50 43" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M39.3936 42.4238L23.1816 25.7578L13.7881 35.3027L10.3027 31.8184L0 42.4238V10.6064H39.3936V42.4238ZM50 31.8184H43.9395V6.06055H10.6064V0H50V31.8184Z" fill="#224455"/>
+            </svg>
+            <p>{{ userSnappsCount }}</p>
+            <p>{% if userSnappsCount == 1 %}snapp{% else %}snapps{% endif %}</p>
+        </div>
+        <div class="user-stats">
+            <svg width="32" height="29" viewBox="0 0 56 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M50.632 23.9533C50.632 28.3491 47.0446 31.9268 42.6377 31.9268C38.2316 31.9268 34.657 28.3491 34.657 23.9533C34.657 19.5392 38.2316 15.9614 42.6377 15.9614C47.0351 15.9614 50.632 19.5456 50.632 23.9533ZM18.5155 0C12.0088 0 6.70526 5.29401 6.70526 11.8063C6.70526 18.3178 12.0032 23.6213 18.5155 23.6213C25.0302 23.6213 30.3289 18.3178 30.3289 11.8063C30.3329 5.29401 25.0294 0 18.5155 0ZM55.3955 48.1726C55.3955 40.909 49.6607 35.0138 42.6258 35.0138C41.371 35.0138 40.1726 35.2608 39.0322 35.6102C40.5348 38.6226 41.4544 41.982 41.4544 45.5955V50H55.3962V48.1726H55.3955ZM0 50H37.0279V45.8123C37.0279 35.3085 28.7168 26.7631 18.5155 26.7631C8.2976 26.7631 0.00079418 35.3093 0.00079418 45.8123V50H0Z" fill="#224455"/>
+            </svg>
+            <p>{{ groupsCount }}</p>
+            <p>{% if groupsCount == 1 %}group{% else %}groups{% endif %}</p>
+        </div>
+        <div class="user-stats">
+            <svg width="29" height="29" viewBox="0 0 53 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M26.3158 40.1921L42.5789 50L38.2763 31.5026L52.6316 19.0632L33.7079 17.4395L26.3158 0L18.9237 17.4395L0 19.0632L14.3553 31.5026L10.0526 50L26.3158 40.1921Z" fill="#224455"/>
+            </svg>
+            <p>{{ starCount }}</p>
+            <p>{% if starCount == 1 %}star{% else %}stars{% endif %}</p>
+        </div>
+    </div>
+  </div>
+</section>
+
+{% if userGroups and userGroups.size > 0 %}
+  {% for group in userGroups %}
+    <section class="home-page-snappmaps-list">
+      <h2><a href="/groups/{{ group.slug }}">{{ group.name }}</a></h2>
+      <div class="group-action-summary">
+        <span class="group-action-stat">
+          <svg viewBox="0 0 26 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M11.18 22.1801C4.42 16.2001 0 12.1701 0 7.23008C0 3.20008 3.12 0.0800781 7.15 0.0800781C9.36 0.0800781 11.57 2.05608 13 3.74608C14.43 2.05608 16.64 0.0800781 18.85 0.0800781C22.88 0.0800781 26 3.20008 26 7.23008C26 12.1701 21.58 16.2001 14.82 22.1801L13 24.0001L11.18 22.1801Z" fill=""/>
+          </svg>
+          <span class="group-action-count">{{ group.likes }}</span>
+        </span>
+        <span class="group-action-stat">
+          <svg viewBox="0 0 25 26" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M13.4058 3.72573C13.8278 3.40698 14.3574 3.0832 14.9917 2.83616C16.1688 2.37764 17.9625 2.5135 19.9376 3.75587C19.9376 3.75587 18.8096 5.11737 17.6308 5.67973C16.5155 6.21178 15.9504 6.26072 15.76 6.27722L15.731 6.27981C16.5271 6.82259 17.2388 7.72723 17.6003 9.21083C17.6003 9.21083 15.8777 9.4264 14.802 9.02689C13.7263 8.62738 12.854 8.08004 12.3625 6.78038C12.3603 6.78742 12.3571 6.80485 12.3522 6.83125L12.3522 6.83129C12.3026 7.09881 12.0823 8.28695 11.0688 8.92738C9.95525 9.63107 8.72583 10.0371 7.50457 9.85011C7.42315 9.83805 7.57996 7.4287 9.69078 6.31298C9.57921 6.34012 8.65537 6.50379 7.36284 6.32203C6.07032 6.14026 4.9354 5.27566 4.1755 4.15994C4.11821 4.07249 6.81705 2.01294 9.80536 3.37894L9.80632 3.37941C9.84083 3.39631 10.7891 3.86081 11.5707 4.42144C11.6169 4.00824 11.72 3.38475 11.9495 2.61703C12.3774 1.18528 13.0928 0.0131043 13.0928 0.0131043L15.0185 0C15.0185 0 14.3365 0.747239 13.8811 2.01939C13.7055 2.50991 13.5413 3.13849 13.4058 3.72573ZM18.3084 6.9616C19.2513 8.72819 19.4199 10.3489 19.4199 10.3489C19.4199 10.3489 18.5626 10.7781 16.6085 10.724C14.9853 10.679 13.6024 10.2901 12.5699 9.48645C11.5462 10.699 10.1054 11.3612 8.39262 11.3612C8.03167 11.3612 7.65263 11.3325 7.27087 11.2728C6.63431 11.176 6.12952 10.6938 6.01584 10.0739C5.93171 9.60646 6.04418 8.67016 6.49922 7.68712C5.60815 7.42629 4.95892 7.22425 4.07841 6.30966C1.74927 8.48954 0 10.6278 0 13.9976C0 20.6252 5.59699 26 12.4997 26C19.403 26 24.9988 20.6255 24.9988 13.9976C24.9988 10.2774 22.9356 7.859 20.1692 5.65591C19.6792 6.14351 19.2513 6.46948 18.3084 6.9616Z" fill=""/>
+          </svg>
+          <span class="group-action-count">{{ group.tomatoes }}</span>
+        </span>
+        <span class="group-action-stat">
+          <svg viewBox="0 0 38 36" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M18.9474 28.9383L30.6568 36L27.5589 22.6819L37.8947 13.7255L24.2697 12.5564L18.9474 0L13.6251 12.5564L0 13.7255L10.3358 22.6819L7.23789 36L18.9474 28.9383Z" fill=""/>
+          </svg>
+          <span class="group-action-count">{{ group.stars }}</span>
+        </span>
+      </div>
+
+      {% if group.snaps and group.snaps.size > 0 %}
+        {% assign sorted_snaps = group.snaps | sort: 'date_created' | reverse %}
+        <figure class="image-thumbnails">
+          {% for snapp in sorted_snaps limit: 5 %}
+            <a href="/snapps/{{ snapp.uuid }}" aria-label="Snapp {{ forloop.index }} in groep {{ group.name }}">
+              <picture>
+                <source srcset="https://fdnd-agency.directus.app/assets/{{ snapp.picture }}?width=200&format=avif" type="image/avif" width="200" height="200">
+                <source srcset="https://fdnd-agency.directus.app/assets/{{ snapp.picture }}?width=200&format=webp" type="image/webp" width="200" height="200">
+                <img loading="lazy" src="https://fdnd-agency.directus.app/assets/{{ snapp.picture }}?width=200" alt="" width="200" height="200" style="object-fit: cover;">
+              </picture>
+            </a>
+          {% endfor %}
+        </figure>
+      {% else %}
+        <p class="no-data">No snapps yet.</p>
+      {% endif %}
+    </section>
+  {% endfor %}
+{% else %}
+  <section class="home-page-snappmaps-list">
+    <p class="no-data">No groups yet.</p>
+  </section>
+{% endif %}
+
+{% render 'partials/footer.liquid', currentPage: 'user' %}

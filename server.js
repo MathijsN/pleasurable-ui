@@ -414,12 +414,164 @@ app.post('/snapps/:uuid/action', async function (request, response) {
 // Aanpassen
 
 app.get('/user', async function (request, response) {
-  const params = new URLSearchParams()
-
-  response.render('snapp.liquid', { user })
+  return response.redirect(302, `/user/${userUuid}`)
 })
 
+app.get('/user/:uuid', async function (request, response) {
+  const userUuid = request.params.uuid
 
+  const userParams = new URLSearchParams()
+  userParams.set('fields', '*,groups.snappthis_group_uuid.name,groups.snappthis_group_uuid.slug')
+  userParams.set('filter[uuid]', userUuid)
+
+  const userResponse = await fetch(`${userEndpoint}?${userParams.toString()}`)
+  const userResponseJSON = await userResponse.json()
+  const user = userResponseJSON.data?.[0]
+
+  if (!user) {
+    return response.status(404).render('404.liquid')
+  }
+
+  if (user.birthdate) {
+    const year = new Date(user.birthdate).getFullYear()
+    const decade = Math.floor((year % 100) / 10) * 10
+    user.birthDecade = `born in the ${decade.toString().padStart(2, '0')}s`
+  }
+
+  const userGroupsMap = new Map()
+  const rawUserGroups = Array.isArray(user.groups) ? user.groups : []
+
+  for (const groupRelation of rawUserGroups) {
+    const groupData = groupRelation?.snappthis_group_uuid
+    if (!groupData?.slug || !groupData?.name) {
+      continue
+    }
+
+    if (!userGroupsMap.has(groupData.slug)) {
+      userGroupsMap.set(groupData.slug, {
+        name: groupData.name,
+        slug: groupData.slug,
+        snaps: [],
+        likes: 0,
+        tomatoes: 0,
+        stars: 0,
+      })
+    }
+  }
+
+  const userSnapsParams = new URLSearchParams()
+  userSnapsParams.set('fields', 'uuid,picture,date_created,snapmap.groups.snappthis_group_uuid.name,snapmap.groups.snappthis_group_uuid.slug')
+  userSnapsParams.set('filter[author][_eq]', userUuid)
+  userSnapsParams.set('filter[picture][_neq]', 'null')
+
+  const userSnapsResponse = await fetch(`${snappEndpoint}?${userSnapsParams.toString()}`)
+  const userSnapsResponseJSON = await userSnapsResponse.json()
+  const rawUserSnaps = userSnapsResponseJSON.data || []
+  const uniqueUserSnaps = Array.from(
+    new Map(
+      rawUserSnaps
+        .filter((snap) => snap?.uuid && snap?.picture)
+        .map((snap) => [snap.uuid, snap])
+    ).values()
+  )
+
+  const validUserSnaps = uniqueUserSnaps.filter((snap) => {
+    const groups = Array.isArray(snap.snapmap?.groups) ? snap.snapmap.groups : []
+    return groups.some((group) => group?.snappthis_group_uuid?.slug && group?.snappthis_group_uuid?.name)
+  })
+
+  const userSnappsCount = validUserSnaps.length
+  const userSnapIds = [...new Set(validUserSnaps.map((snap) => snap.uuid).filter(Boolean))]
+
+  const userActions = []
+  if (userSnapIds.length > 0) {
+    const userActionsResponse = await fetch(`${actionEndpoint}?fields=action,snap&filter[snap][_in]=${userSnapIds.join(',')}`)
+    const userActionsResponseJSON = await userActionsResponse.json()
+    userActions.push(...(userActionsResponseJSON.data || []))
+  }
+
+  for (const snap of validUserSnaps) {
+    const groups = Array.isArray(snap.snapmap?.groups) ? snap.snapmap.groups : []
+
+    for (const group of groups) {
+      const groupData = group.snappthis_group_uuid
+
+      if (!groupData?.slug || !groupData?.name) {
+        continue
+      }
+
+      if (!userGroupsMap.has(groupData.slug)) {
+        userGroupsMap.set(groupData.slug, {
+          name: groupData.name,
+          slug: groupData.slug,
+          snaps: [],
+          likes: 0,
+          tomatoes: 0,
+          stars: 0
+        })
+      }
+
+      userGroupsMap.get(groupData.slug).snaps.push(snap)
+    }
+  }
+
+  const actionCountsByGroup = new Map()
+
+  for (const action of userActions) {
+    const snapUuid = action?.snap
+    const actionType = action?.action
+
+    if (!snapUuid || !actionType) {
+      continue
+    }
+
+    const snap = validUserSnaps.find((s) => s.uuid === snapUuid)
+    if (!snap) {
+      continue
+    }
+
+    const groups = Array.isArray(snap.snapmap?.groups) ? snap.snapmap.groups : []
+    for (const group of groups) {
+      const groupData = group.snappthis_group_uuid
+
+      if (!groupData?.slug || !groupData?.name) {
+        continue
+      }
+
+      if (!actionCountsByGroup.has(groupData.slug)) {
+        actionCountsByGroup.set(groupData.slug, { like: 0, tomato: 0, star: 0 })
+      }
+
+      if (actionType === 'like' || actionType === 'tomato' || actionType === 'star') {
+        actionCountsByGroup.get(groupData.slug)[actionType] += 1
+      }
+    }
+  }
+
+  for (const group of userGroupsMap.values()) {
+    const counts = actionCountsByGroup.get(group.slug) || { like: 0, tomato: 0, star: 0 }
+    group.likes = counts.like
+    group.tomatoes = counts.tomato
+    group.stars = counts.star
+  }
+
+  const userGroups = Array.from(userGroupsMap.values())
+  const groupsCount = userGroups.length
+
+  let starCount = 0
+  if (userSnapIds.length > 0) {
+    const starParams = new URLSearchParams()
+    starParams.set('fields', 'uuid')
+    starParams.set('filter[action][_eq]', 'star')
+    starParams.set('filter[snap][_in]', userSnapIds.join(','))
+
+    const starResponse = await fetch(`${actionEndpoint}?${starParams.toString()}`)
+    const starResponseJSON = await starResponse.json()
+    starCount = starResponseJSON.data?.length || 0
+  }
+
+  response.render('user.liquid', { user, currentPage: 'user', userSnappsCount, groupsCount, starCount, userGroups })
+})
 
 
 app.use((req, res) => {
