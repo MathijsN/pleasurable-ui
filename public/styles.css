@@ -924,3 +924,7 @@ dialog[open] {
         }
     }
 }
+
+.no-data {
+    padding-inline: var(--spacing-s);
+}
