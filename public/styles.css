@@ -84,6 +84,10 @@ body {
         margin-bottom: 0;
     }
 
+    &:has(.login-page) header {
+        display: none;
+    }
+
     /* margin-block: var(--bar-height); */
 }
 
@@ -282,7 +286,7 @@ form.picture {
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding-block: var(--spacing-m) calc(var(--spacing-m) * 2);
+    padding-block: var(--spacing-m) calc(var(--spacing-m) * 2.5);
 
     img,
     .retry-action,
@@ -470,7 +474,7 @@ dialog[open] {
 
     h2,
     .active {
-        padding-inline: var(--spacing-s);
+        padding-inline: 4px;
     }
 
     h2 {
@@ -533,7 +537,7 @@ dialog[open] {
         a {
             display: inline-block;
             text-decoration: none;
-            
+
 
             @media (any-pointer:fine) {
                 &:hover {
@@ -553,8 +557,7 @@ dialog[open] {
 }
 
 .pill-link-list {
-    margin: 4px;
-    height: var(--bar-height);
+    padding: 0px 4px 4px;
     display: flex;
     align-items: center;
     gap: 4px;
@@ -563,7 +566,7 @@ dialog[open] {
     li {
         display: flex;
         align-items: center;
-        height: 80%;
+        height: calc(var(--bar-height) * 0.8);
         list-style: none;
         align-self: center;
         /* Hoort bij de ul */
@@ -572,6 +575,7 @@ dialog[open] {
         &:last-of-type {
             color: var(--text-color-on-light-bg);
             padding-left: 8px;
+            padding-block: 4px;
             height: fit-content;
         }
 
@@ -696,6 +700,7 @@ dialog[open] {
     display: grid;
     grid-template-columns: repeat(3, 33%);
     gap: var(--grid-gap);
+    margin-top: var(--grid-gap);
 
     li {
         list-style: none;
@@ -729,19 +734,21 @@ dialog[open] {
             border: none;
             transition: 0.1s;
 
+            svg {
+                display: block;
+                height: 1rem;
+                width: auto;
+                fill: var(--lightest-color);
+            }
+        }
+
+        button[type="submit"] {
             @media (any-pointer:fine) {
                 &:hover {
                     transition: var(--transition-duration);
                     cursor: pointer;
                     scale: 1.15;
                 }
-            }
-
-            svg {
-                display: block;
-                height: 1rem;
-                width: auto;
-                fill: var(--lightest-color);
             }
         }
     }
@@ -777,12 +784,143 @@ dialog[open] {
             animation-timing-function: ease-in-out;
         }
     }
+
+    .inactive {
+        color: #90A1AA;
+
+        svg {
+            fill: #90A1AA
+        }
+
+    }
+
+    .heart-inactive {
+        color: var(--heart-icon-color-inactive);
+
+        svg {
+            fill: var(--heart-icon-color-inactive);
+        }
+    }
+
+    .tomato-inactive {
+        color: var(--tomato-icon-color-inactive);
+
+        svg {
+            fill: var(--tomato-icon-color-inactive);
+        }
+    }
+
+    .star-inactive {
+        color: var(--star-icon-color-inactive);
+
+        svg {
+            fill: var(--star-icon-color-inactive);
+        }
+    }
 }
 
 @keyframes --icon-bounce {
-    0%   { scale: 1; }
-    50%  { scale: 1.5; }
-    100% { scale: 1; }
+    0% {
+        scale: 1;
+    }
+
+    50% {
+        scale: 1.5;
+    }
+
+    100% {
+        scale: 1;
+    }
+}
+
+
+
+.login-page {
+    .login-logo {
+        width: 30%;
+        margin: 0 auto;
+    }
+
+    .visually-hidden {
+        border: 0;
+        clip-path: inset(50%);
+        height: 1px;
+        margin: 0;
+        overflow: hidden;
+        position: absolute;
+        white-space: nowrap;
+        width: 1px;
+    }
+
+    fieldset {
+        border: none;
+
+        legend {
+            margin: auto;
+            padding-top: 1rem;
+            padding-bottom: 0.3rem;
+            color: var(--lightest-color);
+        }
+    }
+
+    .form-inputs {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    input {
+        font-family: inherit;
+        font-size: var(--font-size-xs);
+        width: 90%;
+        border-radius: 0;
+        border: 0;
+        padding: 0.5rem;
+
+        &[type="email"],
+        &[type="password"] {
+            border: 1px solid #979797;
+        }
+
+        &::placeholder {
+            color: #90A1AAFF;
+            font-size: var(--font-size-xs);
+        }
+    }
+
+    .login-error {
+        color: var(--alert-accent-color);
+        width: 90%;
+        margin: 0 auto;
+        padding-top: 10px;
+    }
+
+    a {
+        display: block;
+        font-size: var(--font-size-xs);
+        color: var(--light-text-color-on-dark-bg);
+        text-decoration: none;
+        width: 90%;
+        margin: 0 auto;
+        padding-top: 10px;
+    }
+
+    .button-div {
+        display: flex;
+        margin: 0 auto;
+        width: 90%;
+
+        button {
+            font-family: inherit;
+            background-color: var(--accent-color-on-dark-bg);
+            color: var(--lightest-color);
+            font-size: var(--font-size-xs);
+            border-radius: 2rem;
+            border: none;
+            padding: 0.75rem 2rem;
+            margin-left: auto;
+        }
+    }
 }
 
 /* pop-up for like, tomato and star when clicked */
@@ -831,8 +969,13 @@ dialog[open] {
 }
 
 @keyframes --fade-popup {
-    0% { opacity: 1; }
-    100% { opacity: 0; }
+    0% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0;
+    }
 }
 
 .loading-actions~.loading-count {
@@ -853,8 +996,13 @@ dialog[open] {
 }
 
 @keyframes --loading-actions {
-    0% { max-width: 0; }
-  100% { max-width: 1em; }
+    0% {
+        max-width: 0;
+    }
+
+    100% {
+        max-width: 1em;
+    }
 }
 
 .snapp-detail-group-info {
@@ -927,5 +1075,45 @@ dialog[open] {
 
 .no-data {
     padding-inline: var(--spacing-s);
-    height: 5dvh;
+@view-transition {
+    navigation: auto;
+}
+
+.offline-melding,
+.offline-pagina {
+    position: fixed;
+    top: 50%;
+    left: 0;
+    translate: 0 -50%;
+    width: 100%;
+    padding: 3rem 0;
+    display: flex;
+    justify-content: center;
+    background-color: #ffffffd9;
+    color: var(--dark-text-color-on-light-bg);
+    font-size: var(--font-size-xs);
+    z-index: 10;
+
+    a {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.75rem;
+        text-decoration: none;
+        color: inherit;
+
+        p {
+            font-size: var(--font-size-m);
+        }
+    }
+
+    &[hidden] {
+        display: none;
+    }
+}
+
+/* Snappmap */
+
+.current-group {
+    color: var(--text-color-on-light-bg);
 }

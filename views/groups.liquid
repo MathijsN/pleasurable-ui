@@ -9,12 +9,20 @@
     {% for group in allGroups %}
       {% assign today_date = 'now' | date: '%Y%m%d' %}
       {% assign target_date = '' %}
+      {% assign this_user_has_a_snapp = false %}
+
+      {% for user in group.users %}
+        {% if user.snappthis_user_uuid.uuid == userUuid %}
+          {% assign this_user_has_a_snapp = true %}
+        {% endif %}
+      {% endfor %}
+
       
       {% for snappmap in group.snappmap %}
         {% assign target_date = snappmap.snappthis_snapmap_uuid.time_end | date: '%Y%m%d' %}
       {% endfor %}
 
-      {% if target_date > today_date and target_date != '' %}
+      {% if this_user_has_a_snapp and target_date > today_date and target_date != '' %}
         <li class="group-list-container">
           <a href="/groups/{{ group.slug }}">
             <div class="group-list-stats">
@@ -108,9 +116,17 @@
         {% when 3 or 23 %}{% assign endSuffix = "rd" %}
       {% endcase %}
 
+      {% assign this_user_has_a_snapp = false %}
+
+      {% for snap in snappmap.snappthis_snapmap_uuid.snaps %}
+        {% if snap.author == userUuid %}
+          {% assign this_user_has_a_snapp = true %}
+        {% endif %}
+      {% endfor %}
+
       <li class="group-list-container">
         <div class="group-list-stats snappmap">
-          {% if target_date > today_date and target_date != '' %}
+          {% if this_user_has_a_snapp and target_date > today_date and target_date != '' %}
             <h2 class="active"><a href="/snappmaps/{{ snappmap.snappthis_snapmap_uuid.slug }}">{{ snappmap.snappthis_snapmap_uuid.name }}</a></h2>
             <p class="active">Add your snapp!</p>
           {% else %}
