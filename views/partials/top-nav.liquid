@@ -1,6 +1,12 @@
 <header class="top-nav">
   {% if currentPage == 'snappmap' %}
     {% assign headerName = snappmap.name %}
+    <a href="/" class="go-back-link">
+      <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+        <title>Go back to index</title>
+        <path fill-rule="evenodd" clip-rule="evenodd" d="M7.6 14L18.8 2.8L16 0L0 16L16 32L18.8 29.2L7.6 18H32V14H7.6Z" fill=""/>
+      </svg>
+    </a>
     <details>
       <summary>
         <h1>{{ snappmap.name | truncate: 19 }}</h1>
@@ -23,11 +29,15 @@
   {% endif %}
 
   {% if currentPage == 'groups' %}
+    <a href="/" class="go-back-link">
+      <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+        <title>Go back to the Snappmap {{ oneSnappInfo[0].snapmap.name }}</title>
+        <path fill-rule="evenodd" clip-rule="evenodd" d="M7.6 14L18.8 2.8L16 0L0 16L16 32L18.8 29.2L7.6 18H32V14H7.6Z" fill=""/>
+      </svg>
+    </a>
     <h1>Your groups</h1>
     <svg
       class="right-center-icon"
-      width="16"
-      height="16"
       viewBox="0 0 36 36"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
@@ -37,11 +47,15 @@
   {% endif %}
 
   {% if currentPage == 'yourSnappmaps' %}
+    <a href="/" class="go-back-link">
+      <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+        <title>Go back to the Snappmap {{ oneSnappInfo[0].snapmap.name }}</title>
+        <path fill-rule="evenodd" clip-rule="evenodd" d="M7.6 14L18.8 2.8L16 0L0 16L16 32L18.8 29.2L7.6 18H32V14H7.6Z" fill=""/>
+      </svg>
+    </a>
     <h1>Your snappmaps</h1>
     <svg
       class="right-center-icon"
-      width="16"
-      height="16"
       viewBox="0 0 36 36"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
@@ -55,6 +69,31 @@
   {% endif %}
 
   {% if currentPage == 'snapps' %}
-    <h1>Snapps</h1>
+    <a href="/" class="go-back-link">
+      <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+        <title>Go back to the Snappmap {{ oneSnappInfo[0].snapmap.name }}</title>
+        <path fill-rule="evenodd" clip-rule="evenodd" d="M7.6 14L18.8 2.8L16 0L0 16L16 32L18.8 29.2L7.6 18H32V14H7.6Z" fill=""/>
+      </svg>
+    </a>
+    <h1>{{ topNavTitle }}</h1>
+  {% endif %}
+
+  {% if currentPage == 'snappsUser' %}
+    <a href="/" class="go-back-link">
+      <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+        <title>Go back to the index</title>
+        <path fill-rule="evenodd" clip-rule="evenodd" d="M7.6 14L18.8 2.8L16 0L0 16L16 32L18.8 29.2L7.6 18H32V14H7.6Z" fill=""/>
+      </svg>
+    </a>
+    <h1>{{ topNavTitle | truncate: 19 }}</h1>
+  {% endif %}
+  {% if currentPage == 'snappsLocation' %}
+    <a href="/" class="go-back-link">
+      <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+        <title>Go back to the index</title>
+        <path fill-rule="evenodd" clip-rule="evenodd" d="M7.6 14L18.8 2.8L16 0L0 16L16 32L18.8 29.2L7.6 18H32V14H7.6Z" fill=""/>
+      </svg>
+    </a>
+    <h1>{{ topNavTitle | truncate: 19 }}</h1>
   {% endif %}
 </header>

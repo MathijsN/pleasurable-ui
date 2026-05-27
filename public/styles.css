@@ -163,6 +163,8 @@ header {
 
     .right-center-icon {
         justify-self: end;
+        width: var(--font-size-s);
+        aspect-ratio: 1/1;
     }
 
 }
