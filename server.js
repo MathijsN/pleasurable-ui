@@ -21,7 +21,9 @@ const snappmapEndpoint = `${baseURL}/snappthis_snapmap`
 const snappEndpoint = `${baseURL}/snappthis_snap`
 const actionEndpoint = `${baseURL}/snappthis_action`
 const userEndpoint = `${baseURL}/snappthis_user`
-const currentUserUuid = '5e9589a5-ebfa-4a99-87a6-010f2f571444'
+
+// Gebruikers id Anne-Fleur Pietersen
+const userUuid = "5e9589a5-ebfa-4a99-87a6-010f2f571444"
 
 app.get('/', async function (request, response) {
   const params = new URLSearchParams()
@@ -33,7 +35,22 @@ app.get('/', async function (request, response) {
   const allSnappmapsApiResponseJSON = await allSnappmapsApiResponse.json()
   const allSnappmaps = allSnappmapsApiResponseJSON.data
 
-  response.render('index.liquid', { allSnappmaps })
+  allSnappmaps.sort((snappmapA, snappmapB) => {
+    // check of de gebruiker een snap heeft in snappmap A en B
+    const userHasSnapInA = snappmapA.snaps?.some(snap => snap.author === userUuid)
+    const userHasSnapInB = snappmapB.snaps?.some(snap => snap.author === userUuid)
+
+    // 1. als alleen A een snap van de gebruiker heeft → A komt eerst
+    if (userHasSnapInA && !userHasSnapInB) return -1
+
+    // 2. als alleen B een snap van de gebruiker heeft → B komt eerst
+    if (!userHasSnapInA && userHasSnapInB) return 1
+
+    // 3. anders: sorteren op einddatum (nieuwste eerst)
+    return new Date(snappmapB.time_end) - new Date(snappmapA.time_end)
+  })
+
+  response.render('index.liquid', { allSnappmaps, userUuid })
 })
 
 app.get('/login', async function (request, response) {
@@ -41,14 +58,18 @@ app.get('/login', async function (request, response) {
   response.render('login.liquid')
 })
 
+app.get('/offline', async function (request, response) {
+
+  response.render('offline.liquid')
+})
+
 app.post("/login", async function (request, response) {
   const loginInfo = {
     email: request.body.email,
     password: request.body.password,
   };
-  console.log(loginInfo);
 
-  const testEmail = "fdnd@hva.nl";
+  const testEmail = "anne-fleur@snappthis.com";
   const testPassword = "snappthis";
 
   if (loginInfo.email == testEmail && loginInfo.password == testPassword) {
@@ -63,7 +84,7 @@ app.post("/login", async function (request, response) {
 
 app.get('/groups', async function (request, response) {
   const params = new URLSearchParams()
-  params.set('fields', 'name,slug,snappmap.snappthis_snapmap_uuid.*,count(users)')
+  params.set('fields', 'name,slug,snappmap.snappthis_snapmap_uuid.*,users.snappthis_user_uuid.uuid,count(users)')
 
   const allGroupsApiResponse = await fetch(`${groupEndpoint}?${params.toString()}`)
   const allGroupsApiResponseJSON = await allGroupsApiResponse.json()
@@ -71,12 +92,12 @@ app.get('/groups', async function (request, response) {
 
   const path = request.path
 
-  response.render('groups.liquid', { allGroups, path })
+  response.render('groups.liquid', { allGroups, path, userUuid })
 })
 
 app.get('/groups/:slug', async function (request, response) {
   const params = new URLSearchParams()
-  params.set('fields', '*.*,snappmap.snappthis_snapmap_uuid.*')
+  params.set('fields', '*.*,snappmap.snappthis_snapmap_uuid.*,snappmap.snappthis_snapmap_uuid.snaps.author')
   params.set('filter[slug]', request.params.slug)
 
   const snappMapsApiResponse = await fetch(`${groupEndpoint}?${params.toString()}`)
@@ -85,7 +106,7 @@ app.get('/groups/:slug', async function (request, response) {
 
   const path = request.path
 
-  response.render('groups.liquid', { snappMapslist, path })
+  response.render('groups.liquid', { snappMapslist, path, userUuid })
 })
 
 app.get('/snappmaps/:slug', async function (request, response) {
@@ -98,17 +119,71 @@ app.get('/snappmaps/:slug', async function (request, response) {
   const snappmapApiResponseJSON = await snappmapApiResponse.json()
   const snappmap = snappmapApiResponseJSON.data
 
+  const userParams = new URLSearchParams()
+
+  userParams.set('fields', '*.*.*')
+  userParams.set('filter[name][_icontains]', 'anne-fleur')
+
+  const userApiResponse = await fetch(`${userEndpoint}?${userParams.toString()}`)
+  const userApiResponseJSON = await userApiResponse.json()
+  const user = userApiResponseJSON.data
+
   const status = request.query.status
   const path = request.path
 
-  response.render('snappmap.liquid', { snappmap, status, path })
+  console.log(user[0].groups)
+
+  response.render('snappmap.liquid', { snappmap, status, path, user })
 })
 
-app.post('/snappmaps/:slug', upload.single('file'), async function (request, response) {
+// Maak een functie aan die van coördinaten een plaatsnaam maakt
+async function reverseGeocode(latitude, longitude) {
 
+  // Vraag aan Photon wat de plaatsnaam is van de coördinaten
+  const reverseGeocodeResponse = await fetch(
+    `https://photon.komoot.io/reverse?lat=${latitude}&lon=${longitude}`,
+    { headers: { 'User-Agent': 'snappmaps-app/1.0 (yourname@email.com)' } }
+  )
+
+  // Controleer of de response wel JSON is voordat we hem parsen
+  const contentType = reverseGeocodeResponse.headers.get('content-type')
+  if (!contentType || !contentType.includes('application/json')) {
+    return 'Unknown'
+  }
+  const reverseGeocodeData = await reverseGeocodeResponse.json()
+
+  // Photon geeft data terug in features[0].properties
+  const properties = reverseGeocodeData.features?.[0]?.properties
+  // Zoek de stadsnaam op, probeer eerst 'city', dan 'town', dan 'village'
+  const city = properties?.city ?? properties?.town ?? properties?.village
+  // Zoek de wijknaam op, probeer eerst 'district', dan 'suburb', dan 'neighbourhood'
+  const district = properties?.district ?? properties?.suburb ?? properties?.neighbourhood
+
+  // Als we zowel een stad als een wijk hebben, combineer ze dan (vb: Amsterdam-Zuid)
+  if (city && district) return `${city}-${district}`
+  // Als we alleen een stad hebben, geef dan alleen de stad terug (vb: Amsterdam)
+  if (city) return city
+  // Als we niks hebben, geef dan 'Unknown' terug
+  return 'Unknown'
+}
+
+app.post('/snappmaps/:slug', upload.single('file'), async function (request, response) {
   const snappmapid = request.body.uuid
   const snappmapSlug = request.params.slug
   const file = request.file
+
+  // Haal de lengte- en breedtegraad op uit de 'hidden' inputs
+  const latitude = request.body.latitude
+  const longitude = request.body.longitude
+
+  let location
+  if (latitude && longitude) {
+    // Als we beide coördinaten hebben, zet ze om naar een plaatsnaam
+    location = await reverseGeocode(latitude, longitude)
+  } else {
+    // Als één van de twee er niet is, gebruik dan 'Unknown'
+    location = 'Unknown'
+  }
 
   const formData = new FormData()
   const blob = new Blob([file.buffer], { type: file.mimetype })
@@ -123,9 +198,9 @@ app.post('/snappmaps/:slug', upload.single('file'), async function (request, res
 
   if (uploadResponseData.data.id != null) {
     let newSnap = {
-      location: 'Haarlem',
+      location: location,
       snapmap: snappmapid,
-      author: '505c32d4-88fc-4102-8ef8-0847e9d9292b',
+      author: '5e9589a5-ebfa-4a99-87a6-010f2f571444',
       picture: uploadResponseData.data.id,
     }
 
@@ -136,7 +211,6 @@ app.post('/snappmaps/:slug', upload.single('file'), async function (request, res
       },
       body: JSON.stringify(newSnap),
     })
-
 
     if (snapResponse.ok) {
       response.redirect(303, `/snappmaps/${snappmapSlug}?status=succes`)
@@ -153,6 +227,7 @@ app.get('/snapps', async function (request, response) {
   const params = new URLSearchParams()
   params.set('fields', '*,snapmap.groups.snappthis_group_uuid.name')
   params.set('filter[picture][_neq]', 'null')
+  params.set('sort', '-date_created')
 
   const allSnappsApiResponse = await fetch(`${snappEndpoint}?${params.toString()}`)
   const allSnappsApiResponseJSON = await allSnappsApiResponse.json()
@@ -160,11 +235,13 @@ app.get('/snapps', async function (request, response) {
 
   const path = request.path
 
-  response.render('snappmap.liquid', { allSnapps, path })
+  response.render('snapps.liquid', { allSnapps, path })
 })
 
-
-
+// Geef 404 error bij '/snapps/location'
+app.get('/snapps/location', (req, res) => {
+  res.status(404).render('404.liquid')
+})
 
 app.get('/snapps/location/:location', async function (request, response) {
   const params = new URLSearchParams()
@@ -178,18 +255,19 @@ app.get('/snapps/location/:location', async function (request, response) {
 
   const path = request.path
 
-  response.render('snappmap.liquid', { allSnapps, path })
+  response.render('snapps.liquid', { allSnapps, path })
 })
 
+// Geef 404 error bij '/snapps/user'
+app.get('/snapps/user', (req, res) => {
+  res.status(404).render('404.liquid')
+})
 
-
-// Aanpassen
-
-app.get('/snapps/user/:uuid', async function (request, response) {
+app.get('/snapps/user/:name', async function (request, response) {
   const params = new URLSearchParams()
-  params.set('fields', '*,snapmap.groups.snappthis_group_uuid.name')
+  params.set('fields', '*,author.name,snapmap.groups.snappthis_group_uuid.name')
   params.set('filter[picture][_neq]', 'null')
-  params.set('filter[user]', request.params.location)
+  params.set('filter[author][name]', request.params.name)
 
   const allSnappsApiResponse = await fetch(`${snappEndpoint}?${params.toString()}`)
   const allSnappsApiResponseJSON = await allSnappsApiResponse.json()
@@ -197,16 +275,10 @@ app.get('/snapps/user/:uuid', async function (request, response) {
 
   const path = request.path
 
-  response.render('snappmap.liquid', { allSnapps, path })
+  response.render('snapps.liquid', { allSnapps, path })
 })
 
-
-
-
-// Aanpassen
-
 app.get('/snapps/:uuid', async function (request, response) {
-  const userUuid = currentUserUuid
   const snappUuid = request.params.uuid
   const status = request.query.status
 
@@ -249,11 +321,9 @@ app.get('/snapps/:uuid', async function (request, response) {
   response.render('snapp.liquid', { userUuid, snappUuid, oneSnappInfo, likesCount, tomatoCount, starCount, hasLike, hasTomato, hasStar, status })
 })
 
-
 app.post('/snapps/:uuid/action', async function (request, response) {
   const actionType = request.body.action
   const snappUuid = request.params.uuid
-  const userUuid = currentUserUuid
 
   const params = new URLSearchParams()
   params.set('filter[snap][_eq]', `${snappUuid}`)
@@ -346,7 +416,7 @@ app.post('/snapps/:uuid/action', async function (request, response) {
 // Aanpassen
 
 app.get('/user', async function (request, response) {
-  return response.redirect(302, `/user/${currentUserUuid}`)
+  return response.redirect(302, `/user/${userUuid}`)
 })
 
 app.get('/user/:uuid', async function (request, response) {
