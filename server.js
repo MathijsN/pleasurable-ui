@@ -131,8 +131,6 @@ app.get('/snappmaps/:slug', async function (request, response) {
   const status = request.query.status
   const path = request.path
 
-  console.log(user[0].groups)
-
   response.render('snappmap.liquid', { snappmap, status, path, user })
 })
 
