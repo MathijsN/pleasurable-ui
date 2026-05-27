@@ -1,2 +1,6 @@
-<h1>404</h1>
-<h2>Oops, deze pagina is niet beschikbaar</h2>
+{% render 'partials/head.liquid', title: '404', currentPage: '404' %}
+<section class="page-404">
+  <h1>404</h1>
+  <p>Oops, deze pagina is niet beschikbaar</p>
+</section>
+{% render 'partials/footer.liquid' %}
