@@ -371,7 +371,7 @@ app.get('/user/:uuid', async function (request, response) {
   }
 
   const userSnapsParams = new URLSearchParams()
-  userSnapsParams.set('fields', 'uuid,picture,snapmap.groups.snappthis_group_uuid.name,snapmap.groups.snappthis_group_uuid.slug')
+  userSnapsParams.set('fields', 'uuid,picture,date_created,snapmap.groups.snappthis_group_uuid.name,snapmap.groups.snappthis_group_uuid.slug')
   userSnapsParams.set('filter[author][_eq]', userUuid)
   userSnapsParams.set('filter[picture][_neq]', 'null')
 

@@ -58,8 +58,9 @@
       </div>
 
       {% if group.snaps and group.snaps.size > 0 %}
+        {% assign sorted_snaps = group.snaps | sort: 'date_created' | reverse %}
         <figure class="image-thumbnails">
-          {% for snapp in group.snaps limit: 5 %}
+          {% for snapp in sorted_snaps limit: 5 %}
             <a href="/snapps/{{ snapp.uuid }}" aria-label="Snapp {{ forloop.index }} in groep {{ group.name }}">
               <picture>
                 <source srcset="https://fdnd-agency.directus.app/assets/{{ snapp.picture }}?width=200&format=avif" type="image/avif" width="200" height="200">
