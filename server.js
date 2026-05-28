@@ -121,7 +121,7 @@ app.get('/groups/:slug', async function (request, response) {
 app.get('/snappmaps/:slug', async function (request, response) {
   const params = new URLSearchParams()
 
-  params.set('fields', '*.*,groups.snappthis_group_uuid.name,groups.snappthis_group_uuid.slug,groups.snappthis_group_uuid.snappmap.snappthis_snapmap_uuid.name,groups.snappthis_group_uuid.snappmap.snappthis_snapmap_uuid.slug,groups.snappthis_group_uuid.snappmap.snappthis_snapmap_uuid.uuid')
+  params.set('fields', '*.*,groups.snappthis_group_uuid.name,groups.snappthis_group_uuid.slug,groups.snappthis_group_uuid.snappmap.snappthis_snapmap_uuid.name,groups.snappthis_group_uuid.snappmap.snappthis_snapmap_uuid.slug,groups.snappthis_group_uuid.snappmap.snappthis_snapmap_uuid.uuid,snaps.author.*')
   params.set('filter[slug]', request.params.slug)
 
   const snappmapApiResponse = await fetch(`${snappmapEndpoint}?${params.toString()}`)
@@ -140,7 +140,7 @@ app.get('/snappmaps/:slug', async function (request, response) {
   const status = request.query.status
   const path = request.path
 
-  response.render('snappmap.liquid', { snappmap, status, path, user })
+  response.render('snappmap.liquid', { snappmap, status, path, user, userUuid })
 })
 
 

@@ -54,9 +54,9 @@
 
         {% comment %} deze section is alleen voor de list view {% endcomment %}
         <section>
-          {% if snaps.author.uuid == currentUserUuid %}
+          {% if snaps.author.uuid == userUuid %}
             <h2>You</h2>
-          {% elsif snaps.author.uuid != currentUserUuid %}
+          {% elsif snaps.author != userUuid %}
             <h3>{{ snaps.author.name }}</h3>
           {% endif %}
           <p>{{ snaps.location }}</p>
