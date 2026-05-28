@@ -696,8 +696,9 @@ dialog[open] {
             color: var(--dark-text-color-on-light-bg);
             background-color: var(--pill-link-bg-color);
             padding-inline: 1.4rem;
-            border-radius: 1.5rem;
+            border-radius: var(--bar-height);
             height: 100%;
+            font-size: var(--font-size-m);
 
             @media (any-pointer:fine) {
                 &:hover {
@@ -1106,6 +1107,96 @@ dialog[open] {
 
     100% {
         scale: 1;
+    }
+}
+
+
+
+.login-page {
+    .login-logo {
+        width: 30%;
+        margin: 0 auto;
+    }
+
+    .visually-hidden {
+        border: 0;
+        clip-path: inset(50%);
+        height: 1px;
+        margin: 0;
+        overflow: hidden;
+        position: absolute;
+        white-space: nowrap;
+        width: 1px;
+    }
+
+    fieldset {
+        border: none;
+
+        legend {
+            margin: auto;
+            padding-top: 1rem;
+            padding-bottom: 0.3rem;
+            color: var(--lightest-color);
+        }
+    }
+
+    .form-inputs {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    input {
+        font-family: inherit;
+        font-size: var(--font-size-xs);
+        width: 90%;
+        border-radius: 0;
+        border: 0;
+        padding: 0.5rem;
+
+        &[type="email"],
+        &[type="password"] {
+            border: 1px solid #979797;
+        }
+
+        &::placeholder {
+            color: #90A1AAFF;
+            font-size: var(--font-size-xs);
+        }
+    }
+
+    .login-error {
+        color: var(--alert-accent-color);
+        width: 90%;
+        margin: 0 auto;
+        padding-top: 10px;
+    }
+
+    a {
+        display: block;
+        font-size: var(--font-size-xs);
+        color: var(--light-text-color-on-dark-bg);
+        text-decoration: none;
+        width: 90%;
+        margin: 0 auto;
+        padding-top: 10px;
+    }
+
+    .button-div {
+        display: flex;
+        margin: 0 auto;
+        width: 90%;
+
+        button {
+            font-family: inherit;
+            background-color: var(--accent-color-on-dark-bg);
+            color: var(--primary-color);
+            font-size: var(--font-size-xs);
+            border-radius: 2rem;
+            border: none;
+            padding: 0.75rem 2rem;
+            margin-left: auto;
+        }
     }
 }
 
