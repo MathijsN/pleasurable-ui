@@ -1,10 +1,12 @@
 {% assign snappmap = snappmap[0] %}
 {% assign user = user[0] %}
+{% assign today_date = 'now' | date: '%Y%m%d' %}
+{% assign target_date = snappmap.time_end | date: '%Y%m%d' %}
+{% assign target_date_sec = snappmap.time_end | date: '%s' %}
 
 {% if path contains 'snappmap' %}
   {% render 'partials/head.liquid', title: 'Snappmap', currentPage: 'snappmap', snappmap: snappmap %}
 {% endif %}
-
 {% comment %} maak if statement die checked of jij in de snappmap kan posten {% endcomment %}
 {% for group in user.groups %}
   {% if group.snappthis_group_uuid.name == snappmap.groups[0].snappthis_group_uuid.name %}
@@ -14,12 +16,13 @@
       </svg>
       <h2>{{ snappmap.groups[0].snappthis_group_uuid.name }}</h2>
     </div>
-    {% render 'partials/uploadSnapForm.liquid', snappmapSlug: snappmap.slug, snappmapUuid: snappmap.uuid %}
+    {% if target_date > today_date %}
+      {% render 'partials/uploadSnapForm.liquid', snappmapSlug: snappmap.slug, snappmapUuid: snappmap.uuid, target_date: target_date_sec %}
+    {% endif %}
   {% endif %}
 {% endfor %}
 
 {% render 'partials/formStatusMessage.liquid', status: status %}
-
 {% assign sorted_snaps = snappmap.snaps | sort: 'date_created' | reverse %}
 <ul class="grid" id="grid">
   {% for snaps in sorted_snaps %}
