@@ -9,7 +9,7 @@
     src="#"
     alt="Preview"
   >
-  <p>naam snappmap</p>
+  <h2>{{ snappmapName }}</h2>
 
   <label id="make-snapp">
     <svg
@@ -32,7 +32,7 @@
 
     <input type="file" name="file" id="file" accept="image/*" capture="environment" required>
     <input type="hidden" name="uuid" value="{{ snappmapUuid }}">
-    
+
     {% comment %} Voor het ophalen van de geolocatie {% endcomment %}
     <input type="hidden" name="latitude" id="latitude">
     <input type="hidden" name="longitude" id="longitude">
@@ -46,7 +46,7 @@
 
 {% assign today_date_seconds = 'now' | date: '%s' %}
 {% assign difference_seconds = target_date | minus: today_date_seconds %}
-{% assign hours_remaining = difference_seconds | divided_by: 3600 | round: 0 %} 
+{% assign hours_remaining = difference_seconds | divided_by: 3600 | round: 0 %}
 {% comment %} 'modulo: 3600' verwijdert alle volledige uren en houdt alleen de overgebleven seconden over die geen heel uur vormen {% endcomment %}
 {% assign minutes_remaining = difference_seconds | modulo: 3600 | divided_by: 60 | round: 0 %}
 
