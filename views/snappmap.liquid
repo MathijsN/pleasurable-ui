@@ -17,21 +17,72 @@
       <h2>{{ snappmap.groups[0].snappthis_group_uuid.name }}</h2>
     </div>
     {% if target_date > today_date %}
-      {% render 'partials/uploadSnapForm.liquid', snappmapSlug: snappmap.slug, snappmapUuid: snappmap.uuid, target_date: target_date_sec %}
+      {% render 'partials/uploadSnapForm.liquid',
+        snappmapSlug: snappmap.slug,
+        snappmapUuid: snappmap.uuid,
+        target_date: target_date_sec
+      %}
     {% endif %}
   {% endif %}
 {% endfor %}
 
 {% render 'partials/formStatusMessage.liquid', status: status %}
+{% comment %}
+  <ul class="grid" id="grid">
+    {% for snaps in sorted_snaps %}
+      <li>
+        <img
+          src="https://fdnd-agency.directus.app/assets/{{ snaps.picture }}?width=300&format=webp"
+          alt=""
+          loading="lazy"
+        >
+      </li>
+    {% endfor %}
+  </ul>
+{% endcomment %}
+
 {% assign sorted_snaps = snappmap.snaps | sort: 'date_created' | reverse %}
-<ul class="grid" id="grid">
+<ul class="grid grid--large" id="grid">
   {% for snaps in sorted_snaps %}
     <li>
-      <img
-        src="https://fdnd-agency.directus.app/assets/{{ snaps.picture }}?width=300&format=webp"
-        alt=""
-        loading="lazy"
-      >
+      <a href="/snapps/{{ snaps.uuid }}">
+        <img
+          src="https://fdnd-agency.directus.app/assets/{{ snaps.picture }}?width=300&format=webp"
+          alt=""
+          loading="lazy"
+        >
+
+        {% comment %} deze section is alleen voor de list view {% endcomment %}
+        <section>
+          {% if snaps.author.uuid == currentUserUuid %}
+            <h2>You</h2>
+          {% elsif snaps.author.uuid != currentUserUuid %}
+            <h3>{{ snaps.author.name }}</h3>
+          {% endif %}
+          <p>{{ snaps.location }}</p>
+
+          <ul class="snap-stats">
+            <li>
+              <svg viewBox="0 0 27 25">
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M13.5 24.9167L11.61 23.0208C4.59 16.7917 0 12.5938 0 7.44792C0 3.25 3.24 0 7.425 0C9.72 0 12.015 1.08333 13.5 2.84375C14.985 1.08333 17.28 0 19.575 0C23.76 0 27 3.25 27 7.44792C27 12.5938 22.41 16.7917 15.39 23.0208L13.5 24.9167V24.9167Z" fill="currentColor"/>
+              </svg>
+              {{ snaps.actions | where: 'action', 'like' | size }}
+            </li>
+            <li>
+              <svg viewBox="0 0 27 29">
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M14.4783 4.02378C14.9341 3.67954 15.506 3.32986 16.191 3.06305C17.4624 2.56785 19.3995 2.71458 21.5326 4.05634C21.5326 4.05634 20.3144 5.52676 19.0412 6.13411C17.8367 6.70872 17.2265 6.76158 17.0208 6.7794L16.9895 6.78219C17.8493 7.3684 18.6179 8.34541 19.0084 9.9477C19.0084 9.9477 17.1479 10.1805 15.9861 9.74904C14.8244 9.31757 13.8823 8.72644 13.3515 7.3228C13.3491 7.33041 13.3456 7.34922 13.3404 7.37772L13.3403 7.37779C13.2868 7.66672 13.0489 8.9499 11.9543 9.64157C10.7517 10.4016 9.4239 10.84 8.10494 10.6381C8.017 10.6251 8.18635 8.02299 10.466 6.81802C10.3455 6.84733 9.3478 7.02409 7.95187 6.82779C6.55594 6.63148 5.33023 5.69771 4.50954 4.49274C4.44767 4.39829 7.36241 2.17397 10.5898 3.64925L10.5908 3.64976C10.6282 3.66804 11.6523 4.1697 12.4963 4.77515C12.5463 4.3289 12.6577 3.65553 12.9054 2.82639C13.3675 1.2801 14.1402 0.0141526 14.1402 0.0141526L16.22 0C16.22 0 15.4834 0.807018 14.9916 2.18094C14.8019 2.71071 14.6246 3.38957 14.4783 4.02378ZM19.773 7.51853C20.7914 9.42645 20.9734 11.1768 20.9734 11.1768C20.9734 11.1768 20.0476 11.6404 17.9372 11.5819C16.1841 11.5333 14.6906 11.1133 13.5755 10.2454C12.4699 11.5549 10.9138 12.2701 9.06403 12.2701C8.67421 12.2701 8.26484 12.2391 7.85254 12.1746C7.16505 12.0701 6.61988 11.5493 6.49711 10.8798C6.40624 10.375 6.52772 9.36378 7.01915 8.30209C6.0568 8.02039 5.35563 7.80219 4.40468 6.81444C1.88921 9.1687 0 11.478 0 15.1174C0 22.2753 6.04475 28.08 13.4997 28.08C20.9552 28.08 26.9986 22.2756 26.9986 15.1174C26.9986 11.0996 24.7704 8.48772 21.7827 6.10838C21.2535 6.63499 20.7914 6.98704 19.773 7.51853Z" fill="currentColor"/>
+              </svg>
+              {{ snaps.actions | where: 'action', 'tomato' | size }}
+            </li>
+            <li>
+              <svg viewBox="0 0 28 27">
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M14 21.1611L22.652 26.325L20.363 16.5861L28 10.0368L17.9326 9.18188L14 0L10.0674 9.18188L0 10.0368L7.637 16.5861L5.348 26.325L14 21.1611Z" fill="currentColor"/>
+              </svg>
+              {{ snaps.actions | where: 'action', 'star' | size }}
+            </li>
+          </ul>
+        </section>
+      </a>
     </li>
   {% endfor %}
 </ul>
