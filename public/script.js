@@ -1,4 +1,4 @@
-if ('serviceWorker' in navigator){
+if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('/sw.js')
 }
 
@@ -36,7 +36,7 @@ pictureForm.addEventListener('submit', async function (e) {
     await new Promise(function (resolve) {
         // Als de browser geen toegang heeft tot geolocatie, stop dan meteen
         if (!navigator.geolocation) return resolve()
-         
+
         // Vraag de browser om de huidige locatie van de gebruiker
         navigator.geolocation.getCurrentPosition(
             // Als het ophalen van de locatie gelukt is, sla dan de coördinaten op in de 'hidden' inputs
@@ -96,3 +96,31 @@ pictureForm.addEventListener('submit', async function (e) {
     document.querySelector(".loader").style.display = 'none'
     document.querySelector(".submit-text").style.display = 'block'
 })
+
+const snappGrid = document.getElementById('grid')
+const viewPopover = document.getElementById('menu-view')
+const headerIconButton = document.querySelector('.view-toggle')
+
+if (snappGrid && viewPopover) {
+    const viewOptions = viewPopover.querySelectorAll('.view-options button')
+
+    viewOptions.forEach(clickedOption => {
+        clickedOption.addEventListener('click', () => {
+            const viewClass = clickedOption.classList[0]
+            snappGrid.className = 'grid ' + viewClass
+
+            viewOptions.forEach(option => option.classList.remove('is-active'))
+            clickedOption.classList.add('is-active')
+
+            if (headerIconButton) {
+                const optionIcon = clickedOption.querySelector('svg')
+                const headerIcon = headerIconButton.querySelector('svg')
+                if (optionIcon && headerIcon) {
+                    headerIcon.replaceWith(optionIcon.cloneNode(true))
+                }
+            }
+
+            viewPopover.hidePopover()
+        })
+    })
+}

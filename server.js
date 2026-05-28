@@ -143,6 +143,7 @@ app.get('/snappmaps/:slug', async function (request, response) {
   response.render('snappmap.liquid', { snappmap, status, path, user })
 })
 
+
 // Maak een functie aan die van coördinaten een plaatsnaam maakt
 async function reverseGeocode(latitude, longitude) {
 
