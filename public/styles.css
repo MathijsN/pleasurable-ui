@@ -707,7 +707,7 @@ dialog[open] {
         button {
             font-family: inherit;
             background-color: var(--accent-color-on-dark-bg);
-            color: var(--lightest-color);
+            color: var(--primary-color);
             font-size: var(--font-size-xs);
             border-radius: 2rem;
             border: none;
@@ -952,7 +952,7 @@ dialog[open] {
         button {
             font-family: inherit;
             background-color: var(--accent-color-on-dark-bg);
-            color: var(--lightest-color);
+            color: var(--primary-color);
             font-size: var(--font-size-xs);
             border-radius: 2rem;
             border: none;
