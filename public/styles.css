@@ -142,7 +142,8 @@ header {
 
     .right-center-icon {
         justify-self: end;
-        width: var(--font-size-s);
+        width: calc(var(--bar-height) * 0.40);
+        height: auto;
         aspect-ratio: 1/1;
     }
 
@@ -240,14 +241,14 @@ nav {
                 height: 100%;
 
                 svg {
-                    height: 36%;
-                    width: auto;
+                    height: auto;
+                    width: calc(var(--bar-height) * 0.40);
                     fill: var(--lightest-color);
                 }
             }
 
             li:nth-of-type(1) svg {
-                height: 45%;
+                width: calc(var(--bar-height) * 0.44);
             }
         }
     }
