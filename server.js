@@ -112,7 +112,7 @@ app.get('/groups/:slug', async function (request, response) {
 app.get('/snappmaps/:slug', async function (request, response) {
   const params = new URLSearchParams()
 
-  params.set('fields', '*.*,groups.snappthis_group_uuid.name,groups.snappthis_group_uuid.slug,groups.snappthis_group_uuid.snappmap.snappthis_snapmap_uuid.name,groups.snappthis_group_uuid.snappmap.snappthis_snapmap_uuid.slug,groups.snappthis_group_uuid.snappmap.snappthis_snapmap_uuid.uuid')
+  params.set('fields', '*.*,snaps.author.uuid,snaps.author.name,snaps.actions.action,groups.snappthis_group_uuid.name,groups.snappthis_group_uuid.slug,groups.snappthis_group_uuid.snappmap.snappthis_snapmap_uuid.name,groups.snappthis_group_uuid.snappmap.snappthis_snapmap_uuid.slug,groups.snappthis_group_uuid.snappmap.snappthis_snapmap_uuid.uuid')
   params.set('filter[slug]', request.params.slug)
 
   const snappmapApiResponse = await fetch(`${snappmapEndpoint}?${params.toString()}`)
@@ -127,13 +127,18 @@ app.get('/snappmaps/:slug', async function (request, response) {
   const userApiResponse = await fetch(`${userEndpoint}?${userParams.toString()}`)
   const userApiResponseJSON = await userApiResponse.json()
   const user = userApiResponseJSON.data
+  for (const snap of snappmap[0].snaps) {
+    const stars = snap.actions.filter(action => action.action === 'star')
+    snap.stars_count = stars.length
+  }
 
   const status = request.query.status
+  const sort = request.query.sort
   const path = request.path
 
   console.log(user[0].groups)
 
-  response.render('snappmap.liquid', { snappmap, status, path, user })
+  response.render('snappmap.liquid', { snappmap, status, sort, path, currentUserUuid: userUuid })
 })
 
 // Maak een functie aan die van coördinaten een plaatsnaam maakt

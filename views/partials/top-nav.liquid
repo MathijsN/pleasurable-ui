@@ -1,6 +1,12 @@
 <header class="top-nav">
   {% if currentPage == 'snappmap' %}
     {% assign headerName = snappmap.name %}
+    <a href="/" class="go-back-link">
+      <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+        <title>Go back to the Snappmap {{ oneSnappInfo[0].snapmap.name }}</title>
+        <path fill-rule="evenodd" clip-rule="evenodd" d="M7.6 14L18.8 2.8L16 0L0 16L16 32L18.8 29.2L7.6 18H32V14H7.6Z" fill=""/>
+      </svg>
+    </a>
     <details>
       <summary>
         <h1>{{ snappmap.name | truncate: 19 }}</h1>
@@ -20,6 +26,79 @@
         {% endfor %}
       </ul>
     </details>
+
+    <button class="view-toggle" popovertarget="menu-view">
+      <svg viewBox="0 0 36 36">
+        <path fill-rule="evenodd" clip-rule="evenodd" d="M0 9H9V0H0V9ZM13.5 36H22.5V27H13.5V36ZM0 36H9V27H0V36ZM0 22.5H9V13.5H0V22.5ZM13.5 22.5H22.5V13.5H13.5V22.5ZM27 0V9H36V0H27ZM13.5 9H22.5V0H13.5V9ZM27 22.5H36V13.5H27V22.5ZM27 36H36V27H27V36Z" fill="currentColor"/>
+      </svg>
+    </button>
+
+    <div id="menu-view" class="menu-view" popover>
+      <h2>Sort by</h2>
+      
+      <ul class="sort-options">
+        <li>
+          <a href="?sort=time" class="sort--time {% if sort != 'starred' %}is-active{% endif %}">
+            <svg viewBox="0 0 36 36">
+              <path fill-rule="evenodd" clip-rule="evenodd" d="M18 0C8.06 0 0 8.06 0 18s8.06 18 18 18 18-8.06 18-18S27.94 0 18 0zm0 32.4c-7.95 0-14.4-6.45-14.4-14.4S10.05 3.6 18 3.6 32.4 10.05 32.4 18 25.95 32.4 18 32.4zM19.8 9h-2.7v10.8l9.45 5.67 1.35-2.21-8.1-4.81V9z" fill="currentColor"/>
+            </svg>
+            Time
+          </a>
+        </li>
+        <li>
+          <a href="?sort=starred" class="sort--starred {% if sort == 'starred' %}is-active{% endif %}">
+            <svg viewBox="0 0 28 27">
+              <path fill-rule="evenodd" clip-rule="evenodd" d="M14 21.1611L22.652 26.325L20.363 16.5861L28 10.0368L17.9326 9.18188L14 0L10.0674 9.18188L0 10.0368L7.637 16.5861L5.348 26.325L14 21.1611Z" fill="currentColor"/>
+            </svg>
+            Starred
+          </a>
+        </li>
+      </ul>
+
+      <h2>View</h2>
+      <ul class="view-options">
+        <li>
+          <button type="button" class="grid--xlarge">
+            <svg viewBox="0 0 37 36">
+              <path fill-rule="evenodd" clip-rule="evenodd" d="M0 15.6038H15.6038V0H0V15.6038V15.6038ZM0 36H15.6038V20.3962H0V36V36ZM20.6842 36H36.288V20.3962H20.6842V36V36ZM20.6842 15.6038H36.288V0H20.6842V15.6038V15.6038Z" fill="currentColor"/>
+            </svg>
+            XLarge
+          </button>
+        </li>
+        <li>
+          <button type="button" class="grid--large is-active">
+            <svg viewBox="0 0 36 36">
+              <path fill-rule="evenodd" clip-rule="evenodd" d="M0 9H9V0H0V9ZM13.5 36H22.5V27H13.5V36ZM0 36H9V27H0V36ZM0 22.5H9V13.5H0V22.5ZM13.5 22.5H22.5V13.5H13.5V22.5ZM27 0V9H36V0H27ZM13.5 9H22.5V0H13.5V9ZM27 22.5H36V13.5H27V22.5ZM27 36H36V27H27V36Z" fill="currentColor"/>
+            </svg>
+            Large
+          </button>
+        </li>
+        <li>
+          <button type="button" class="grid--medium">
+            <svg viewBox="0 0 36 36">
+              <path fill-rule="evenodd" clip-rule="evenodd" d="M0 5.88848H5.88848V0H0V5.88848ZM10.0372 25.9628H15.9257V20.0744H10.0372V25.9628ZM10.0372 36H15.9257V30.1115H10.0372V36ZM0 25.9628H5.88848V20.0744H0V25.9628ZM0 36H5.88848V30.1115H0V36ZM0 15.9257H5.88848V10.0372H0V15.9257ZM15.9257 15.9257V10.0372H10.0372V15.9257H15.9257ZM20.0744 0V5.88848H25.9628V0H20.0744ZM30.1115 5.88848H36V0H30.1115V5.88848ZM15.9257 5.88848V0H10.0372V5.88848H15.9257ZM20.0744 15.9257H25.9628V10.0372H20.0744V15.9257ZM36 15.9257V10.0372H30.1115V15.9257H36ZM20.0744 25.9628H25.9628V20.0744H20.0744V25.9628ZM20.0744 36H25.9628V30.1115H20.0744V36ZM30.1115 25.9628H36V20.0744H30.1115V25.9628ZM30.1115 36H36V30.1115H30.1115V36Z" fill="currentColor"/>
+            </svg>
+            Medium
+          </button>
+        </li>
+        <li>
+          <button type="button" class="grid--small">
+            <svg viewBox="0 0 36 36">
+              <path fill-rule="evenodd" clip-rule="evenodd" d="M0 4.60465H4.60465V0H0V4.60465ZM7.84884 20.3023H12.4535V15.6977H7.84884V20.3023ZM7.84884 28.1512H12.4535V23.5465H7.84884V28.1512ZM7.84884 36H12.4535V31.3953H7.84884V36ZM0 20.3023H4.60465V15.6977H0V20.3023ZM0 28.1512H4.60465V23.5465H0V28.1512ZM0 36H4.60465V31.3953H0V36ZM0 12.4535H4.60465V7.84884H0V12.4535ZM12.4535 12.4535V7.84884H7.84884V12.4535H12.4535ZM15.6977 0V4.60465H20.3023V0H15.6977ZM23.5465 4.60465H28.1512V0H23.5465V4.60465ZM31.3953 4.60465H36V0H31.3953V4.60465ZM12.4535 4.60465V0H7.84884V4.60465H12.4535ZM15.6977 12.4535H20.3023V7.84884H15.6977V12.4535ZM28.1512 12.4535V7.84884H23.5465V12.4535H28.1512ZM36 12.4535V7.84884H31.3953V12.4535H36ZM15.6977 20.3023H20.3023V15.6977H15.6977V20.3023ZM15.6977 28.1512H20.3023V23.5465H15.6977V28.1512ZM15.6977 36H20.3023V31.3953H15.6977V36ZM23.5465 20.3023H28.1512V15.6977H23.5465V20.3023ZM31.3953 20.3023H36V15.6977H31.3953V20.3023ZM23.5465 28.1512H28.1512V23.5465H23.5465V28.1512ZM23.5465 36H28.1512V31.3953H23.5465V36ZM31.3953 28.1512H36V23.5465H31.3953V28.1512ZM31.3953 36H36V31.3953H31.3953V36Z" fill="currentColor"/>
+            </svg>
+            Small
+          </button>
+        </li>
+        <li>
+          <button type="button" class="grid--list">
+            <svg viewBox="0 0 36 36">
+              <path fill-rule="evenodd" clip-rule="evenodd" d="M9 9H0V0H9V9ZM36 0H13.68V4.32H36V0ZM36 13.68H13.68V18H36V13.68ZM13.68 27H36V31.32H13.68V27ZM0 36H9V27H0V36ZM9 22.5H0V13.5H9V22.5Z" fill="currentColor"/>
+            </svg>
+            List
+          </button>
+        </li>
+      </ul>
+    </div>
   {% endif %}
 
   {% if currentPage == 'groups' %}

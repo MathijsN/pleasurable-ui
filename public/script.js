@@ -96,3 +96,34 @@ pictureForm.addEventListener('submit', async function (e) {
     document.querySelector(".loader").style.display = 'none'
     document.querySelector(".submit-text").style.display = 'block'
 })
+
+const snappGrid = document.getElementById('grid')
+const viewPopover = document.getElementById('menu-view')
+const headerIconButton = document.querySelector('.view-toggle')
+
+if (snappGrid && viewPopover) {
+    const viewOptions = viewPopover.querySelectorAll('.view-options button')
+
+    viewOptions.forEach(clickedOption => {
+        clickedOption.addEventListener('click', () => {
+
+            const viewClass = clickedOption.classList[0]
+            snappGrid.className = 'grid ' + viewClass
+
+            //haal is-active bij alle opties weg zet het op de geklikte
+            viewOptions.forEach(option => option.classList.remove('is-active'))
+            clickedOption.classList.add('is-active')
+
+            //Vervang het icon in de header door dat van de gekozen view
+            if (headerIconButton) {
+                const optionIcon = clickedOption.querySelector('svg')
+                const headerIcon = headerIconButton.querySelector('svg')
+                if (optionIcon && headerIcon) {
+                    headerIcon.replaceWith(optionIcon.cloneNode(true))
+                }
+            }
+
+            viewPopover.hidePopover()
+        })
+    })
+}
