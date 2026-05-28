@@ -806,45 +806,6 @@ dialog[open] {
     }
 }
 
-/* .grid {
-    display: grid;
-    grid-template-columns: repeat(3, 33%);
-    gap: var(--grid-gap);
-    margin-top: var(--grid-gap);
-    overflow: clip;
-
-    li {
-        list-style: none;
-        overflow: hidden;
-
-        --col: calc(rem((sibling-index() - 1), 3) + 1);
-        animation: --grid-ani 1s ease;
-        animation-fill-mode: backwards;
-        animation-timeline: view(calc(95% - 5% * var(--col)) calc(-5% + 5% * var(--col)));
-    }
-
-    img {
-        width: 100%;
-        height: 100%;
-        aspect-ratio: 1/1;
-        object-fit: cover;
-    }
-}
-
-@keyframes --grid-ani {
-    from {
-        scale: 0.8;
-        opacity: 0.3;
-    }
-
-    to {
-        scale: 1;
-        opacity: 1;
-    }
-} */
-
-
-
 .grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
