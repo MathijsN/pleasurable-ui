@@ -1,6 +1,7 @@
 import express, { response } from 'express'
 import { Liquid } from 'liquidjs';
 import multer from 'multer';
+import cookieParser from 'cookie-parser';
 
 const app = express()
 
@@ -9,6 +10,7 @@ const upload = multer({ storage: multer.memoryStorage() });
 app.use(express.urlencoded({ extended: true }))
 
 app.use(express.static('public'))
+app.use(cookieParser())
 
 const engine = new Liquid()
 app.engine('liquid', engine.express())
@@ -26,6 +28,11 @@ const userEndpoint = `${baseURL}/snappthis_user`
 const userUuid = "5e9589a5-ebfa-4a99-87a6-010f2f571444"
 
 app.get('/', async function (request, response) {
+  // Controleer of de gebruiker is ingelogd
+  if (!request.cookies.loggedIn) {
+    return response.redirect('/login')
+  }
+
   const params = new URLSearchParams()
   params.set('fields', '*,snaps.*')
   params.set('sort', '-time_end')
@@ -73,6 +80,8 @@ app.post("/login", async function (request, response) {
   const testPassword = "snappthis";
 
   if (loginInfo.email == testEmail && loginInfo.password == testPassword) {
+    // Sla een cookie op zodat de gebruiker ingelogd blijft
+    response.cookie('loggedIn', 'true', { httpOnly: true })
     response.redirect(303, '/');
     console.log("succesvol Ingelogd");
   } else {
