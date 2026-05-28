@@ -264,7 +264,6 @@ ul.groups {
     justify-content: space-between;
     height: var(--bar-height);
     flex: 1;
-    height: var(--bar-height);
 
     .group-list-stats {
         display: flex;
@@ -853,7 +852,6 @@ dialog[open] {
     list-style: none;
 
     li {
-        list-style: none;
         overflow: hidden;
         --col: 1;
         animation: --grid-item-appear 1s ease backwards;
@@ -1264,9 +1262,6 @@ dialog[open] {
     height: 5dvh
 }
 
-@view-transition {
-    navigation: auto;
-}
 
 .offline-melding,
 .offline-pagina {
