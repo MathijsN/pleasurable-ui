@@ -57,7 +57,7 @@
           {% if snaps.author.uuid == userUuid %}
             <h2>You</h2>
           {% elsif snaps.author != userUuid %}
-            <h3>{{ snaps.author.name }}</h3>
+            <h2>{{ snaps.author.name }}</h2>
           {% endif %}
           <p>{{ snaps.location }}</p>
 
