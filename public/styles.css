@@ -542,8 +542,8 @@ form.picture {
 
             svg {
                 display: block;
-                height: 1rem;
-                width: auto;
+                height: auto;
+                width: calc(var(--bar-height) * 0.30);
                 fill: var(--lightest-color);
             }
         }
@@ -767,8 +767,8 @@ form.picture {
         font-size: var(--font-size-xs);
 
         svg {
-            width: 1rem;
-            height: 1rem;
+            width: calc(var(--bar-height) * 0.30);
+            height: auto;
             fill: var(--icon-color-on-light-bg);
         }
     }
@@ -1025,8 +1025,8 @@ ul.groups {
     }
 
     .snap-stats svg {
-        width: 1.1rem;
-        height: 1.1rem;
+        width: calc(var(--bar-height) * 0.30);
+        height: auto;
     }
 }
 
