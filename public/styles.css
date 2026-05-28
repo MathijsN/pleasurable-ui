@@ -156,8 +156,8 @@ header {
         cursor: pointer;
 
         svg {
-            width: var(--icon-width);
-            height: var(--icon-width);
+            width: calc(var(--bar-height) * 0.40);
+            height: auto;
             display: block;
         }
     }
