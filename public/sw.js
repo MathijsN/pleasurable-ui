@@ -14,7 +14,7 @@ const AssetsToCache = [
     "/login",
     "/groups",
     "/snapps",
-    // "/user", bestaat nog niet en veroorzaakt anders errors
+    "/user",
     "/offline",
 ];
 
