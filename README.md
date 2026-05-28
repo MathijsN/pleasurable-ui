@@ -42,11 +42,13 @@ Stap 1) installeer de [NodeJS ontwikkelomgeving](https://nodejs.org/en/download)
 
 Stap 2) Fork deze repository, *clone* deze op jouw computer en open het in VSCodium/ een code editor.
 
-Stap 3) Open de Terminal in VSCodium, Voer in de terminal het commando `npm install uit` door het in te typen en op enter te drukken.
+Stap 3) Open de Terminal in VSCodium, voer in de terminal het commando `npm install uit` door het in te typen en op enter te drukken.
 
 Stap 4) Om `multipart/form-data` (bestanden) te kunnen POST'en is het handig om [Multer](https://www.npmjs.com/package/multer) te installeren in de terminal. 
 
-Stap 5) Na de installatie is de map `node_modules` aangemaakt, en gevuld met allerlei packages. Start de website door in de terminal het comando `npm start` uit te voeren. Als het goed is, komt hier een melding te staan over het opstarten van de server: Application started on http://localhost:8000 — Open deze URL in je browser
+Stap 5) Om de `cookie-parser` te kunnen gebruiken, voer in de terminal het commando `npm install cookie-parser` door het in te typen en op enter te drukken. De `cookie-parser` is om een tijdelijke inlog te maken met het gebruik van cookies. 
+
+Stap 6) Na de installatie is de map `node_modules` aangemaakt, en gevuld met allerlei packages. Start de website door in de terminal het comando `npm start` uit te voeren. Als het goed is, komt hier een melding te staan over het opstarten van de server: Application started on http://localhost:8000 — Open deze URL in je browser
 
 ## Bronnen
 - [Figma ontwerpen van de opdrachtgever](https://www.figma.com/design/0sXvjvqboOmfDuFMUcRHJh/2025snappthisDesign?node-id=0-1&t=FGaH92iMbFUM6n4w-1)
