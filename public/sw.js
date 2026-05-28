@@ -8,13 +8,13 @@ const AssetsToCache = [
     "/manifest.json",
     "/assets/logo.png",
     "/assets/snappthis-logo.svg",
+    "/assets/logo-desktop.png",
     "/fonts/Bariol_Regular.otf",
     //routes
     "/",
     "/login",
     "/groups",
     "/snapps",
-    "/user",
     "/offline",
 ];
 
