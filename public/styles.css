@@ -722,6 +722,7 @@ dialog[open] {
     grid-template-columns: repeat(3, 33%);
     gap: var(--grid-gap);
     margin-top: var(--grid-gap);
+    overflow: clip;
 
     li {
         list-style: none;
