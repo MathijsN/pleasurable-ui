@@ -573,7 +573,7 @@ dialog[open] {
 
     h2,
     .active {
-        padding-inline: 4px;
+        padding-inline: var(--spacing-s);
     }
 
     h2 {
