@@ -932,7 +932,7 @@ dialog[open] {
 
 .grid--list {
     grid-template-columns: 1fr;
-    gap: 1px;
+    gap: var(--grid-gap);
 
     >li {
         background-color: var(--background-color-dialog);
