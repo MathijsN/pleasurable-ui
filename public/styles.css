@@ -1004,6 +1004,7 @@ ul.groups {
     section h2 {
         font-size: var(--font-size-m);
         color: var(--primary-color);
+        font-weight: normal;
     }
 
     section p {
