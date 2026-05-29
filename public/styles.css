@@ -67,6 +67,16 @@ body {
     &:has(.login-page) header {
         display: none;
     }
+
+    &:has(form.picture:valid) header {
+        h1 {
+            display: none;
+        }
+
+        .view-toggle {
+            display: none;
+        }
+    }
 }
 
 /* partials/top-nav.liquid */
@@ -303,7 +313,7 @@ form.picture {
 
     img,
     .retry-action,
-    p,
+    h2,
     button[type="submit"] {
         display: none;
     }
@@ -345,11 +355,11 @@ form.picture {
         button[type="submit"],
         img,
         .retry-action,
-        p {
+        h2 {
             display: block;
         }
 
-        p {
+        h2 {
             grid-column: span 2;
         }
 
@@ -362,7 +372,8 @@ form.picture {
 
         label,
         button[type="submit"] {
-            width: 2rem;
+            width: 3.5rem;
+            font-size: var(--font-size-s);
             aspect-ratio: 1/1;
             display: flex;
             justify-content: center;
@@ -413,7 +424,7 @@ form.picture {
 }
 
 .loader {
-    width: 22px;
+    width: 30px;
     aspect-ratio: 1/1;
     border-radius: 50%;
     position: relative;

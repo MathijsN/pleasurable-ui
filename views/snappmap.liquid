@@ -20,26 +20,14 @@
       {% render 'partials/uploadSnapForm.liquid',
         snappmapSlug: snappmap.slug,
         snappmapUuid: snappmap.uuid,
-        target_date: target_date_sec
+        target_date: target_date_sec,
+        snappmapName: snappmap.name
       %}
     {% endif %}
   {% endif %}
 {% endfor %}
 
 {% render 'partials/formStatusMessage.liquid', status: status %}
-{% comment %}
-  <ul class="grid" id="grid">
-    {% for snaps in sorted_snaps %}
-      <li>
-        <img
-          src="https://fdnd-agency.directus.app/assets/{{ snaps.picture }}?width=300&format=webp"
-          alt=""
-          loading="lazy"
-        >
-      </li>
-    {% endfor %}
-  </ul>
-{% endcomment %}
 
 {% assign sorted_snaps = snappmap.snaps | sort: 'date_created' | reverse %}
 <ul class="grid grid--large" id="grid">
