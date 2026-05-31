@@ -1,0 +1,68 @@
+<form
+  action="/snappmaps/{{ snappmapSlug }}"
+  method="POST"
+  enctype="multipart/form-data"
+  class="picture"
+>
+  <img
+    class="image-preview"
+    src="#"
+    alt="Preview"
+  >
+  <h2>{{ snappmapName }}</h2>
+
+  <label id="make-snapp">
+    <svg
+      width="200"
+      height="200"
+      viewBox="0 0 200 200"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      class="picture-icon"
+    >
+      <title>Make or select a picture</title>
+      <circle cx="100" cy="100" r="100" fill="#00E53D"/>
+      <path fill-rule="evenodd" clip-rule="evenodd" d="M99.7856 93.1627C94.2754 93.1627 89.7922 97.6459 89.7922 103.156C89.7922 108.666 94.2754 113.149 99.7856 113.149C105.296 113.149 109.779 108.666 109.779 103.156C109.779 97.6459 105.296 93.1627 99.7856 93.1627V93.1627ZM116.697 76.2509C116.697 70.7315 112.223 66.2576 106.704 66.2576H92.8671C87.3477 66.2576 82.8737 70.7315 82.8737 76.2509H71.343C65.8236 76.2509 61.3496 80.7249 61.3496 86.2443V120.068C61.3496 125.587 65.8236 130.061 71.343 130.061H128.228C133.748 130.061 138.222 125.587 138.222 120.068V86.2443C138.222 80.7249 133.748 76.2509 128.228 76.2509H116.697ZM99.7856 120.837C90.0359 120.837 82.105 112.905 82.105 103.156C82.105 93.4072 90.0359 85.4755 99.7856 85.4755C109.535 85.4755 117.466 93.4072 117.466 103.156C117.466 112.905 109.535 120.837 99.7856 120.837V120.837Z" fill="white"/>
+    </svg>
+
+    <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 16 16" class="retry-action">
+      <path fill="#555753" fill-rule="evenodd" d="M7.32.029a8 8 0 0 1 7.18 3.307V1.75a.75.75 0 0 1 1.5 0V6h-4.25a.75.75 0 0 1 0-1.5h1.727A6.5 6.5 0 0 0 1.694 6.424A.75.75 0 1 1 .239 6.06A8 8 0 0 1 7.319.03Zm-3.4 14.852A8 8 0 0 0 15.76 9.94a.75.75 0 0 0-1.455-.364A6.5 6.5 0 0 1 2.523 11.5H4.25a.75.75 0 0 0 0-1.5H0v4.25a.75.75 0 0 0 1.5 0v-1.586a8 8 0 0 0 2.42 2.217" clip-rule="evenodd"/>
+        <title>Retake picture</title>
+    </svg>
+
+    <input type="file" name="file" id="file" accept="image/*" capture="environment" required>
+    <input type="hidden" name="uuid" value="{{ snappmapUuid }}">
+
+    {% comment %} Voor het ophalen van de geolocatie {% endcomment %}
+    <input type="hidden" name="latitude" id="latitude">
+    <input type="hidden" name="longitude" id="longitude">
+  </label>
+
+  <button type="submit">
+    <span class="submit-text">OK</span>
+    <span class="loader"></span>
+  </button>
+</form>
+
+{% assign today_date_seconds = 'now' | date: '%s' %}
+{% assign difference_seconds = target_date | minus: today_date_seconds %}
+{% assign hours_remaining = difference_seconds | divided_by: 3600 | round: 0 %}
+{% comment %} 'modulo: 3600' verwijdert alle volledige uren en houdt alleen de overgebleven seconden over die geen heel uur vormen {% endcomment %}
+{% assign minutes_remaining = difference_seconds | modulo: 3600 | divided_by: 60 | round: 0 %}
+
+{% if hours_remaining < 10 %}
+  {% assign hours_display = hours_remaining | prepend: '0' %}
+{% else %}
+  {% assign hours_display = hours_remaining %}
+{% endif %}
+
+{% if minutes_remaining < 10 %}
+  {% assign minutes_display = minutes_remaining | prepend: '0' %}
+{% else %}
+  {% assign minutes_display = minutes_remaining %}
+{% endif %}
+
+<div class="timer-picture">
+  <p>{{ hours_display }}:{{ minutes_display }}</p>
+  <p class="active">Add your snapp!</p>
+</div>

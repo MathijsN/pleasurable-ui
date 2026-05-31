@@ -1,3 +1,32 @@
-{% render 'partials/head.liquid' %}
+{% render 'partials/head.liquid', title: 'SnappThis', currentPage: 'index' %}
+
+{% for snappmap in allSnappmaps %}
+  {% comment %} Maak variabelen aan om te checken of de eind tijd van de snappmap overschreden is met de datum van 'vandaag' {% endcomment %}
+  {% assign today_date = 'now' | date: '%Y%m%d' %}
+  {% assign target_date = snappmap.time_end | date: '%Y%m%d' %}
+  {% assign this_user_has_a_snapp = snappmap.snaps | where: 'author', userUuid | first %}
+
+  <section class="home-page-snappmaps-list">
+    <h2><a href="/snappmaps/{{ snappmap.slug }}">{{ snappmap.name }}</a></h2>
+
+    {% comment %} Gebruik variabelen om te checken of de eind tijd van de snappmap overschreden is 
+    + of er een snapp is gemaakt met de ingelogte gebruiker {% endcomment %}
+    {% if target_date > today_date and this_user_has_a_snapp %}
+      <p class="active"><strong>Add your snapp!</strong></p>
+    {% endif %}
+
+    <figure class="image-thumbnails">
+        {% for snapp in snappmap.snaps limit: 5 %}
+          <a href="/snapps/{{ snapp.uuid }}" aria-label="Recente Snapp {{ forloop.index }} van 5 in snappmap {{ snappmap.name }}">
+            <picture>
+              <source srcset="https://fdnd-agency.directus.app/assets/{{ snapp.picture }}?width=200&format=avif" type="image/avif" width="200" height="200">
+              <source srcset="https://fdnd-agency.directus.app/assets/{{ snapp.picture }}?width=200&format=webp" type="image/webp" width="200" height="200">
+              <img loading="lazy" src="https://fdnd-agency.directus.app/assets/{{ snapp.picture }}?width=200" alt="" width="200" height="200" style="object-fit: cover;">
+            </picture>
+          </a>
+        {% endfor %}
+    </figure>
+  </section>
+{% endfor %}
 
 {% render 'partials/footer.liquid', currentPage: 'home' %}

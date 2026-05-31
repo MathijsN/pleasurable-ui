@@ -5,10 +5,36 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ title }}</title>
 
-    <link rel="icon" href="/assets/snappthis-logo.png" type="image/png">
+    <link rel="icon" href="/assets/snappthis-logo.svg">
 
     <link rel="stylesheet" href="/styles.css">
-    <script src="/script.js" type="module" defer></script>
+    <link rel="manifest" href="/manifest.json">
+    <script src="/script.js" type="module"></script> 
+    <script src="/login.js" type="module"></script>
 </head>
 <body>
+    {% comment %} voor snapp.liquid {% endcomment %}
+    {% if oneSnapp %}
+        {%  render 'partials/snapp-actions.liquid', 
+            snappUuid: snappUuid,
+            userUuid: userUuid,
+            oneSnappInfo: oneSnappInfo,
+            likesCount: likesCount,
+            tomatoCount: tomatoCount,
+            starCount: starCount,
+            status: status,
+            hasLike: hasLike,
+            hasTomato: hasTomato,
+            hasStar: hasStar %}
+    {% else %}
+        {% render 'partials/top-nav.liquid', currentPage: currentPage, snappmap: snappmap, topNavTitle: topNavTitle %}
+    {% endif %}
+    
+
     <main>
+    <div class="offline-melding" hidden>
+        <a href="">
+            <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M30.6 5.4C27.45 2.025 22.95 0 18 0C8.1 0 0 8.1 0 18C0 27.9 8.1 36 18 36C26.325 36 33.3 30.15 35.325 22.5H30.6C28.8 27.675 23.85 31.5 18 31.5C10.575 31.5 4.5 25.425 4.5 18C4.5 10.575 10.575 4.5 18 4.5C21.825 4.5 24.975 6.075 27.45 8.55L20.25 15.75H36V0L30.6 5.4Z" fill="#224455"/></svg>
+            <p>Geen internetverbinding</p>
+        </a>
+    </div>
