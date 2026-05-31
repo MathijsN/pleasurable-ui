@@ -121,7 +121,7 @@ Stap 6) Na de installatie is de map `node_modules` aangemaakt, en gevuld met all
 - [Filter rules - @Directus](https://directus.io/docs/guides/connect/filter-rules)
 - [Liquid Markup - @Modyo Docs](https://docs.modyo.com/en/platform/channels/liquid-markup.html)
 - [Multer | Middleware for uploading files - @NPMJS](https://www.npmjs.com/package/multer)
-- [Cookie-parser | Middleware for the use of cookies](https://www.npmjs.com/package/cookie-parser)
+- [Cookie-parser | Middleware for the use of browser cookies - @NPMJS](https://www.npmjs.com/package/cookie-parser)
 - [About Photon | Geolocation API - @Github](https://github.com/komoot/photon)
 
 ## Licentie
