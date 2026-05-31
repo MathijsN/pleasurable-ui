@@ -45,10 +45,49 @@ Tot slot zijn er een aantal extra functionaliteiten toegevoegd:
 
 ## Gebruik
 <!-- Bij Gebruik staat de user story, hoe het werkt en wat je er mee kan. -->
+De website/webapplicatie bestaat uit meerdere pagina's en interacties. Als je de app opent, kom je eerst op de [loginpagina](https://github.com/MathijsN/pleasurable-ui/wiki/Login,-Service-Worker-&-Grid-view#login). Hier log je in met het e-mailadres en wachtwoord van 'Anne-fleur Pietersen', waarna er een cookie wordt gezet zodat je ingelogd blijft tijdens het navigeren. De [service worker](https://github.com/MathijsN/pleasurable-ui/wiki/Login,-Service-Worker-&-Grid-view#service-worker-pwa) zorgt er daarnaast voor dat de app ook zonder internetverbinding werkt. Via het manifest is de app bovendien installeerbaar als PWA, Progressive Web App, op je telefoon.
+
+<table>
+  <tr>
+    <td><img width="200" alt="Image" src="https://github.com/user-attachments/assets/350c8577-0146-49af-b063-d0859fa26108"/></td>
+    <td><img width="200" alt="Image" src="https://github.com/user-attachments/assets/a88f217f-1ba6-4c89-9234-503e6a5d125c" /></td>
+  </tr>
+</table>
+
+Eenmaal ingelogd kom je op een overzicht van de pagina's, waaronder het groepenoverzicht, de snappmappagina en de gebruikerspagina. Hoe je er doorheen navigeert, is te vinden op de wikipagina [Groups page, snappmaps page & user page](https://github.com/MathijsN/pleasurable-ui/wiki/Groups-page,-snappmaps-page-&-user-page).
+
+<table>
+  <tr>
+    <td><img width="200" alt="Image" src="https://github.com/user-attachments/assets/dc5275e5-c0c7-4b91-8d42-ae3aa8d2c1f7"/></td>
+    <td><img width="200" alt="Image" src="https://github.com/user-attachments/assets/e6be5b38-cb79-4bb1-a573-75ce4732517d" /></td>
+    <td><img width="200" alt="Image" src="https://github.com/user-attachments/assets/507344dc-ac43-414c-b09d-e6fa9905b93a"/></td>
+  </tr>
+</table>
+
+In een snappmap kun je de weergave aanpassen via de [grid view wisselaar](https://github.com/MathijsN/pleasurable-ui/wiki/Login,-Service-Worker-&-Grid-view#grid-view-wisselaar). Via een popover in de header kies je tussen vijf weergaves: XLarge, Large, Medium, Small en List.
+
+<table>
+  <tr>
+    <td><img width="200" alt="Image" src="https://github.com/user-attachments/assets/8621d2ed-1df5-4c66-800f-6bb452336703"/></td>
+    <td><img width="200" alt="Image" src="https://github.com/user-attachments/assets/75ca1238-a895-4b2c-bda5-4048d9fa0b05" /></td>
+  </tr>
+</table>
+
+De twee interacties zijn apart gedocumenteerd. Beide pagina's bevatten de user story, wireflows, breakdown schetsen en technische documentatie per interactie. Het liken, disliken en favorieten van snapps, inclusief de bijbehorende loading en succes states, is uitgewerkt op de pagina [Likes, dislikes & favorites](https://github.com/MathijsN/pleasurable-ui/wiki/Likes,-dislikes-&-favorites-%E2%80%90-Interactie). 
+
+https://github.com/user-attachments/assets/be6a9711-252c-47bc-bd58-ab2a681515a7
+
+
+Het uploaden van een foto/snapp in een snappmap, inclusief de feedback aan de gebruiker bij een succes of error, is te vinden op de pagina [Upload snapp in snappmap](https://github.com/MathijsN/pleasurable-ui/wiki/Upload-snapp-in-snappmap-%E2%80%90-interactie).
+
+https://github.com/user-attachments/assets/72730276-dcbb-4d3b-a997-d9ad718bb9c0
+
+
 
 
 ## Kenmerken
 <!-- Bij Kenmerken staat welke technieken zijn gebruikt en hoe. Wat is de HTML structuur? Wat zijn de belangrijkste dingen in CSS? Wat is er met JS gedaan en hoe? Misschien heb je iets met NodeJS gedaan, of heb je een framwork of library gebruikt? -->
+De website/webapplicatie is gebouwd met NodeJS, Express, Liquid en JSON, en maakt gebruik van de [FDND Directus database - Snappthis](https://fdnd-agency.directus.app/items/snappthis_snap) als databron. Alle pagina's en interacties zijn opgebouwd volgens het principe van Progressive Enhancement: de website is eerst functioneel zonder CSS en JavaScript, en wordt daarna laag voor laag verbeterd met styling, loading states en animaties. Zo is de website/webapplicatie op elk apparaat en in elke browser bruikbaar, en wordt de ervaring steeds gebruiksvriendelijker en fijner naarmate de browser meer ondersteunt.
 
 ## Installatie
 <!-- Bij Instalatie staat hoe een andere developer aan jouw repo kan werken -->
