@@ -35,13 +35,22 @@ De website/webapplicatie bestaat uit de volgende pagina's:
 - Een groepenoverzicht, snappmap-overzichten en detailpagina's per snapp
 - Overzichtspagina's waar snapps gefilterd kunnen worden op locatie en gebruiker
 
-Gebruikers kunnen snapps liken, disliken en favorieten, en foto's uploaden in een snappmap.
+Gebruikers kunnen snapps liken, disliken en favorieten, en fotos/snapps uploaden in een snappmap.
 
 Tot slot zijn er een aantal extra functionaliteiten toegevoegd:
-- **Geolocatie:** via de Photon API wordt bij het uploaden van een snapp de locatie opgehaald en opgeslagen, zodat snapps gefilterd kunnen worden op locatie.
+- **Geolocatie:** via de [Photon API](https://github.com/komoot/photon) wordt bij het uploaden van een snapp de locatie [opgehaald](https://github.com/MathijsN/pleasurable-ui/blob/b7df00307c9fa4959b000493fe0c03248f2ba2f3/server.js#L147-L176) en [opgeslagen](https://github.com/MathijsN/pleasurable-ui/blob/b7df00307c9fa4959b000493fe0c03248f2ba2f3/server.js#L187-L194), zodat snapps gefilterd kunnen worden op locatie.
 - **Service worker:** zorgt ervoor dat de website ook zonder internetverbinding werkt; de gebruiker krijgt dan een duidelijke melding in plaats van een browserfout.
-- **Cookie parser:** regelt een tijdelijke inlog via cookies, zodat de gebruiker ingelogd blijft tijdens het navigeren.
+- **Cookie parser:** regelt een tijdelijke [inlog](https://github.com/MathijsN/pleasurable-ui/blob/b7df00307c9fa4959b000493fe0c03248f2ba2f3/server.js#L82-L90) via cookies, zodat de gebruiker vanuit de loginpagina [geredirect](https://github.com/MathijsN/pleasurable-ui/blob/b7df00307c9fa4959b000493fe0c03248f2ba2f3/server.js#L32-L33) wordt naar de homepagina. 
 - **PWA:** de website is installeerbaar als Progressive Web App, waardoor hij als een native app te gebruiken is zonder tussenkomst van de App Store of Google Play.
+
+Link naar website: https://snappthis-main.onrender.com
+
+<img width="200" alt="mobile-black(1)" src="https://github.com/user-attachments/assets/7a5fbadb-5a89-4e66-9d2c-b656052247ef" />
+
+<img width="200" alt="mobile-black(2)" src="https://github.com/user-attachments/assets/f5c9462a-b45b-4c2b-a69f-7dd79ab83b06" />
+
+
+>_Mockups van active snappmap pagina & snapp detailpagina_
 
 ## Gebruik
 <!-- Bij Gebruik staat de user story, hoe het werkt en wat je er mee kan. -->
@@ -112,6 +121,7 @@ Stap 6) Na de installatie is de map `node_modules` aangemaakt, en gevuld met all
 - [Filter rules - @Directus](https://directus.io/docs/guides/connect/filter-rules)
 - [Liquid Markup - @Modyo Docs](https://docs.modyo.com/en/platform/channels/liquid-markup.html)
 - [Multer | Middleware for uploading files - @NPMJS](https://www.npmjs.com/package/multer)
+- [Cookie-parser | Middleware for the use of cookies](https://www.npmjs.com/package/cookie-parser)
 - [About Photon | Geolocation API - @Github](https://github.com/komoot/photon)
 
 ## Licentie
