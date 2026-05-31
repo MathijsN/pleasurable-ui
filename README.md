@@ -28,8 +28,24 @@ foto's, die dienen als inspiratie- en gespreksonderwerp vanuit de echte wereld.
 <!-- Voeg een mooie poster visual toe 📸 -->
 <!-- Voeg een link toe naar Github Pages 🌐-->
 
+Voor het ontwerpen en bouwen van de website/webapplicatie hebben wij ons in sprint 11 gericht op het samenvoegen van de individuele sprints in één gezamenlijke repository.
+
+De website/webapplicatie bestaat uit de volgende pagina's:
+- Een loginpagina, homepagina en gebruikerspagina
+- Een groepenoverzicht, snappmap-overzichten en detailpagina's per snapp
+- Overzichtspagina's waar snapps gefilterd kunnen worden op locatie en gebruiker
+
+Gebruikers kunnen snapps liken, disliken en favorieten, en foto's uploaden in een snappmap.
+
+Tot slot zijn er een aantal extra functionaliteiten toegevoegd:
+- **Geolocatie:** via de Photon API wordt bij het uploaden van een snapp de locatie opgehaald en opgeslagen, zodat snapps gefilterd kunnen worden op locatie.
+- **Service worker:** zorgt ervoor dat de website ook zonder internetverbinding werkt; de gebruiker krijgt dan een duidelijke melding in plaats van een browserfout.
+- **Cookie parser:** regelt een tijdelijke inlog via cookies, zodat de gebruiker ingelogd blijft tijdens het navigeren.
+- **PWA:** de website is installeerbaar als Progressive Web App, waardoor hij als een native app te gebruiken is zonder tussenkomst van de App Store of Google Play.
+
 ## Gebruik
 <!-- Bij Gebruik staat de user story, hoe het werkt en wat je er mee kan. -->
+
 
 ## Kenmerken
 <!-- Bij Kenmerken staat welke technieken zijn gebruikt en hoe. Wat is de HTML structuur? Wat zijn de belangrijkste dingen in CSS? Wat is er met JS gedaan en hoe? Misschien heb je iets met NodeJS gedaan, of heb je een framwork of library gebruikt? -->
