@@ -118,11 +118,17 @@ app.get('/groups/:slug', async function (request, response) {
   response.render('groups.liquid', { snappMapslist, path, userUuid })
 })
 
+// Tel hoeveel sterren een snap heeft
+function countStars(snap) {
+  return snap.actions.filter(action => action.action === 'star').length
+}
+
 app.get('/snappmaps/:slug', async function (request, response) {
   const params = new URLSearchParams()
 
   params.set('fields', '*.*,groups.snappthis_group_uuid.name,groups.snappthis_group_uuid.slug,groups.snappthis_group_uuid.snappmap.snappthis_snapmap_uuid.name,groups.snappthis_group_uuid.snappmap.snappthis_snapmap_uuid.slug,groups.snappthis_group_uuid.snappmap.snappthis_snapmap_uuid.uuid,snaps.author.*,snaps.actions.*')
   params.set('filter[slug]', request.params.slug)
+  params.set('deep[snaps][_sort]', '-date_created')
 
   const snappmapApiResponse = await fetch(`${snappmapEndpoint}?${params.toString()}`)
   const snappmapApiResponseJSON = await snappmapApiResponse.json()
@@ -138,9 +144,15 @@ app.get('/snappmaps/:slug', async function (request, response) {
   const user = userApiResponseJSON.data
 
   const status = request.query.status
+  const sort = request.query.sort
   const path = request.path
 
-  response.render('snappmap.liquid', { snappmap, status, path, user, userUuid })
+  // Bij 'starred' de snaps met de meeste sterren bovenaan zetten
+  if (sort === 'starred') {
+    snappmap[0]?.snaps?.sort((snapA, snapB) => countStars(snapB) - countStars(snapA))
+  }
+
+  response.render('snappmap.liquid', { snappmap, status, sort, path, user, userUuid })
 })
 
 
