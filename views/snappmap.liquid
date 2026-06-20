@@ -5,7 +5,7 @@
 {% assign target_date_sec = snappmap.time_end | date: '%s' %}
 
 {% if path contains 'snappmap' %}
-  {% render 'partials/head.liquid', title: 'Snappmap', currentPage: 'snappmap', snappmap: snappmap %}
+  {% render 'partials/head.liquid', title: 'Snappmap', currentPage: 'snappmap', snappmap: snappmap, sort: sort %}
 {% endif %}
 {% comment %} maak if statement die checked of jij in de snappmap kan posten {% endcomment %}
 {% for group in user.groups %}
@@ -29,9 +29,8 @@
 
 {% render 'partials/formStatusMessage.liquid', status: status %}
 
-{% assign sorted_snaps = snappmap.snaps | sort: 'date_created' | reverse %}
 <ul class="grid grid--large" id="grid">
-  {% for snaps in sorted_snaps %}
+  {% for snaps in snappmap.snaps %}
     <li>
       <a href="/snapps/{{ snaps.uuid }}">
         <img
