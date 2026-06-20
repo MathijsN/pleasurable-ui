@@ -56,35 +56,49 @@ self.addEventListener("activate", (event) => {
     console.log("activated service worker");
 });
 
-//Luister naar elk netwerkverzoek
+// statische assets 
+const staticExtensions = [".css", ".js", ".json", ".png", ".jpg", ".jpeg", ".svg", ".gif", ".webp", ".otf", ".ttf", ".woff", ".woff2", ".ico"];
+
+// kijkt of de url op een van die assets eindigt
+function isStaticAsset(url) {
+    return staticExtensions.some((extensie) => url.endsWith(extensie));
+}
+
+// haalt iets van het netwerk en bewaart meteen een kopie in de cache
+async function fetchAndCache(request) {
+    const response = await fetch(request);
+    const cache = await caches.open(cacheVersion);
+    cache.put(request, response.clone());
+    return response;
+}
+
+// NETWORK-FIRST: eerst het netwerk proberen voor verse data, bij offline uit cache
+// gebruikt voor dynamische data zoals paginas en api verzoeken
+async function networkFirst(request) {
+    try {
+        return await fetchAndCache(request);
+    } catch {
+        // netwerk faalt, val terug op de cache of anders de offline-pagina
+        return (await caches.match(request)) || caches.match("/offline");
+    }
+}
+
+// STALE-WHILE-REVALIDATE: snel uit cache en ondertussen op de achtergrond verversen
+// gebruikt voor statische assets die zelden veranderen
+async function staleWhileRevalidate(request) {
+    // geef direct de cache terug, of wacht op het netwerk als de cache leeg was
+    return (await caches.match(request)) || fetchAndCache(request);
+}
+
+//Luister naar elk netwerkverzoek en kies de juiste strategie
 self.addEventListener("fetch", (event) => {
-    //pakt het verzoek en bepaalt wat er mee gedaan wor
-    event.respondWith(
-        //kijkt of er een al gecachede match is
-        caches.match(event.request).then((cachedResponse) => {
-            //Start op de achtergrond een verzoek naar het echte internet
-            const networkFetch = fetch(event.request).then((networkResponse) => {
-                // alleen get verzoeken cachen, post mag niet en zorgt voor errors
-                if (event.request.method === "GET" && networkResponse.ok) {
-                    // internet geeft antwoord, open de cache
-                    return caches.open(cacheVersion).then((cache) => {
-                        // sla een kopie op in de cache voor de volgende keer
-                        cache.put(event.request, networkResponse.clone());
-                        // geef de verse versie terug
-                        return networkResponse;
-                    });
-                }
-                // POST en andere methodes gewoon teruggeven zonder te cachen
-                return networkResponse;
-            });
+    // alleen GET-verzoeken cachen, de rest doorlaten
+    if (event.request.method !== "GET") return;
 
-            // geef direct de cache terug, of wacht op het internet als de cache leeg was
-            return cachedResponse || networkFetch.catch(() => {
-                if (event.request.mode === "navigate"){
-                    return caches.match("offline");
-                }
-
-        });
-        }),
-    );
+    // statische assets via stale-while-revalidate, dynamische data via network-first
+    if (isStaticAsset(event.request.url)) {
+        event.respondWith(staleWhileRevalidate(event.request));
+    } else {
+        event.respondWith(networkFirst(event.request));
+    }
 });
